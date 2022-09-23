@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "DEBUG='app:server' node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "resetDb": "sqitch revert -y; sqitch deploy;"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +20,8 @@
     "express-jsdoc-swagger": "^1.8.0",
     "logger": "^0.0.1",
     "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.5.0"
   }
 }
