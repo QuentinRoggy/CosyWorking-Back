@@ -15,8 +15,18 @@ router.use(function(_, res, next) {
   next();
 });
 
-  router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.checkDuplicateEmail], controllerHandler(controller.signup));
+/**
+ * POST /api/auth/signup
+ * @summary Create a new User
+ * @tags User
+ * @return {ApiError} 400 - Bad request response - application/json
+ * @return {ApiError} 404 - Restaurant not found - application/json
+ */
+router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.checkDuplicateEmail], controllerHandler(controller.signup));
 
-  router.post("/auth/login", controllerHandler(controller.login));
+/**
+ * 
+ */
+router.post("/auth/login", controllerHandler(controller.login));
 
-  module.exports = router;
+module.exports = router;
