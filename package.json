@@ -6,7 +6,7 @@
   "scripts": {
     "start": "DEBUG='app:server' node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "resetDb": "sqitch revert -y; sqitch deploy;"
+    "resetDb": "sqitch revert -y; sqitch deploy; DEBUG='seeding' node ./data/seeding.js"
   },
   "keywords": [],
   "author": "",
