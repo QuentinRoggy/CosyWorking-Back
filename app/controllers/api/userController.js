@@ -1,6 +1,8 @@
+require("dotenv").config();
 const userDatamapper = require("../../Datamapper/user");
 const roleDatamapper = require("../../Datamapper/role");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userController = {
 
@@ -23,6 +25,35 @@ const userController = {
     const result = await userDatamapper.create(userToInsert);
 
     res.json(result);
+  },
+
+  async login(req, res) {
+    const emailToFInd = req.body.email;
+
+    const user = await userDatamapper.findUserLoggedByEmail(emailToFInd);
+
+    if (user.length === 0) {
+      res.status(404).send({
+        message: "User not found"});
+    }
+
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      user[0].password
+    );
+
+    if (!passwordIsValid) {
+      res.status(401).send({
+        message: "Invalid password"});
+    }
+
+    var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400 // 24 hours
+    });
+
+    user[0].token = token;
+
+    res.json(user);
   }
 
 };

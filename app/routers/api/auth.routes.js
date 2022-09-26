@@ -17,6 +17,6 @@ router.use(function(_, res, next) {
 
   router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.checkDuplicateEmail], controllerHandler(controller.signup));
 
-  // router.post("/api/auth/signin", controller.signin);
+  router.post("/auth/login", controllerHandler(controller.login));
 
   module.exports = router;
