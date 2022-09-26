@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS public."user"
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT user_pkey PRIMARY KEY (id),
     CONSTRAINT email_unique UNIQUE (email),
-    CONSTRAINT password_unique UNIQUE (password),
     CONSTRAINT username_unique UNIQUE (username),
     CONSTRAINT role_id_fk FOREIGN KEY (role_id)
         REFERENCES public.role (id) MATCH SIMPLE
