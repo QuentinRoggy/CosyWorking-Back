@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS public.booking_ref
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     CONSTRAINT booking_ref_pkey PRIMARY KEY (id)
-)
+);
 
     --  *** BOOKING *** 
 
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS public.booking
         REFERENCES public.workspace (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
     --  *** WORKSPACE_HAS_EQUIPMENT *** 
 
