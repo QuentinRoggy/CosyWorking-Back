@@ -6,7 +6,9 @@ const validate = require('../../validation/validator');
 const userCreateSchema = require('../../validation/schemas/userCreateSchema');
 const {userController: controller} = require("../../controllers/api");
 const controllerHandler = require('../../helpers/controllerHandler');
+const verifyAccesRight = require('../../middleware/verifyAccessRight');
 
+// Gives acces to x-access-token in header
 router.use(function(_, res, next) {
   res.header(
     "Access-Control-Allow-Headers",
@@ -15,7 +17,7 @@ router.use(function(_, res, next) {
   next();
 });
 
-/**
+/** 
  * POST /api/auth/signup
  * @summary Create a new User
  * @tags User
@@ -32,5 +34,10 @@ router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.che
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
 router.post("/auth/login", controllerHandler(controller.login));
+
+/**
+ * test
+ */
+router.get("/coworker", [verifyAccesRight.verifyToken, verifyAccesRight.isCoworker], controllerHandler(controller.coworker));
 
 module.exports = router;

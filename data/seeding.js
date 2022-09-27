@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { faker } = require("@faker-js/faker");
 const debug = require("debug")("seeding");
+const bcrypt = require("bcryptjs");
 
 const db = require("../app/config/db");
 
@@ -44,7 +45,7 @@ function generateUsers(nbUsers, roleIds) {
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),
       email: faker.internet.email(this.first_name, this.last_name),
-      password: faker.internet.password(),
+      password: bcrypt.hashSync("password", 8),
       username: faker.internet.userName(this.first_name, this.last_name),
       avatar: faker.internet.avatar(),
       gender: faker.name.sexType(),
@@ -99,19 +100,7 @@ async function insertUsers(users) {
       "about",
       "role_id"
     )
-    VALUES 
-    (
-      'admin',
-      'admin',
-      'admin_cosyworking@gmail.com',
-      'admin',
-      'admin',
-      'truc.jpg',
-      'male',
-      'Je suis le boss',
-      3
-    ),
-    ${usersValues} RETURNING id;`;
+    VALUES ${usersValues} RETURNING id;`;
 
   const result = await db.query(queryString);
   return result.rows;
