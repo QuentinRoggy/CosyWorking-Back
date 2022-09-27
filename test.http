@@ -20,8 +20,8 @@ POST {{hostname}}/auth/login
 content-type: application/json
 
 {
-   "email": "rouge@doeuf.com",
-   "password": "Password123$"
+   "email": "Anice78@hotmail.fr",
+   "password": "password"
 }
 
 ### séparateur entre deux requêtes
