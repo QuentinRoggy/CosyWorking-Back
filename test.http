@@ -1,0 +1,15 @@
+@hostname = http://localhost:3000/api
+
+### séparateur entre deux requêtes
+
+POST {{hostname}}/user/auth/signup
+content-type: application/json
+
+{
+	"last_name": "John",
+   "first_name": "Doeuf",
+   "email": "john@doeuf.com",
+   "password": "password",
+   "gender": "male",
+   "role": "role"
+}

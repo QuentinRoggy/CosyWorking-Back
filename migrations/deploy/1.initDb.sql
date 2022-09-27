@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS public."user"
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT user_pkey PRIMARY KEY (id),
     CONSTRAINT email_unique UNIQUE (email),
-    CONSTRAINT password_unique UNIQUE (password),
     CONSTRAINT username_unique UNIQUE (username),
     CONSTRAINT role_id_fk FOREIGN KEY (role_id)
         REFERENCES public.role (id) MATCH SIMPLE
@@ -127,6 +126,14 @@ CREATE TABLE IF NOT EXISTS public.image
         ON DELETE NO ACTION
 );
 
+
+    --  *** BOOKING REF *** 
+CREATE TABLE IF NOT EXISTS public.booking_ref
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    CONSTRAINT booking_ref_pkey PRIMARY KEY (id)
+)
+
     --  *** BOOKING *** 
 
 CREATE TABLE IF NOT EXISTS public.booking
@@ -137,9 +144,15 @@ CREATE TABLE IF NOT EXISTS public.booking
     user_id integer NOT NULL,
     workspace_id integer NOT NULL,
     state_id integer NOT NULL,
+    booking_ref_id integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT booking_pkey PRIMARY KEY (id),
+    CONSTRAINT booking_ref_fk FOREIGN KEY (booking_ref_id)
+        REFERENCES public.booking_ref (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
     CONSTRAINT booking_state_id_fk FOREIGN KEY (state_id)
         REFERENCES public.state (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -152,7 +165,7 @@ CREATE TABLE IF NOT EXISTS public.booking
         REFERENCES public.workspace (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-);
+)
 
     --  *** WORKSPACE_HAS_EQUIPMENT *** 
 
