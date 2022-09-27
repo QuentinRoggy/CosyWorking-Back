@@ -2,14 +2,35 @@
 
 ### séparateur entre deux requêtes
 
-POST {{hostname}}/user/auth/signup
+POST {{hostname}}/auth/signup
 content-type: application/json
 
 {
 	"last_name": "John",
    "first_name": "Doeuf",
-   "email": "john@doeuf.com",
-   "password": "password",
+   "email": "rouge@doeuf.com",
+   "password": "Password123$",
    "gender": "male",
-   "role": "role"
+   "role_id": "coworker"
+}
+
+### séparateur entre deux requêtes
+
+POST {{hostname}}/auth/login
+content-type: application/json
+
+{
+   "email": "rouge@doeuf.com",
+   "password": "Password123$"
+}
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/coworker
+content-type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3LCJ1c2VyUm9sZURlc2NyaXB0aW9uIjoiY293b3JrZXIiLCJpYXQiOjE2NjQyODM1MzUsImV4cCI6MTY2NDM2OTkzNX0.rMUeUfT0MAMxQcYnBK4npbU9OOia33Juyl8yyTt6N-U
+
+{
+   "email": "rouge@doeuf.com",
+   "password": "Password123$"
 }

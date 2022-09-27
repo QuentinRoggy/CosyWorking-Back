@@ -6,11 +6,19 @@ const jwt = require("jsonwebtoken");
 
 const userController = {
 
+  /**
+   * Method to sign up
+   * @param {*} req 
+   * @param {*} res 
+   * @returns 
+   */
   async signup(req, res) {
+
+    // We get user's information
     const userToInsert = req.body;
 
-    const descriptionToFind = req.body.role_id;
-    const idRole = await roleDatamapper.findByDescription(descriptionToFind);
+    // We fetch the role_id from the user created
+    const idRole = await roleDatamapper.findByDescription(userToInsert.role_id);
 
     if (!idRole) {
       res.status(400).send({
@@ -19,7 +27,10 @@ const userController = {
       return;
     }
 
+    // We change the value from role to role_id
     userToInsert.role_id = idRole[0].id;
+
+    // We update the password into crypted string
     userToInsert.password = bcrypt.hashSync(req.body.password, 8);
 
     const result = await userDatamapper.create(userToInsert);
@@ -27,16 +38,25 @@ const userController = {
     res.json(result);
   },
 
+  /**
+   * Method to login
+   * @param {*} req 
+   * @param {*} res 
+   */
   async login(req, res) {
+
     const emailToFInd = req.body.email;
 
+    // We fetch the user according to his email
     const user = await userDatamapper.findUserLoggedByEmail(emailToFInd);
 
+    // If user don't exist, obligatory send a 0 length 
     if (user.length === 0) {
       res.status(404).send({
         message: "User not found"});
     }
 
+    // Compare the user password with the crypted password in Db, return boolean
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user[0].password
@@ -47,15 +67,38 @@ const userController = {
         message: "Invalid password"});
     }
 
-    var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    // We create the user's token
+    // attached to it's id and role
+    // to have a direct access
+    const token = jwt.sign({
+      userId: user[0].id, 
+      userRoleDescription: user[0].role_description}, 
+      process.env.JWT_SECRET,
+      {
       expiresIn: 86400 // 24 hours
     });
 
-    user[0].token = token;
+    // We create an object for the Front response
+    const userLogged = {
+      userId: user[0].id, 
+      userRoleDescription: user[0].role_description, 
+      userToken: token
+    }
 
-    res.json(user);
+    res.json(userLogged);
+  },
+
+  /**
+   * test
+   * @param {*} _ 
+   * @param {*} res 
+   */
+  coworker(_, res) {
+    res.json({message: "ok"});
   }
 
 };
 
 module.exports = userController;
+
+
