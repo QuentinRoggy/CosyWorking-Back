@@ -3,8 +3,9 @@ const userDatamapper = require("../../Datamapper/user");
 const roleDatamapper = require("../../Datamapper/role");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const user = require("../../Datamapper/user");
 
-const userController = {
+module.exports = {
 
   /**
    * Method to sign up
@@ -75,7 +76,7 @@ const userController = {
       userRoleDescription: user[0].role_description}, 
       process.env.JWT_SECRET,
       {
-      expiresIn: 86400 // 24 hours
+      expiresIn: 60 // 24 hours
     });
 
     // We create an object for the Front response
@@ -99,6 +100,5 @@ const userController = {
 
 };
 
-module.exports = userController;
 
 
