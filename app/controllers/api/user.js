@@ -3,8 +3,9 @@ const userDatamapper = require("../../Datamapper/user");
 const roleDatamapper = require("../../Datamapper/role");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const user = require("../../Datamapper/user");
 
-const userController = {
+module.exports = {
 
   /**
    * Method to sign up
@@ -99,6 +100,5 @@ const userController = {
 
 };
 
-module.exports = userController;
 
 
