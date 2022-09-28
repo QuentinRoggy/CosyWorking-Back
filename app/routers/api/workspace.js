@@ -16,6 +16,7 @@ router.use(function(_, res, next) {
 });
 
 router.post("/workspace/create", controllerHandler(controller.create));
+
 router.get("/workspace/find-random", controllerHandler(controller.findRandom));
 
 module.exports = router;

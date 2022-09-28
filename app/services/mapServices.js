@@ -1,10 +1,11 @@
+require("dotenv").config();
 const axios = require("axios");
 
 module.exports = {
   async findLocation(address, zipCode, city) {
 
     const params = {
-      access_key: "f61c8bee2f11dca8893b2a69f6737256",
+      access_key: process.env.API_LOCATION_ACCESS_KEY,
       query: `${address} ${zipCode} ${city}`
     }
   

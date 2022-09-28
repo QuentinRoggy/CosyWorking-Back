@@ -5,6 +5,7 @@ module.exports = {
 
   async create(req, res) {
     const workspaceToCreate = req.body;
+    
     const coordinates = await mapServices.findLocation(req.body.address,req.body.zip_code, req.body.city);
 
     workspaceToCreate.latitude = coordinates.latitude;
