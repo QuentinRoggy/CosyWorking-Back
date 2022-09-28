@@ -20,7 +20,7 @@ router.use(authRouter);
 // route.user(bookingRouter);
 // route.user(profilRouter);
 // route.user(userRouter);
-// route.user(workspaceRouter);
+router.use(workspaceRouter);
 
 
 
