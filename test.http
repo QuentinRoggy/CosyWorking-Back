@@ -59,9 +59,14 @@ content-type: application/json
 
 ### séparateur entre deux requêtes
 
-PATCH {{hostname}}/booking/2/state
+PATCH {{hostname}}/booking/1/state
 content-type: application/json
 
 {
-   "stateDescription": "En attente"
+   "stateDescription": "Annulé"
 }
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/workspace/1/bookeddate
+content-type: application/json

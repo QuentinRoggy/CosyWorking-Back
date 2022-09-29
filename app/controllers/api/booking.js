@@ -5,6 +5,11 @@ const stateDatamapper = require('../../Datamapper/state')
 
 module.exports = {
 
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async getBookingByCoworker(req, res) {
 
         const coworkerId = req.params.id;
@@ -19,17 +24,26 @@ module.exports = {
 
     // },
 
-    // async getBookedDate(req, res) {
+    async getBookedDate(req, res) {
 
-    // },
+        const workspaceId = req.params.id;
 
+        const result = await bookingDatamapper.getBookedDateByWorkspace(workspaceId);
+
+        res.json(result);
+
+    },
+
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async bookingRequest(req, res) {
 
     const bookingToInsert = req.body;
 
     bookingToInsert.booking_ref_id = await bookingRefDatamaper.insertNewBookingRef();
-
-    // bookingToInsert.state_id = await stateDatamapper.getFromStateDescription();
 
     // loop 
 
@@ -39,6 +53,11 @@ module.exports = {
 
     },
 
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async stateUpdate(req, res) {
 
         const bookingId = req.params.id;

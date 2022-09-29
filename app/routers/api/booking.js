@@ -12,15 +12,15 @@ router.get("/personalspace/:id/coworkerbooking", controllerHandler(bookingContro
 
 
 // /**
-//  * GET 
+//  * GET All booked date by workspace
 //  *
-// router.get("/workspace/:id/bookeddate", controllerHandler(bookingController.getBookingByHost));
+router.get("/workspace/:id/bookeddate", controllerHandler(bookingController.getBookedDate));
 
 
 // /**
-//  * GET booking by Host
+//  * GET booking by host
 //  *
-// router.get("/personalspace/:hostid/booking", controllerHandler(bookingController.getBookedDate));
+// router.get("/personalspace/:hostid/booking", controllerHandler(bookingController.getBookingByHost));
 
 
 // /**

@@ -29,13 +29,18 @@ module.exports = {
     //  * @param {*} req 
     //  * @param {*} res 
     //  */
-    // async get() {
+    async getBookedDateByWorkspace(workspaceId) {
 
-    //     const queryString = ``;
-    //     const result = await client.query(queryString, []); 
-    //     return result.rows;
+        const queryString = `
+        SELECT booking.start_date, booking.end_date 
+        FROM booking 
+        JOIN state ON state.id = booking.state_id
+        WHERE booking.workspace_id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
+        `;
+        const result = await client.query(queryString, [workspaceId]); 
+        return result.rows;
 
-    // },
+    },
 
     // /**
     //  * 
