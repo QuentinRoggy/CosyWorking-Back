@@ -70,3 +70,10 @@ content-type: application/json
 
 GET {{hostname}}/workspace/1/bookeddate
 content-type: application/json
+
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personalspace/1/booking
+content-type: application/json
+

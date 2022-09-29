@@ -17,13 +17,27 @@ module.exports = {
         const result = await bookingDatamapper.getCoworkerReservationsById(coworkerId);
 
         res.json(result)
-
     },
 
-    // async getBookingByHost(req, res) {
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
+    async getBookingByHost(req, res) {
 
-    // },
+        const hostId = req.params.hostid;
 
+        const result = await bookingDatamapper.getBookingByHostId(hostId);
+        
+        res.json(result);
+    },
+
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async getBookedDate(req, res) {
 
         const workspaceId = req.params.id;
@@ -31,7 +45,6 @@ module.exports = {
         const result = await bookingDatamapper.getBookedDateByWorkspace(workspaceId);
 
         res.json(result);
-
     },
 
     /**
@@ -50,7 +63,6 @@ module.exports = {
     const result = await bookingDatamapper.PostBookingRequest(bookingToInsert);
 
     res.json(result);
-
     },
 
     /**
@@ -67,7 +79,6 @@ module.exports = {
         const updatedState= await bookingDatamapper.UpdateBookingState(stateDescription, bookingId );
 
         res.json({message: `The booking with the id ${bookingId} has been succesfully updated with the state ${stateDescription}`});
-
     },
 
 }

@@ -37,6 +37,7 @@ module.exports = {
         JOIN state ON state.id = booking.state_id
         WHERE booking.workspace_id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
         `;
+
         const result = await client.query(queryString, [workspaceId]); 
         return result.rows;
 
@@ -47,13 +48,23 @@ module.exports = {
     //  * @param {*} req 
     //  * @param {*} res 
     //  */
-    // async getBookingByHostId() {
+    async getBookingByHostId(hostId) {
 
-    //     const queryString = ``;
-    //     const result = await client.query(queryString, []); 
-    //     return result.rows;
+        const queryString = `
+        SELECT booking.id, workspace.title, image.link, workspace.address, workspace.city, "user".first_name AS coworker, booking.start_date, booking.end_date, state.description 
+        FROM booking
+        JOIN workspace ON workspace.id = booking.workspace_id
+        JOIN "user" ON "user".id = booking.user_id
+        JOIN image ON image.workspace_id = workspace.id 
+        JOIN state ON state.id = booking.state_id
+        WHERE workspace.user_id = $1 AND image.main_image = true
+        `;
 
-    // },
+        const result = await client.query(queryString, [hostId]); 
+        
+        return result.rows;
+
+    },
 
     // /**
     //  * 

@@ -8,19 +8,19 @@ const controllerHandler = require('../../helpers/controllerHandler');
 /**
  * GET all reservation of Coworker
  */
-router.get("/personalspace/:id/coworkerbooking", controllerHandler(bookingController.getBookingByCoworker));
+router.get("/personalspace/:id(\\d+)/coworkerbooking", controllerHandler(bookingController.getBookingByCoworker));
 
 
 // /**
-//  * GET All booked date by workspace
+//  * GET all booked date by workspace
 //  *
-router.get("/workspace/:id/bookeddate", controllerHandler(bookingController.getBookedDate));
+router.get("/workspace/:id(\\d+)/bookeddate", controllerHandler(bookingController.getBookedDate));
 
 
 // /**
 //  * GET booking by host
 //  *
-// router.get("/personalspace/:hostid/booking", controllerHandler(bookingController.getBookingByHost));
+router.get("/personalspace/:hostid(\\d+)/booking", controllerHandler(bookingController.getBookingByHost));
 
 
 // /**
@@ -32,6 +32,6 @@ router.post("/booking/request", controllerHandler(bookingController.bookingReque
 // /**
 //  * PATCH update a booking state
 //  * 
-router.patch("/booking/:id/state", controllerHandler(bookingController.stateUpdate));
+router.patch("/booking/:id(\\d+)/state", controllerHandler(bookingController.stateUpdate));
 
 module.exports = router;
