@@ -28,7 +28,7 @@ router.get("/workspace/:id(\\d+)", controllerHandler(controller.findById));
 /**
  * GET personalspace/:hostid/workspace
  */
-router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler());
+router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(findWorkspacesByHost));
 
 /**
  * POST /workspace/create

@@ -6,10 +6,18 @@ module.exports = {
   async findById(req, res) {
     const workspaceId = req.params.id;
 
-    const workspace = await workspaceDatamapper.findByPk(workspaceId);
+    const workspace = await workspaceDatamapper.getWorkspaceByPk(workspaceId);
 
-    res.json(workspace)
+    res.json(workspace);
 
+  },
+
+  async findWorkspacesByHost(req, res) {
+    const hostId = req.params.hostid;
+
+    const workspaces = await workspaceDatamapper.getWorkspacesByHostId(hostId);
+
+    res.json(workspaces);
   },
 
   async create(req, res) {

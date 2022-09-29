@@ -2,7 +2,7 @@ const client = require("../config/db");
 
 module.exports = {
 
-  async findByPk(workspaceId) {
+  async getWorkspaceByPk(workspaceId) {
   const queryString = `
   SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.address, workspace.zip_code, workspace.city, workspace.latitude, 
   workspace.longitude, workspace.morning_price, workspace.afternoon_price, workspace.day_price, 
@@ -16,6 +16,14 @@ module.exports = {
   const result = await client.query(queryString, [workspaceId]);
 
   return result.rows;
+  },
+
+  async getWorkspacesByHostId(hostId) {
+    const queryString = ``;
+
+    const result = await client.query(queryString, [hostId]);
+
+    return result.rows;
   },
 
   async create(workspaceToInsert) {
