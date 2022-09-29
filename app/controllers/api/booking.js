@@ -29,7 +29,7 @@ module.exports = {
 
     bookingToInsert.booking_ref_id = await bookingRefDatamaper.insertNewBookingRef();
 
-    bookingToInsert.state_id = await stateDatamapper.getFromStateDescription();
+    // bookingToInsert.state_id = await stateDatamapper.getFromStateDescription();
 
     // loop 
 
@@ -39,8 +39,16 @@ module.exports = {
 
     },
 
-    // async stateUpdate(req, res) {
+    async stateUpdate(req, res) {
 
-    // },
+        const bookingId = req.params.id;
+
+        const stateDescription = req.body.stateDescription;
+        
+        const updatedState= await bookingDatamapper.UpdateBookingState(stateDescription, bookingId );
+
+        res.json({message: `The booking with the id ${bookingId} has been succesfully updated with the state ${stateDescription}`});
+
+    },
 
 }

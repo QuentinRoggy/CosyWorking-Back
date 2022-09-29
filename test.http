@@ -49,7 +49,7 @@ content-type: application/json
    "start-date": "01.01.01",
    "end_date" : "02.02.02",
    "user_id" : 1,
-   "workspace_id" : 2
+   "workspace_id" : 1
 }
 
 ### séparateur entre deux requêtes
@@ -57,3 +57,11 @@ content-type: application/json
 GET {{hostname}}/personalspace/1/coworkerbooking
 content-type: application/json
 
+### séparateur entre deux requêtes
+
+PATCH {{hostname}}/booking/2/state
+content-type: application/json
+
+{
+   "stateDescription": "En attente"
+}
