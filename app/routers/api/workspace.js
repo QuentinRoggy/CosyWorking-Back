@@ -15,8 +15,40 @@ router.use(function(_, res, next) {
   next();
 });
 
+/**
+ * GET /workspace/find-random
+ */
+router.get("/workspace/find-random", controllerHandler(controller.findRandom));
+
+/**
+ * GET /workspace/:id
+ */
+router.get("/workspace/:id(\\d+)", controllerHandler(controller.findById));
+
+/**
+ * GET personalspace/:hostid/workspace
+ */
+router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler());
+
+/**
+ * POST /workspace/create
+ */
 router.post("/workspace/create", controllerHandler(controller.create));
 
-router.get("/workspace/find-random", controllerHandler(controller.findRandom));
+/**
+ * POST /workspace/search"
+ */
+router.post("/workspace/search", controllerHandler());
+
+/**
+ * PATCH workspace/:id
+ */
+router.patch("workspace/:id(\\d+)", controllerHandler());
+
+/**
+ * PATCH /workspace/state/:id
+ */
+router.patch("/workspace/state/:id(\\d+)", controllerHandler());
+
 
 module.exports = router;

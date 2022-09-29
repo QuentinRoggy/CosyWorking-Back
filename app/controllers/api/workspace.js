@@ -3,6 +3,15 @@ const mapServices = require("../../services/mapServices");
 
 module.exports = {
 
+  async findById(req, res) {
+    const workspaceId = req.params.id;
+
+    const workspace = await workspaceDatamapper.findByPk(workspaceId);
+
+    res.json(workspace)
+
+  },
+
   async create(req, res) {
     const workspaceToCreate = req.body;
     
