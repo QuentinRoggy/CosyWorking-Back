@@ -82,6 +82,40 @@ module.exports = {
     return result.rows;
   },
 
+  async patchOne(workspaceId, updatedWorkspace) {
+
+    let queryObject = {};
+
+    let queryString = "";
+    let counter = 1;
+    let queryParams = [];
+    let values = [];
+    let columns = [];
+
+    for (const key in updatedWorkspace ) {
+      columns.push(key);
+      queryParams.push(`$${counter}`);
+      counter ++;
+
+      values.push(updatedWorkspace[key]);
+    }
+
+    if (queryParams.length > 1 ) {
+      queryString = `UPDATE workspace SET ( ${columns.join(',')} ) = (${queryParams.join(',')}) WHERE id = ${workspaceId} RETURNING *;`;
+
+    } else {
+      queryString = `UPDATE workspace SET ${columns.join(',')} = ${queryParams.join(',')} WHERE id = ${workspaceId} RETURNING *;`;
+    }
+
+    queryObject.queryString = queryString;
+    queryObject.values = values;
+
+    const result = await client.query(queryObject.queryString, [...queryObject.values]);
+
+    return result.rows;
+
+  },
+
   async patchState(workspaceId, newState) {
     const queryString = `UPDATE workspace SET availability = $2 WHERE workspace.id = $1`;
 

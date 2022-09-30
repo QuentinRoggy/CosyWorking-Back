@@ -38,6 +38,15 @@ module.exports = {
     res.json(workspaces);
   },
 
+  async updateOne(req, res) {
+    const workspaceId = req.params.id;
+    const updatedWorkspace = req.body;
+
+    const result = await workspaceDatamapper.patchOne(workspaceId, updatedWorkspace);
+
+    res.json(result);
+  },
+
   async updateState(req, res) {
     const workspaceId = req.params.id;
     const newState = req.body.availability;

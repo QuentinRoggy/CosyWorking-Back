@@ -67,7 +67,7 @@ router.post("/workspace/search", controllerHandler());
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.patch("workspace/:id(\\d+)", controllerHandler());
+router.patch("/workspace/:id(\\d+)", controllerHandler(controller.updateOne));
 
 /**
  * PATCH /workspace/state/:id
