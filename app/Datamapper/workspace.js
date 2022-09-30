@@ -21,7 +21,8 @@ module.exports = {
                                'end_date',booking.end_date))
            FROM booking 
            JOIN workspace ON workspace.id = booking.workspace_id
-           where workspace.id = $1
+			JOIN state ON state.id = booking.state_id
+           where workspace.id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
           ),
       'equipments_list', (SELECT json_agg(json_build_object('description', equipment.description, 
                                'icon_link', equipment.icon_link))
