@@ -42,7 +42,7 @@ module.exports = {
     const workspaceId = req.params.id;
     const newState = req.body.availability;
 
-    const result = await workspaceDatamapper.patchState(workspaceId, newState);
+    await workspaceDatamapper.patchState(workspaceId, newState);
 
     res.json({message: `The workspace availabilty was succussfully changed to ${req.body.availability}`});
   }

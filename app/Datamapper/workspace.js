@@ -4,14 +4,34 @@ module.exports = {
 
   async getWorkspaceByPk(workspaceId) {
   const queryString = `
-  SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.address, workspace.zip_code, workspace.city, workspace.latitude, 
-  workspace.longitude, workspace.day_price, workspace.half_day_price, 
-  (SELECT ARRAY_AGG(image.link) FROM image WHERE image.workspace_id = $1) as image_links,
-  "user".first_name as host 
+  SELECT json_build_object(
+    'workspace',workspace.*,
+      'user', (SELECT json_agg(json_build_object('host', "user".first_name, 
+                          'host_avatar',"user".avatar))
+           FROM "user" 
+           JOIN workspace ON workspace.user_id = "user".id
+           where workspace.id = $1
+          ),
+    'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
+           FROM image 
+           JOIN workspace ON workspace.id = image.workspace_id
+           where workspace.id = $1
+          ),
+      'booking_list', (SELECT json_agg(json_build_object('start_date', booking.start_date, 
+                               'end_date',booking.end_date))
+           FROM booking 
+           JOIN workspace ON workspace.id = booking.workspace_id
+           where workspace.id = $1
+          ),
+      'equipments_list', (SELECT json_agg(json_build_object('description', equipment.description, 
+                               'icon_link', equipment.icon_link))
+           FROM workspace_has_equipment 
+           JOIN equipment ON equipment.id = workspace_has_equipment.equipment_id
+           where workspace_has_equipment.workspace_id = $1
+          )
+  ) as workspace_details
   FROM workspace
-  JOIN "user" ON "user".id = workspace.user_id
-  JOIN image ON image.workspace_id = workspace.id
-  WHERE workspace.id = $1
+  WHERE workspace.id = $1;
   `;
   const result = await client.query(queryString, [workspaceId]);
 
@@ -65,9 +85,9 @@ module.exports = {
   async patchState(workspaceId, newState) {
     const queryString = `UPDATE workspace SET availability = $2 WHERE workspace.id = $1`;
 
-    const result = await client.query(queryString, [workspaceId, newState]);
+    await client.query(queryString, [workspaceId, newState]);
 
-    return result.rows;
+    return;
   }
 
 }
