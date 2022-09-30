@@ -36,5 +36,14 @@ module.exports = {
   async findRandom(_, res) {
     const workspaces = await workspaceDatamapper.getRandom();
     res.json(workspaces);
+  },
+
+  async updateState(req, res) {
+    const workspaceId = req.params.id;
+    const newState = req.body.availability;
+
+    const result = await workspaceDatamapper.patchState(workspaceId, newState);
+
+    res.json({message: `The workspace availabilty was succussfully changed to ${req.body.availability}`});
   }
 }

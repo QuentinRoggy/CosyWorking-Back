@@ -28,7 +28,7 @@ router.get("/workspace/:id(\\d+)", controllerHandler(controller.findById));
 /**
  * GET personalspace/:hostid/workspace
  */
-router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(findWorkspacesByHost));
+router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(controller.findWorkspacesByHost));
 
 /**
  * POST /workspace/create
@@ -48,7 +48,7 @@ router.patch("workspace/:id(\\d+)", controllerHandler());
 /**
  * PATCH /workspace/state/:id
  */
-router.patch("/workspace/state/:id(\\d+)", controllerHandler());
+router.patch("/workspace/state/:id(\\d+)", controllerHandler(controller.updateState));
 
 
 module.exports = router;
