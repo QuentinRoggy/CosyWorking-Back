@@ -76,7 +76,7 @@ module.exports = {
       userRoleDescription: user[0].role_description}, 
       process.env.JWT_SECRET,
       {
-      expiresIn: 86400 // 24 hours
+      expiresIn: 60 // 24 hours
     });
 
     // We create an object for the Front response
@@ -87,6 +87,15 @@ module.exports = {
     }
 
     res.json(userLogged);
+  },
+
+  async findUserById(req,res) {
+
+    const userId = req.params.id;
+
+    const result = await userDatamapper.getUserByPk(userId);
+
+    res.json(result);
   },
 
   /**

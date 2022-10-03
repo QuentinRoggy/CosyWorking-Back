@@ -6,9 +6,9 @@ POST {{hostname}}/auth/signup
 content-type: application/json
 
 {
-	"last_name": "John",
+	"last_name": "Jean",
    "first_name": "Doeuf",
-   "email": "rouge@doeuf.com",
+   "email": "jean@doeuf.com",
    "password": "Password123$",
    "gender": "male",
    "role_id": "coworker"
@@ -20,17 +20,64 @@ POST {{hostname}}/auth/login
 content-type: application/json
 
 {
-   "email": "Anice78@hotmail.fr",
-   "password": "password"
+   "email": "jean@doeuf.com",
+   "password": "Password123$"
 }
 
 ### séparateur entre deux requêtes
 
 GET {{hostname}}/coworker
 content-type: application/json
-x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3LCJ1c2VyUm9sZURlc2NyaXB0aW9uIjoiY293b3JrZXIiLCJpYXQiOjE2NjQyODM1MzUsImV4cCI6MTY2NDM2OTkzNX0.rMUeUfT0MAMxQcYnBK4npbU9OOia33Juyl8yyTt6N-U
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUxLCJ1c2VyUm9sZURlc2NyaXB0aW9uIjoiY293b3JrZXIiLCJpYXQiOjE2NjQ1NDU2NjksImV4cCI6MTY2NDYzMjA2OX0.w3umxgfTITzFvWGxa-55gb3WIY4rv0jmn5m5jXvG3Rw
 
 {
    "email": "rouge@doeuf.com",
    "password": "Password123$"
 }
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personalspace/:id/coworkerbooking
+content-type: application/json
+
+### séparateur entre deux requêtes
+
+POST {{hostname}}/booking/request
+content-type: application/json
+
+{
+   "start_date": "05.01.01",
+   "end_date" : "06.02.02",
+   "user_id" : 1,
+   "workspace_id" : 1
+}
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personalspace/1/coworkerbooking
+content-type: application/json
+
+### séparateur entre deux requêtes
+
+PATCH {{hostname}}/booking/2/state
+content-type: application/json
+
+{
+   "stateDescription": 
+}
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/workspace/1/bookeddate
+content-type: application/json
+
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personalspace/1/booking
+content-type: application/json
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/user/2
+content-type: application/json

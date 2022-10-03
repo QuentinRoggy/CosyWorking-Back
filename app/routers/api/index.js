@@ -17,8 +17,8 @@ const { route } = require('./auth');
 router.all('/', apiController.home);
 
 router.use(authRouter);
-
-
+router.use(bookingRouter);
+router.use(userRouter);
 router.use(workspaceRouter);
 
 router.use(authRouter);

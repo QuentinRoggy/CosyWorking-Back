@@ -18,7 +18,3 @@ module.exports = Joi.object({
     gender: Joi.string().required(),
     role_id: Joi.string().required()
 }).required();
-
-
-
-
