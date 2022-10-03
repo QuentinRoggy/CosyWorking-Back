@@ -48,6 +48,15 @@ module.exports = {
     const result = await client.query(queryString, [...values]);
 
     return result.rows;
+  },
+
+  async getUserByPk(userId) {
+    
+    const queryString = `SELECT "user".* FROM "user" WHERE "user".id = $1`;
+
+    const result = await client.query(queryString, [userId]);
+
+    return result.rows;
   }
 };
 

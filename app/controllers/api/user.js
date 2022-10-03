@@ -89,6 +89,15 @@ module.exports = {
     res.json(userLogged);
   },
 
+  async findUserById(req,res) {
+
+    const userId = req.params.id;
+
+    const result = await userDatamapper.getUserByPk(userId);
+
+    res.json(result);
+  },
+
   /**
    * test
    * @param {*} _ 

@@ -10,7 +10,7 @@ module.exports = {
      * @param {*} req 
      * @param {*} res 
      */
-    async getBookingByCoworker(req, res) {
+    async findBookingByCoworker(req, res) {
 
         const coworkerId = req.params.id;
 
@@ -24,7 +24,7 @@ module.exports = {
      * @param {*} req 
      * @param {*} res 
      */
-    async getBookingByHost(req, res) {
+    async findBookingByHost(req, res) {
 
         const hostId = req.params.hostid;
 
@@ -38,7 +38,7 @@ module.exports = {
      * @param {*} req 
      * @param {*} res 
      */
-    async getBookedDate(req, res) {
+    async findBookedDate(req, res) {
 
         const workspaceId = req.params.id;
 
