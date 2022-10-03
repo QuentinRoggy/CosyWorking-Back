@@ -51,16 +51,18 @@ module.exports = {
     return result.rows;
   },
 
+  /**
+   * 
+   * @param {*} userId 
+   * @returns 
+   */
   async getUserByPk(userId) {
     
-    const test = parseInt(userId);
 
-    const queryString = `SELECT get_user('{"user_id": $1}');`;
+    const queryString = `SELECT get_user($1)`;
 
-    const result = await client.query(queryString, [JSON.stringify([userId])]);
+    const result = await client.query(queryString, [userId]);
 
     return result.rows;
   }
 };
-
-
