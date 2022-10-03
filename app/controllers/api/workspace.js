@@ -54,5 +54,13 @@ module.exports = {
     await workspaceDatamapper.patchState(workspaceId, newState);
 
     res.json({message: `The workspace availabilty was succussfully changed to ${req.body.availability}`});
+  },
+
+  async searchWorkspaces(req, res) {
+    const searchDetails = req.body;
+
+    const workspacesAvailable = await workspaceDatamapper.getWorkspacesFromSearch(searchDetails);
+
+    res.json(workspacesAvailable);
   }
 }

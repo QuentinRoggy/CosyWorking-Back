@@ -45,3 +45,35 @@ SELECT json_build_object(
 )
 FROM workspace
 WHERE workspace.user_id = 2;
+
+SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
+FROM workspace 
+JOIN image ON image.workspace_id = workspace.id
+WHERE 
+image.main_image = true
+AND (workspace.id NOT IN (
+  SELECT DISTINCT booking.workspace_id 
+  FROM booking 
+  WHERE booking.start_date IN ('2022-08-12 08:00:00','2022-08-13 08:00:00','2022-08-14 13:00:00') 
+  AND booking.end_date IN ('2022-08-12 12:00:00','2022-08-14 17:00:00','2022-08-14 17:00:00'))    
+  AND workspace.city = 'Angers'
+  AND workspace.id IN (SELECT * FROM (
+	SELECT workspace_has_equipment.workspace_id
+	FROM workspace_has_equipment
+	WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = 'Cuisine')
+	INTERSECT
+	SELECT workspace_has_equipment.workspace_id
+	FROM workspace_has_equipment
+	WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = 'Imprimante')
+	) as workspace_by_equipment))
+OR (workspace.id NOT IN (Select DISTINCT booking.workspace_id FROM booking) 
+  AND workspace.city = 'Angers' 
+  AND workspace.id IN (SELECT * FROM (
+	SELECT workspace_has_equipment.workspace_id
+	FROM workspace_has_equipment
+	WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = 'Cuisine')
+	INTERSECT
+	SELECT workspace_has_equipment.workspace_id
+	FROM workspace_has_equipment
+	WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = 'Imprimante')
+	) as workspace_by_equipment))
