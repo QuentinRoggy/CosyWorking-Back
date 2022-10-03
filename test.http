@@ -79,5 +79,5 @@ content-type: application/json
 
 ### séparateur entre deux requêtes
 
-GET {{hostname}}/user/1
+GET {{hostname}}/user/2
 content-type: application/json
