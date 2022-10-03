@@ -1,3 +1,4 @@
+const { json } = require('express');
 const client = require('../config/db');
 const { ApiError } = require('../errors/apiErrors');
 
@@ -48,7 +49,20 @@ module.exports = {
     const result = await client.query(queryString, [...values]);
 
     return result.rows;
+  },
+
+  /**
+   * 
+   * @param {*} userId 
+   * @returns 
+   */
+  async getUserByPk(userId) {
+    
+
+    const queryString = `SELECT get_user($1)`;
+
+    const result = await client.query(queryString, [userId]);
+
+    return result.rows;
   }
 };
-
-
