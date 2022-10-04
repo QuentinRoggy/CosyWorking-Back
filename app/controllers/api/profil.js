@@ -10,6 +10,17 @@ module.exports = {
 
         res.json(result);
 
+    },
+
+    async updatePersonalspace(req, res) {
+
+        const userId = req.params.id;
+
+        const userBody = req.body;
+
+        const result = await profilDatamapper.updatePersonalspace(userId, userBody);
+
+        res.json(result);
     }
 
 }
