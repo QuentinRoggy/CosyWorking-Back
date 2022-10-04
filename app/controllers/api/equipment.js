@@ -4,6 +4,7 @@ module.exports = {
   async findAll(_, res) {
     const result = await equipmentDatamapper.getAll();
 
-    res.json(result);
+    res.json(result)
+
   }
 }

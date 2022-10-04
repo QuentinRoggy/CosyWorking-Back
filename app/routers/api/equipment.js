@@ -15,7 +15,13 @@ router.use(function(_, res, next) {
   next();
 });
 
-
+/**
+ * GET /api/equipments
+ * @summary Get all equipments
+ * @tags Equipments
+ * @return {ApiError} 400 - Bad request response - application/json
+ * @return {ApiError} 404 - Restaurant not found - application/json
+ */
 router.get("/equipments", controllerHandler(controller.findAll));
 
 module.exports = router;

@@ -115,6 +115,7 @@ module.exports = {
 
     return result.rows;
 
+    return;
   },
 
   async patchState(workspaceId, newState) {
