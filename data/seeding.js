@@ -8,8 +8,8 @@ const db = require("../app/config/db");
 db.queryCount = 0;
 
 faker.locale = "fr";
-const NB_USERS = 50;
-// const NB_WORKSPACES = 10;
+const NB_USERS = 10;
+const NB_WORKSPACES = 5;
 
 function pgQuoteEscape(row) {
   const newRow = {};
@@ -45,7 +45,7 @@ function generateUsers(nbUsers, roleIds) {
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),
       email: faker.internet.email(this.first_name, this.last_name),
-      password: bcrypt.hashSync("password", 8),
+      password: bcrypt.hashSync("Password123!", 8),
       username: faker.internet.userName(this.first_name, this.last_name),
       avatar: faker.internet.avatar(),
       gender: faker.name.sexType(),
@@ -75,6 +75,11 @@ function generateUsers(nbUsers, roleIds) {
 async function insertUsers(users) {
   await db.query('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE');
 
+  const coworkerId = await db.query(`SELECT role.id FROM role WHERE role.description = 'coworker'`);
+  const hostId = await db.query(`SELECT role.id FROM role WHERE role.description = 'host'`);
+  const password = bcrypt.hashSync("Password123!", 8);
+
+
   const usersValues = users.map((user) => `(
     '${user.first_name}',
     '${user.last_name}',
@@ -100,7 +105,9 @@ async function insertUsers(users) {
       "about",
       "role_id"
     )
-    VALUES ${usersValues} RETURNING id;`;
+    VALUES ('Corentin', 'Vanaquer', 'corentin.vanaquer@cosyworking.fr', '${password}', 'Corentin.V', '${faker.internet.avatar()}', 'male', 'Je suis un super hôte', ${hostId.rows[0].id}),
+    ('Quentin', 'Roggy', 'quentin.roggy@cosyworking.fr', '${password}', 'Quentin.R', '${faker.internet.avatar()}', 'male', 'Je suis un super coworker', ${coworkerId.rows[0].id}),
+    ${usersValues} RETURNING id;`;
 
   const result = await db.query(queryString);
   return result.rows;
@@ -110,27 +117,27 @@ async function insertEquipment() {
   const equipments = [
     [
       "('Imprimante'",
-      "'/lien1')"
+      "'/lib/images/equipment/imprimante.png')"
     ],
     [
       "('Fibre'",
-      "'/lien2')"
+      "'/lib/images/equipment/fibre.png')"
     ],
     [
       "('Cuisine'",
-      "'/lien3')"
+      "'/lib/images/equipment/cuisine.png')"
     ],
     [
       "('Double écran'",
-      "'/lien4')"
+      "'/lib/images/equipment/double-screen.png')"
     ],
     [
       "('Enceinte'",
-      "'/lien5')"
+      "'/lib/images/equipment/enceinte.png')"
     ],
     [
       "('Piscine'",
-      "'/lien6')"
+      "'/lib/images/equipment/piscine.png')"
     ],
   ];
 
@@ -145,7 +152,8 @@ async function insertStates() {
     "('En attente')",
     "('Validé')",
     "('Annulé')",
-    "('Terminé')"
+    "('Terminé')",
+    "('Non disponible')"
   ];
 
   const queryString = `INSERT INTO "state" ("description") VALUES ${states} RETURNING id;`;
@@ -155,26 +163,34 @@ async function insertStates() {
   return result.rows;
 }
 
-function generateWorkspaces(nbWorkspace, userIds) {
+async function generateWorkspaces(nbWorkspace) {
 
-  debug(userIds);
+  const result = await db.query(`SELECT "user".id FROM "user" JOIN role ON role.id = "user".role_id WHERE role.description = 'host';`);
+
+  const userIds = [];
+
+  for (key in result.rows) {
+    userIds.push(result.rows[key].id);
+  }
 
   const workspaces = [];
+
   for (let iWorkspace = 0; iWorkspace < nbWorkspace; iWorkspace++) {
     const workspace = {
       title: faker.lorem.words(3),
       description: faker.lorem.lines(3),
       address: faker.address.streetAddress(),
-      zip_code: faker.address.zipCode(),
+      zip_code: faker.address.zipCode('#####'),
       city: faker.address.cityName(),
       longitude: faker.address.longitude(),
       latitude: faker.address.latitude(),
-      morning_price: faker.datatype.number(50),
-      afternoon_price: faker.datatype.number(50),
-      day_price: faker.datatype.number(100),
+      half_day_price: faker.datatype.number(10),
+      day_price: faker.datatype.number({min: 10, max: 100}),
       availability: true,
       user_id: userIds[Math.floor(Math.random() * userIds.length)]
     }
+
+    workspace.address = workspace.address.replace(/'/g, "''");
 
     workspaces.push(workspace);
   }
@@ -183,6 +199,7 @@ function generateWorkspaces(nbWorkspace, userIds) {
 }
 
 async function insertWorkspaces(workspaces) {
+
   await db.query('TRUNCATE TABLE "workspace" RESTART IDENTITY CASCADE');
 
   const workspaceValues = workspaces.map((workspace) => `(
@@ -193,8 +210,7 @@ async function insertWorkspaces(workspaces) {
     '${workspace.city}',
     '${workspace.longitude}',
     '${workspace.latitude}',
-    '${workspace.morning_price}',
-    '${workspace.afternoon_price}',
+    '${workspace.half_day_price}',
     '${workspace.day_price}',
     '${workspace.availability}',
     '${workspace.user_id}'
@@ -210,14 +226,75 @@ async function insertWorkspaces(workspaces) {
       "city",
       "longitude",
       "latitude",
-      "morning_price",
-      "afternoon_price",
+      "half_day_price",
       "day_price",
       "availability",
       "user_id"
     )
     VALUES 
     ${workspaceValues} RETURNING id;`;
+
+  const result = await db.query(queryString);
+
+  return result.rows;
+}
+
+async function insertEquipmentForWorkspace() {
+  const wokspacesResult = await db.query(`SELECT id FROM workspace`);
+  const equipmentResult = await db.query(`SELECT id FROM equipment`);
+
+  const workspaceIds = [];
+  const equipmentsIds = []
+
+  for (key in wokspacesResult.rows) {
+    workspaceIds.push(wokspacesResult.rows[key].id);
+  }
+
+  for (key in equipmentResult.rows) {
+    equipmentsIds.push(equipmentResult.rows[key].id);
+  }
+
+  let valueString = ''
+
+  for (let i = 0; i < 10; i++) {
+    const workspaceId = workspaceIds[Math.floor(Math.random() * workspaceIds.length)];
+    const equipmentId = equipmentsIds[Math.floor(Math.random() * equipmentsIds.length)];
+    valueString += `(${equipmentId}, ${workspaceId}),`;
+  }
+
+  valueString = valueString.slice(0, -1);
+
+  const queryString = `INSERT INTO workspace_has_equipment ("equipment_id", "workspace_id") VALUES ${valueString} RETURNING id;`;
+
+  const result = await db.query(queryString);
+
+  return result.rows;
+
+}
+
+async function insertBooking() {
+
+  for (let i = 0; i < 5; i++) {
+    await db.query(`INSERT INTO booking_ref DEFAULT VALUES`);
+  }
+
+
+  const coworkerResult = await db.query(`SELECT "user".id FROM "user" JOIN role ON role.id = "user".role_id WHERE role.description = 'coworker' LIMIT 3;`);
+
+  const coworkerId = [];
+
+  for (key in coworkerResult.rows) {
+    coworkerId.push(coworkerResult.rows[key].id);
+  }
+  
+  const queryString = `INSERT INTO booking ("start_date","end_date","user_id","workspace_id","state_id","booking_ref_id") VALUES 
+  ('2022-12-04 07:00:00+01', '2022-12-04 11:00:00+01', ${coworkerId[0]}, 1, 1, 1), 
+  ('2022-12-04 12:00:00+01', '2022-12-04 16:00:00+01', ${coworkerId[1]}, 1, 1, 2),
+  ('2022-12-04 12:00:00+01', '2022-12-04 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
+  ('2022-12-05 07:00:00+01', '2022-12-05 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
+  ('2022-12-06 11:00:00+01', '2022-12-06 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
+  ('2022-12-09 11:00:00+01', '2022-12-09 16:00:00+01', ${coworkerId[2]}, 2, 1, 4)
+  RETURNING id;`;
 
   const result = await db.query(queryString);
 
@@ -260,8 +337,19 @@ async function insertWorkspaces(workspaces) {
   * Générations de workspace fake
   * Ajout de ces workspace en BDD
   */  
-  //  const workspaces = generateWorkspaces(NB_WORKSPACES, result.hostIds);
-  //  const insertedWorkspace = await insertWorkspaces(workspaces);
-  //  debug(`${insertedWorkspace.length} workspaces inserted.`);
-  //  const workspaceIds = insertedWorkspace.map((workspace) => workspace.id);
+  const workspaces = await generateWorkspaces(NB_WORKSPACES);
+  const insertedWorkspace = await insertWorkspaces(workspaces);
+  debug(`${insertedWorkspace.length} workspaces inserted.`);
+
+  /**
+   * Affectation des Equipments à des workspaces
+   */
+   const insertedItems = await insertEquipmentForWorkspace();
+   debug(`${insertedItems.length} workspaces has equipment inserted.`);
+
+   /**
+    * Création de bookings en auto
+    */
+    const bookings = await insertBooking();
+    debug(`${bookings.length} booking inserted.`);
 })();
