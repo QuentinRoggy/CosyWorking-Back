@@ -6,25 +6,25 @@ module.exports = {
   const queryString = `
   SELECT json_build_object(
     'workspace',workspace.*,
-      'user', (SELECT json_agg(json_build_object('host', "user".first_name, 
+      'user', (SELECT json_agg(json_build_object('host_id', "user".id, 'host', "user".first_name, 
                           'host_avatar',"user".avatar))
            FROM "user" 
            JOIN workspace ON workspace.user_id = "user".id
            where workspace.id = $1
           ),
-    'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
+    'images', (SELECT json_agg(json_build_object('image_id', image.id, 'link', image.link, 'main',image.main_image))
            FROM image 
            JOIN workspace ON workspace.id = image.workspace_id
            where workspace.id = $1
           ),
-      'booking_list', (SELECT json_agg(json_build_object('start_date', booking.start_date, 
+      'booking_list', (SELECT json_agg(json_build_object('booking_id', booking.id, 'start_date', booking.start_date, 
                                'end_date',booking.end_date))
            FROM booking 
            JOIN workspace ON workspace.id = booking.workspace_id
 			JOIN state ON state.id = booking.state_id
            where workspace.id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
           ),
-      'equipments_list', (SELECT json_agg(json_build_object('description', equipment.description, 
+      'equipments_list', (SELECT json_agg(json_build_object('quipment_id', equipment.id, 'description', equipment.description, 
                                'icon_link', equipment.icon_link))
            FROM workspace_has_equipment 
            JOIN equipment ON equipment.id = workspace_has_equipment.equipment_id
