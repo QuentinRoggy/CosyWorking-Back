@@ -52,7 +52,7 @@ router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(controlle
 router.post("/workspace/create", controllerHandler(controller.create));
 
 /**
- * POST /api/workspace/search"
+ * POST /api/workspace/search
  * @summary Get all workspaces according to search
  * @tags Workspace
  * @return {ApiError} 400 - Bad request response - application/json
