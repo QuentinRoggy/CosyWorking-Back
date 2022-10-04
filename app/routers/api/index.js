@@ -10,7 +10,6 @@ const profilRouter = require('./profil');
 const userRouter = require('./user')
 const workspaceRouter = require('./workspace');
 const equipmentRouter = require('./equipment');
-const { route } = require('./auth');
 
 
 

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG='app:server' node index.js",
+    "start": "DEBUG='app:server' set NODE_ENV=development&& node index.js",
+    "prod": "DEBUG='app:server' set NODE_ENV=production&& node index.js",
+    "build": "npm install; npm run resetDb",
     "test": "echo \"Error: no test specified\" && exit 1",
     "resetDb": "sqitch revert -y; sqitch deploy; DEBUG='seeding' node ./data/seeding.js"
   },
