@@ -81,3 +81,8 @@ content-type: application/json
 
 GET {{hostname}}/user/2
 content-type: application/json
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personnalspace/1/profil
+content-type: application/json
