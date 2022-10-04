@@ -5,7 +5,7 @@ const controllerHandler = require('../../helpers/controllerHandler');
 const { profilController } = require("../../controllers/api");
 
 /**
- * GET /personalspace/:id(\\d+)/profil
+ * GET /api/personalspace/:id(\\d+)/profil
  * @summary Get personalspace by id
  * @tags Profil
  * @return {ApiError} 400 - Bad request response - application/json
@@ -14,7 +14,7 @@ const { profilController } = require("../../controllers/api");
 router.get("/personalspace/:id(\\d+)/profil", controllerHandler(profilController.findPersonalspaceById));
 
 /**
- * PATCH /personalspace/:id(\\d+)/profil
+ * PATCH /api/personalspace/:id(\\d+)/profil
  * @summary 
  * @tags Profil
  * @return {ApiError} 400 - Bad request response - application/json
@@ -23,7 +23,7 @@ router.get("/personalspace/:id(\\d+)/profil", controllerHandler(profilController
 router.patch("/personalspace/:id(\\d+)/profil", controllerHandler(profilController.updatePersonalspace));
 
 /**
- * DELETE /personalspace/:id(\\d+)/profil
+ * DELETE /api/personalspace/:id(\\d+)/profil
  * @summary 
  * @tags Profil
  * @return {ApiError} 400 - Bad request response - application/json
