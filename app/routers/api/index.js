@@ -9,6 +9,7 @@ const bookingRouter = require('./booking');
 const profilRouter = require('./profil');
 const userRouter = require('./user')
 const workspaceRouter = require('./workspace');
+const equipmentRouter = require('./equipment');
 const { route } = require('./auth');
 
 
@@ -20,6 +21,7 @@ router.use(authRouter);
 router.use(bookingRouter);
 router.use(userRouter);
 router.use(workspaceRouter);
+router.use(equipmentRouter);
 router.use(profilRouter);
 
 router.use(() => {
