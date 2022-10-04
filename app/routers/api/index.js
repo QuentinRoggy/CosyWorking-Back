@@ -20,6 +20,7 @@ router.use(authRouter);
 router.use(bookingRouter);
 router.use(userRouter);
 router.use(workspaceRouter);
+router.use(profilRouter);
 
 router.use(() => {
     throw new ApiError('API Route not found', { statusCode: 404 });

@@ -81,3 +81,20 @@ content-type: application/json
 
 GET {{hostname}}/user/2
 content-type: application/json
+
+### séparateur entre deux requêtes
+
+GET {{hostname}}/personnalspace/1/profil
+content-type: application/json
+
+
+### séparateur entre deux requêtes
+
+PATCH {{hostname}}/personalspace/1/profil
+content-type: application/json
+
+{
+   "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/875.jpg",
+   "first_name": "parfaiteee",
+   "about": "Je suis très grandesss"
+}

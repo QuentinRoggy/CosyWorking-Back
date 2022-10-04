@@ -9,7 +9,7 @@ const controllerHandler = require('../../helpers/controllerHandler');
 
 
 /**
- * GET /personalspace/:id(\\d+)/coworkerbooking
+ * GET /api/personalspace/:id(\\d+)/coworkerbooking
  * @summary Get all bookings of a specific coworker
  * @tags Booking
  * @return {ApiError} 400 - Bad request response - application/json
@@ -19,7 +19,7 @@ router.get("/personalspace/:id(\\d+)/coworkerbooking", controllerHandler(booking
 
 
 /**
- * GET /workspace/:id(\\d+)/bookeddate
+ * GET /api/workspace/:id(\\d+)/bookeddate
  * @summary Get all booked date of a specific workspace
  * @tags Booking
  * @return {ApiError} 400 - Bad request response - application/json
@@ -29,7 +29,7 @@ router.get("/workspace/:id(\\d+)/bookeddate", controllerHandler(bookingControlle
 
 
 /**
- * GET /personalspace/:hostid(\\d+)/booking
+ * GET /api/personalspace/:hostid(\\d+)/booking
  * @summary Get all bookings asked for a specific Host
  * @tags Booking
  * @return {ApiError} 400 - Bad request response - application/json
@@ -39,7 +39,7 @@ router.get("/personalspace/:hostid(\\d+)/booking", controllerHandler(bookingCont
 
 
 /**
- * POST /booking/request
+ * POST /api/booking/request
  * @summary Post a booking request
  * @tags Booking
  * @return {ApiError} 400 - Bad request response - application/json
@@ -49,7 +49,7 @@ router.post("/booking/request",[validate('body', bookingCreateSchema)], controll
 
 
 /**
- * PATCH /booking/:id(\\d+)/state
+ * PATCH /api/booking/:id(\\d+)/state
  * @summary Update the state of a booking
  * @tags Booking
  * @return {ApiError} 400 - Bad request response - application/json

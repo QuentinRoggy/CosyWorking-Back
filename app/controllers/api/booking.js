@@ -1,6 +1,5 @@
 const bookingDatamapper = require("../../Datamapper/booking")
 const bookingRefDatamaper = require('../../Datamapper/booking_ref');
-const stateDatamapper = require('../../Datamapper/state')
 
 
 module.exports = {
