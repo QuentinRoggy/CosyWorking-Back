@@ -85,8 +85,6 @@ module.exports = {
 
   async patchOne(workspaceId, updatedWorkspace) {
 
-    let queryObject = {};
-
     let queryString = "";
     let counter = 1;
     let queryParams = [];
@@ -102,16 +100,13 @@ module.exports = {
     }
 
     if (queryParams.length > 1 ) {
-      queryString = `UPDATE workspace SET ( ${columns.join(',')} ) = (${queryParams.join(',')}) WHERE id = ${workspaceId} RETURNING *;`;
+      queryString = `UPDATE workspace SET ( ${columns.join(',')} ) = (${queryParams.join(',')}) WHERE id = ${workspaceId} RETURNING ${columns.join(',')};`;
 
     } else {
-      queryString = `UPDATE workspace SET ${columns.join(',')} = ${queryParams.join(',')} WHERE id = ${workspaceId} RETURNING *;`;
+      queryString = `UPDATE workspace SET ${columns.join(',')} = ${queryParams.join(',')} WHERE id = ${workspaceId} RETURNING ${columns.join(',')};`;
     }
 
-    queryObject.queryString = queryString;
-    queryObject.values = values;
-
-    const result = await client.query(queryObject.queryString, [...queryObject.values]);
+    const result = await client.query(queryString, [...values]);
 
     return result.rows;
 
