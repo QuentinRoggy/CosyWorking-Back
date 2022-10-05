@@ -6,10 +6,10 @@ POST {{hostname}}/auth/signup
 content-type: application/json
 
 {
-	"last_name": "Jean",
-   "first_name": "Doeuf",
-   "email": "jean@doeuf.com",
+   "first_name": "patt",
+	"last_name": "bobaa",
    "password": "Password123$",
+   "email": "bob@doeuf.com",
    "gender": "male",
    "role_id": "coworker"
 }
