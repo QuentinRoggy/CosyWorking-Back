@@ -165,7 +165,7 @@ module.exports = {
     if ( endDateString.length > 1 ) {
       endDateString = endDateString.slice(0, -1);
     }
-    
+
     endDateString += ')';
 
     if (equipmentsList.length > 1) {
@@ -213,6 +213,8 @@ module.exports = {
       AND workspace.id IN (SELECT * FROM (
         ${equipmentString}
       ) as workspace_by_equipment))`;
+
+      console.log(queryString);
 
     const result = await client.query(queryString, [...values]);
 
