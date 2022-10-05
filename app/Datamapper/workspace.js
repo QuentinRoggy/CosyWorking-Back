@@ -1,3 +1,4 @@
+const { query } = require("../config/db");
 const client = require("../config/db");
 
 module.exports = {
@@ -56,14 +57,22 @@ module.exports = {
   },
 
   async create(workspaceToInsert) {
-    const queryString = `INSERT INTO "workspace" (title, description, address, zip_code, city, day_price, half_day_price, user_id, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;
     
     const values = [];
-
+    const columns = [];
+    let counter = 1;
+    const queryParams = [];
+    
     for (const key in workspaceToInsert) {
+      columns.push(key)
+      queryParams.push(`$${counter}`);
+      counter ++;
+      
       values.push(workspaceToInsert[key]);
     };
-
+    
+    const queryString = `INSERT INTO "workspace" (${columns.join(',')}) VALUES (${queryParams.join(',')}) RETURNING *`;
+    
     const result = await client.query(queryString, [...values]);
     
     return result.rows;

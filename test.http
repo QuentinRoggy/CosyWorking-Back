@@ -98,3 +98,22 @@ content-type: application/json
    "first_name": "parfaiteee",
    "about": "Je suis très grandesss"
 }
+
+### séparateur entre deux requêtes
+
+POST {{hostname}}/workspace/create
+content-type: application/json
+
+{
+   "description": "primé meilleur bureau",
+   "title": "Best desktop",
+   "address": "10 rue champion",
+   "zip_code": "35000",
+   "longitude": "0",
+   "city": "Rennes",
+   "latitude": "0",
+   "day_price": 100,
+   "half_day_price": 50,
+   "availability": true,
+   "user_id": 2
+}
