@@ -149,7 +149,11 @@ module.exports = {
       counter++;
       startDateString += `$${counter},`;
     }
-    startDateString = startDateString.slice(0, -1);
+
+
+    if ( startDateString.length > 1 ) {
+      startDateString = startDateString.slice(0, -1);
+    }
     startDateString += ')';
 
 
@@ -158,7 +162,10 @@ module.exports = {
       counter++;
       endDateString += `$${counter},`;
     }
-    endDateString = endDateString.slice(0, -1);
+    if ( endDateString.length > 1 ) {
+      endDateString = endDateString.slice(0, -1);
+    }
+    
     endDateString += ')';
 
     if (equipmentsList.length > 1) {
