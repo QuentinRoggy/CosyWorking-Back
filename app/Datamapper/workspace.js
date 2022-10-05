@@ -25,7 +25,7 @@ module.exports = {
 			JOIN state ON state.id = booking.state_id
            where workspace.id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
           ),
-      'equipments_list', (SELECT json_agg(json_build_object('quipment_id', equipment.id, 'description', equipment.description, 
+      'equipments_list', (SELECT json_agg(json_build_object('equipment_id', equipment.id, 'description', equipment.description, 
                                'icon_link', equipment.icon_link))
            FROM workspace_has_equipment 
            JOIN equipment ON equipment.id = workspace_has_equipment.equipment_id
