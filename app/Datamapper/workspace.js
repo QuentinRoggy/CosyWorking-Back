@@ -41,15 +41,17 @@ module.exports = {
   },
 
   async getWorkspacesByHostId(hostId) {
-    const queryString = `SELECT json_build_object(
-      'workspace',workspace.*,
-      'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
-             FROM user 
-             INNER JOIN image ON image.workspace_id = workspace.id
-    )
-    )
-    FROM workspace
-    WHERE workspace.user_id = $1;`;
+    const queryString = `
+      SELECT json_build_object(
+        'workspace',workspace.*,
+        'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
+              FROM user 
+              INNER JOIN image ON image.workspace_id = workspace.id
+      )
+      )
+      FROM workspace
+      WHERE workspace.user_id = $1;
+      `;
 
     const result = await client.query(queryString, [hostId]);
 
