@@ -92,10 +92,23 @@ module.exports = {
     //  * @param {*} req 
     //  * @param {*} res 
     //  */
-    async UpdateBookingState(stateDescription,bookingId) {
+    async UpdateBookingState(body, booking_ref_id) {
 
-        const queryString = `UPDATE booking SET state_id = (SELECT state.id FROM state WHERE state.description = $1) WHERE booking.id = $2 RETURNING *;`;
-        const result = await client.query(queryString, [stateDescription, bookingId]); 
+        const { state } = body;
+
+        const queryString = 
+            `UPDATE booking SET state_id = 
+                (SELECT state.id 
+                FROM state 
+                WHERE state.description = $1)
+            WHERE booking.id IN (
+                SELECT booking.id 
+                FROM booking 
+                JOIN booking_ref ON booking_ref.id = booking.booking_ref_id 
+                WHERE booking_ref.id = $2) 
+            RETURNING *;`;
+
+        const result = await client.query(queryString, [state, booking_ref_id] ); 
         return result.rows;
         
     },
