@@ -83,7 +83,7 @@ module.exports = {
   async getRandom(){
     
     const queryString = `
-    SELECT workspace.title, workspace.day_price, workspace.city, image.link as image_link
+    SELECT workspace_id, workspace.title, workspace.day_price, workspace.city, image.id, image.link as image_link
     FROM workspace
     JOIN image ON image.workspace_id = workspace.id
     WHERE image.main_image = true
