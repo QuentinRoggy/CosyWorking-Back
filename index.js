@@ -1,17 +1,13 @@
 const http = require('http');
-// require('dotenv').config();
-const config = require('./config');
-let mode = '';
+require('dotenv').config();
 
 const debug = require('debug')('app:server');
 const app = require('./app');
-
-debug(`NODE_ENV=${config.NODE_ENV}`);
 
 const port = process.env.PORT ?? 3000;
 
 const server = http.createServer(app);
 
-server.listen(config.PORT, config.HOST, () => {
-    debug(`APP LISTENING ON http://${config.HOST}:${config.PORT}`);
+server.listen(port,() => {
+    debug(`APP LISTENING ON http://localhost:${port}`);
 });

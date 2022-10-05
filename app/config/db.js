@@ -1,11 +1,11 @@
-// require("dotenv").config();
+require("dotenv").config();
 const debug = require('debug')('SQL:log');
 const { Pool } = require('pg');
-const config = require('../../config');
  
-const pool = new Pool(config.DATABASE_URL);
+const connectionString = process.env.DATABASE_URL;
 
-
+const pool = new Pool({connectionString});
+pool.connect();
  
 module.exports = {
     originalClient: pool,
