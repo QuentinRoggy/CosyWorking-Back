@@ -1,3 +1,4 @@
+const { query } = require("../config/db");
 const client = require("../config/db");
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
 			JOIN state ON state.id = booking.state_id
            where workspace.id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
           ),
-      'equipments_list', (SELECT json_agg(json_build_object('quipment_id', equipment.id, 'description', equipment.description, 
+      'equipments_list', (SELECT json_agg(json_build_object('equipment_id', equipment.id, 'description', equipment.description, 
                                'icon_link', equipment.icon_link))
            FROM workspace_has_equipment 
            JOIN equipment ON equipment.id = workspace_has_equipment.equipment_id
@@ -40,15 +41,17 @@ module.exports = {
   },
 
   async getWorkspacesByHostId(hostId) {
-    const queryString = `SELECT json_build_object(
-      'workspace',workspace.*,
-      'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
-             FROM user 
-             INNER JOIN image ON image.workspace_id = workspace.id
-    )
-    )
-    FROM workspace
-    WHERE workspace.user_id = $1;`;
+    const queryString = `
+      SELECT json_build_object(
+        'workspace',workspace.*,
+        'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
+              FROM user 
+              INNER JOIN image ON image.workspace_id = workspace.id
+      )
+      )
+      FROM workspace
+      WHERE workspace.user_id = $1;
+      `;
 
     const result = await client.query(queryString, [hostId]);
 
@@ -56,14 +59,22 @@ module.exports = {
   },
 
   async create(workspaceToInsert) {
-    const queryString = `INSERT INTO "workspace" (title, description, address, zip_code, city, day_price, half_day_price, user_id, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;
     
     const values = [];
-
+    const columns = [];
+    let counter = 1;
+    const queryParams = [];
+    
     for (const key in workspaceToInsert) {
+      columns.push(key)
+      queryParams.push(`$${counter}`);
+      counter ++;
+      
       values.push(workspaceToInsert[key]);
     };
-
+    
+    const queryString = `INSERT INTO "workspace" (${columns.join(',')}) VALUES (${queryParams.join(',')}) RETURNING *`;
+    
     const result = await client.query(queryString, [...values]);
     
     return result.rows;
@@ -72,7 +83,7 @@ module.exports = {
   async getRandom(){
     
     const queryString = `
-    SELECT workspace.title, workspace.day_price, workspace.city, image.link as image_link
+    SELECT workspace_id, workspace.title, workspace.day_price, workspace.city, image.id, image.link as image_link
     FROM workspace
     JOIN image ON image.workspace_id = workspace.id
     WHERE image.main_image = true
