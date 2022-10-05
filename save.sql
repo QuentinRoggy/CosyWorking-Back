@@ -1,2 +1,72 @@
-INSERT INTO public.workspace(title, description, address, zip_code, city, longitude, latitude, half_day_price, day_price, availability, user_id) VALUES ('Petit bureau design', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porttitor odio nec arcu hendrerit, in ullamcorper sem ullamcorper. Vivamus fringilla convallis vulputate. Nam tellus justo, mattis eget dapibus a, dignissim quis metus. Suspendisse quis sapien et magna dictum aliquam. Nam purus quam, consequat et viverra at, consectetur luctus tellus. Vestibulum pharetra pellentesque efficitur. Sed eu consectetur nunc. Morbi massa sem, pellentesque ac mauris eget, cursus euismod erat. Integer maximus ante nec orci ornare, dictum vehicula ante accumsan. Mauris scelerisque dui quis pulvinar sodales. Vivamus ultrices luctus augue, at tempus leo condimentum non. Duis a maximus nunc, in ultricies neque. Quisque sagittis scelerisque dolor, nec posuere dolor faucibus at. Donec vulputate erat enim, at pretium velit malesuada porta. Praesent eget massa velit.', '38 rue des Abbesses', '75018', 'Paris', '48.885390455441474', '2.3367499388477855', 5, 8, true, 3);
+INSERT INTO public."user"(
+	id, last_name, first_name, email, password, username, avatar, about, gender, role_id, created_at, updated_at)
+	VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 2),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 1),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 1),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 1),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, 1);
+
+INSERT INTO public.workspace(
+	title, description, address, zip_code, city, longitude, latitude, half_day_price, day_price, availability, user_id)
+	VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+INSERT INTO public.image(
+	id, link, main_image, workspace_id, created_at, updated_at)
+	VALUES 
+        (?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?);
+
+INSERT INTO public.booking(
+    id, start_date, end_date, user_id, workspace_id, state_id, booking_ref_id, created_at, updated_at)
+    VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?),
+        (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+--DUR
+INSERT INTO public.equipment(
+    description, icon_link)
+    VALUES 
+        ('Imprimante', ?),
+        ('Fibre', ?),
+        ('Cuisine', ?),
+        ('Double écran', ?),
+        ('Enceinte', ?),
+        ('Piscine', ?);
+
+
+--DUR
+INSERT INTO public.role(
+	description)
+	VALUES 
+        ('coworker'),
+        ('host'),
+        ('admin');
+
+--DUR
+INSERT INTO public.state(
+	description)
+	VALUES 
+        ('En attente'),
+        ('Validé'),
+        ('Annulé'),
+        ('Terminé'),
+        ('Non disponible');
+
 
