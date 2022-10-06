@@ -1,4 +1,5 @@
 const { json } = require('express');
+const { query } = require('../config/db');
 const client = require('../config/db');
 const { ApiError } = require('../errors/apiErrors');
 
@@ -38,13 +39,20 @@ module.exports = {
    */
   async create(userToInsert) {
 
-    const queryString = `INSERT INTO "user" (last_name, first_name, email, password, gender, role_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-
     const values = [];
-
-    for (const value in userToInsert) {
-      values.push(userToInsert[value]);
+    const columns = [];
+    let counter = 1;
+    const queryParams = [];
+    
+    for (const key in userToInsert) {
+      columns.push(key);
+      queryParams.push(`$${counter}`);
+      counter++
+      
+      values.push(userToInsert[key]);
     }
+
+    const queryString = `INSERT INTO "user" (${columns.join(',')}) VALUES (${queryParams.join(',')}) RETURNING *`;
 
     const result = await client.query(queryString, [...values]);
 

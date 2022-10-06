@@ -26,6 +26,11 @@ const verifyAccesRight = {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 
       if (err) {
+        if (err.message = "jwt expired") {
+          return res.status(401).send({
+            message: "Token Expired !"
+          })
+        }
         return res.status(401).send({
           message: "Unauthorized!"
         });

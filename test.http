@@ -6,10 +6,10 @@ POST {{hostname}}/auth/signup
 content-type: application/json
 
 {
-	"last_name": "Jean",
-   "first_name": "Doeuf",
-   "email": "jean@doeuf.com",
+   "first_name": "patt",
+	"last_name": "bobaa",
    "password": "Password123$",
+   "email": "bob@doeuf.com",
    "gender": "male",
    "role_id": "coworker"
 }
@@ -49,7 +49,7 @@ content-type: application/json
    "start_date": "05.01.01",
    "end_date" : "06.02.02",
    "user_id" : 1,
-   "workspace_id" : 1
+   "workspace_id" : 3
 }
 
 ### séparateur entre deux requêtes
@@ -98,5 +98,4 @@ content-type: application/json
    "first_name": "parfaiteee",
    "about": "Je suis très grandesss"
 }
-
 

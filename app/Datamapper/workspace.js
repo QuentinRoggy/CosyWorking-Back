@@ -1,3 +1,4 @@
+const { query } = require("../config/db");
 const client = require("../config/db");
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
 			JOIN state ON state.id = booking.state_id
            where workspace.id = $1 AND state.description = 'En attente' OR state.description = 'Validé'
           ),
-      'equipments_list', (SELECT json_agg(json_build_object('quipment_id', equipment.id, 'description', equipment.description, 
+      'equipments_list', (SELECT json_agg(json_build_object('equipment_id', equipment.id, 'description', equipment.description, 
                                'icon_link', equipment.icon_link))
            FROM workspace_has_equipment 
            JOIN equipment ON equipment.id = workspace_has_equipment.equipment_id
@@ -40,15 +41,17 @@ module.exports = {
   },
 
   async getWorkspacesByHostId(hostId) {
-    const queryString = `SELECT json_build_object(
-      'workspace',workspace.*,
-      'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
-             FROM user 
-             INNER JOIN image ON image.workspace_id = workspace.id
-    )
-    )
-    FROM workspace
-    WHERE workspace.user_id = $1;`;
+    const queryString = `
+      SELECT json_build_object(
+        'workspace',workspace.*,
+        'images', (SELECT json_agg(json_build_object('link', image.link, 'main',image.main_image))
+              FROM user 
+              INNER JOIN image ON image.workspace_id = workspace.id
+      )
+      )
+      FROM workspace
+      WHERE workspace.user_id = $1;
+      `;
 
     const result = await client.query(queryString, [hostId]);
 
@@ -56,14 +59,22 @@ module.exports = {
   },
 
   async create(workspaceToInsert) {
-    const queryString = `INSERT INTO "workspace" (title, description, address, zip_code, city, day_price, half_day_price, user_id, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;
     
     const values = [];
-
+    const columns = [];
+    let counter = 1;
+    const queryParams = [];
+    
     for (const key in workspaceToInsert) {
+      columns.push(key)
+      queryParams.push(`$${counter}`);
+      counter ++;
+      
       values.push(workspaceToInsert[key]);
     };
-
+    
+    const queryString = `INSERT INTO "workspace" (${columns.join(',')}) VALUES (${queryParams.join(',')}) RETURNING *`;
+    
     const result = await client.query(queryString, [...values]);
     
     return result.rows;
@@ -72,7 +83,7 @@ module.exports = {
   async getRandom(){
     
     const queryString = `
-    SELECT workspace.title, workspace.day_price, workspace.city, image.link as image_link
+    SELECT workspace_id, workspace.title, workspace.day_price, workspace.city, image.id, image.link as image_link
     FROM workspace
     JOIN image ON image.workspace_id = workspace.id
     WHERE image.main_image = true
@@ -132,6 +143,7 @@ module.exports = {
     let startDateString = `(`;
     let endDateString = `(`;
     let equipmentString = '';
+    let queryString = '';
 
     values.push(city);
 
@@ -144,68 +156,171 @@ module.exports = {
       equipmentsList.push(equipment.description);
     }
 
-    for (const date of startDate) {
-      values.push(date);
-      counter++;
-      startDateString += `$${counter},`;
-    }
-    startDateString = startDateString.slice(0, -1);
-    startDateString += ')';
+    // ************* Logique de création des query String *************
 
+    if ( date_list.length === 0 && equipments.length === 0 ){
+      queryString = `SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
+      FROM workspace 
+      JOIN image ON image.workspace_id = workspace.id
+      WHERE image.main_image = true AND workspace.city = $1`;
 
-    for (const date of endDate) {
-      values.push(date);
-      counter++;
-      endDateString += `$${counter},`;
-    }
-    endDateString = endDateString.slice(0, -1);
-    endDateString += ')';
+    } else if(date_list.length > 0 && equipments.length === 0) {
 
-    if (equipmentsList.length > 1) {
-      equipmentString = `SELECT workspace_has_equipment.workspace_id
-      FROM workspace_has_equipment
-      WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `;
-      let index = 0;
-      for (const equipment of equipmentsList ) {
-        index ++;
-        values.push(equipment);
+      // ************* Logique de création des morceaux de query pour les dates *************
+
+      for (const date of startDate) {
+        values.push(date);
         counter++;
-        if (index === equipmentsList.length) {
-          equipmentString += `$${counter})`;
-        } else {
-          equipmentString += `$${counter}) INTERSECT
-          SELECT workspace_has_equipment.workspace_id
-          FROM workspace_has_equipment
-          WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `
-        }
+        startDateString += `$${counter},`;
       }
-    } else {
-      values.push(equipmentsList[0])
-      counter++;
-      equipmentString = `SELECT workspace_has_equipment.workspace_id
-      FROM workspace_has_equipment
-      WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = $${counter})`;
+      
+      if ( startDateString.length > 1 ) {
+        startDateString = startDateString.slice(0, -1);
+      }
+      startDateString += ')';
+  
+  
+      for (const date of endDate) {
+        values.push(date);
+        counter++;
+        endDateString += `$${counter},`;
+      }
+      if ( endDateString.length > 1 ) {
+        endDateString = endDateString.slice(0, -1);
+      }
+  
+      endDateString += ')';
+
+      queryString = `SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
+      FROM workspace 
+      JOIN image ON image.workspace_id = workspace.id
+      WHERE 
+      image.main_image = true
+      AND (workspace.id NOT IN (
+        SELECT DISTINCT booking.workspace_id 
+        FROM booking 
+        WHERE booking.start_date IN ${startDateString}
+        OR booking.end_date IN ${endDateString})    
+        AND workspace.city = $1)
+      OR (workspace.id NOT IN (Select DISTINCT booking.workspace_id FROM booking) 
+        AND workspace.city = $1)`;
+
+
+    } else if (date_list.length > 0 && equipments.length > 0 ) {
+
+      // ************* Logique de création des morceaux de query pour les dates *************
+
+      for (const date of startDate) {
+        values.push(date);
+        counter++;
+        startDateString += `$${counter},`;
+      }
+      
+      if ( startDateString.length > 1 ) {
+        startDateString = startDateString.slice(0, -1);
+      }
+      startDateString += ')';
+  
+  
+      for (const date of endDate) {
+        values.push(date);
+        counter++;
+        endDateString += `$${counter},`;
+      }
+      if ( endDateString.length > 1 ) {
+        endDateString = endDateString.slice(0, -1);
+      }
+  
+      endDateString += ')';
+
+      // ************* Logique de création des morceaux de query pour les équipements *************
+
+      if (equipmentsList.length > 1) {
+        equipmentString = `SELECT workspace_has_equipment.workspace_id
+        FROM workspace_has_equipment
+        WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `;
+        let index = 0;
+        for (const equipment of equipmentsList ) {
+          index ++;
+          values.push(equipment);
+          counter++;
+          if (index === equipmentsList.length) {
+            equipmentString += `$${counter})`;
+          } else {
+            equipmentString += `$${counter}) INTERSECT
+            SELECT workspace_has_equipment.workspace_id
+            FROM workspace_has_equipment
+            WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `
+          }
+        }
+      } else {
+        values.push(equipmentsList[0])
+        counter++;
+        equipmentString = `SELECT workspace_has_equipment.workspace_id
+        FROM workspace_has_equipment
+        WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = $${counter})`;
+      }
+  
+      queryString = `SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
+      FROM workspace 
+      JOIN image ON image.workspace_id = workspace.id
+      WHERE 
+      image.main_image = true
+      AND (workspace.id NOT IN (
+        SELECT DISTINCT booking.workspace_id 
+        FROM booking 
+        WHERE booking.start_date IN ${startDateString}
+        OR booking.end_date IN ${endDateString})    
+        AND workspace.city = $1
+        AND workspace.id IN (SELECT * FROM (
+       ${equipmentString}
+        ) as workspace_by_equipment))
+      OR (workspace.id NOT IN (Select DISTINCT booking.workspace_id FROM booking) 
+        AND workspace.city = $1 
+        AND workspace.id IN (SELECT * FROM (
+          ${equipmentString}
+        ) as workspace_by_equipment))`;
+
+    } else if (date_list.length === 0 && equipments.length > 0) {
+
+      // ************* Logique de création des morceaux de query pour les équipements *************
+
+      if (equipmentsList.length > 1) {
+        equipmentString = `SELECT workspace_has_equipment.workspace_id
+        FROM workspace_has_equipment
+        WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `;
+        let index = 0;
+        for (const equipment of equipmentsList ) {
+          index ++;
+          values.push(equipment);
+          counter++;
+          if (index === equipmentsList.length) {
+            equipmentString += `$${counter})`;
+          } else {
+            equipmentString += `$${counter}) INTERSECT
+            SELECT workspace_has_equipment.workspace_id
+            FROM workspace_has_equipment
+            WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = `
+          }
+        }
+      } else {
+        values.push(equipmentsList[0])
+        counter++;
+        equipmentString = `SELECT workspace_has_equipment.workspace_id
+        FROM workspace_has_equipment
+        WHERE workspace_has_equipment.equipment_id = (SELECT equipment.id FROM equipment WHERE equipment.description = $${counter})`;
+      }
+
+      queryString = `SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
+      FROM workspace 
+      JOIN image ON image.workspace_id = workspace.id
+      WHERE image.main_image = true
+      AND workspace.city = $1
+      AND workspace.id IN (SELECT * FROM (${equipmentString}) as workspace_by_equipment)`;
+
     }
 
-    const queryString = `SELECT DISTINCT workspace.id, workspace.title, workspace.description, workspace.day_price, workspace.latitude, workspace.longitude, image.link
-    FROM workspace 
-    JOIN image ON image.workspace_id = workspace.id
-    WHERE 
-    image.main_image = true
-    AND (workspace.id NOT IN (
-      SELECT DISTINCT booking.workspace_id 
-      FROM booking 
-      WHERE booking.start_date IN ${startDateString}
-      AND booking.end_date IN ${endDateString})    
-      AND workspace.city = $1
-      AND workspace.id IN (SELECT * FROM (
-     ${equipmentString}
-      ) as workspace_by_equipment))
-    OR (workspace.id NOT IN (Select DISTINCT booking.workspace_id FROM booking) 
-      AND workspace.city = $1 
-      AND workspace.id IN (SELECT * FROM (
-        ${equipmentString}
-      ) as workspace_by_equipment))`;
+    // console.log(queryString);
 
     const result = await client.query(queryString, [...values]);
 
