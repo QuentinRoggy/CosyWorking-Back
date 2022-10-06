@@ -78,13 +78,11 @@ module.exports = {
      */
     async stateUpdate(req, res) {
 
-        const bookingId = req.params.id;
-
-        const stateDescription = req.body.stateDescription;
+        const bookingRefId = req.params.id;
         
-        const updatedState= await bookingDatamapper.UpdateBookingState(stateDescription, bookingId );
+        await bookingDatamapper.UpdateBookingState(req.body, bookingRefId );
 
-        res.json({message: `The booking with the id ${bookingId} has been succesfully updated with the state ${stateDescription}`});
+        res.json({message: `The booking with the id ${bookingRefId} has been succesfully updated with the state ${req.body.state}`});
     },
 
 }
