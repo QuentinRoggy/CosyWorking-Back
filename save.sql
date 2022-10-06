@@ -1,3 +1,5 @@
+BEGIN
+
 INSERT INTO public."user"(
 	last_name, first_name, email, password, username, avatar, about, gender, role_id)
 	VALUES 
@@ -53,35 +55,35 @@ INSERT INTO public.image(
         ('/path/image/22', false, 5),
         ('/path/image/23', false, 5),
         ('/path/image/24', false, 5),
-        ('/path/image/25', false, 5),
+        ('/path/image/25', false, 5);
 
 INSERT INTO public.booking(
-    id, start_date, end_date, user_id, workspace_id, state_id, booking_ref_id, created_at, updated_at)
-    VALUES 
-        (?, ?, ?, ?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        start_date, end_date, user_id, workspace_id, state_id, booking_ref_id)
+        VALUES 
+        ('', '', ?, ?, ?, ?),
+        ('', '', ?, ?, ?, ?),
+        ('', '', ?, ?, ?, ?),
+        ('', '', ?, ?, ?, ?),
+        ('', '', ?, ?, ?, ?);
 
--- DUR
+
 INSERT INTO public.booking_ref(
 	id)
 	VALUES (?);
 
---DUR
+
 INSERT INTO public.equipment(
-    description, icon_link)
-    VALUES 
-        ('Imprimante', '/path/image/printer'),
-        ('Fibre', '/path/image/fiber'),
-        ('Cuisine', '/path/image/kitchen'),
-        ('Double écran', '/path/image/screen'),
-        ('Enceinte', '/path/image/speaker'),
-        ('Piscine', '/path/image/pool');
+        description, icon_link)
+        VALUES 
+        ('Imprimante', '/public/image/equipment/printer'),
+        ('Fibre', '/public/image/equipment/fiber'),
+        ('Cuisine', '/public/image/equipment/kitchen'),
+        ('Double écran', '/public/image/equipment/screen'),
+        ('Enceinte', '/public/image/equipment/speaker'),
+        ('Piscine', '/public/image/equipment/pool');
 
 
---DUR
+
 INSERT INTO public.role(
 	description)
 	VALUES 
@@ -89,7 +91,7 @@ INSERT INTO public.role(
         ('host'),
         ('admin');
 
---DUR
+
 INSERT INTO public.state(
 	description)
 	VALUES 
@@ -99,4 +101,5 @@ INSERT INTO public.state(
         ('Terminé'),
         ('Non disponible');
 
+COMMIT
 
