@@ -53,11 +53,12 @@ const verifyAccesRight = {
    */
   isCoworker(req, res, next) {
 
-    if(req.roleDescription !== 'coworker') {
-        return res.status(403).send({message: 'require coworker role'})
+    if(req.roleDescription === 'coworker' || req.roleDescription === 'admin') {
+      next();
+    } else {
+      return res.status(403).send({message: 'require coworker role'})
     }
-
-    next();
+    
   },
 
     /**
@@ -69,11 +70,14 @@ const verifyAccesRight = {
    */
   isHost(req, res, next) {
 
-    if(req.roleDescription !== 'host') {
-        return res.status(403).send({message: 'require host role'})
-    }
+    if(req.roleDescription === 'host'|| req.roleDescription === 'admin') {
+      next();
 
-    next();
+    } else {
+
+      return res.status(403).send({message: 'require host role'})
+    }
+    
   },
 
     /**
@@ -85,11 +89,12 @@ const verifyAccesRight = {
    */
   isAuthenticate(req, res, next) {
 
-    if(req.roleDescription !== 'host' || req.roleDescription !== 'coworker' || req.roleDescription !== 'admin' ) {
-        return res.status(403).send({message: 'require to be authenticate'})
-    }
+    if (req.roleDescription === 'host' || req.roleDescription === 'coworker' || req.roleDescription === 'admin') {
+      next();
 
-    next();
+    } else {
+      return res.status(403).send({message: 'require to be authenticate'})
+    }
   },
 
     /**
@@ -101,11 +106,13 @@ const verifyAccesRight = {
    */
   isAdmin(req, res, next) {
 
-    if(req.roleDescription !== 'admin') {
-        return res.status(403).send({message: 'require admin role'})
+    if(req.roleDescription === 'admin') {
+      next();
+    } else {
+      
+      return res.status(403).send({message: 'require admin role'})
     }
-
-    next();
+    
   }
 
 };

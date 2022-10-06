@@ -4,6 +4,10 @@ module.exports = {
 
     async findPersonalspaceById(req, res) {
 
+        if (req.userId !== parseInt(req.params.id) ) {
+            return res.json({message : "nope"});
+        }
+
         const userId = req.params.id;
 
         const result = await profilDatamapper.getPersonalspaceByPk(userId);
@@ -13,6 +17,10 @@ module.exports = {
     },
 
     async updatePersonalspace(req, res) {
+
+        if (req.userId !== parseInt(req.params.id) ) {
+            return res.json({message : "nope"});
+        }
 
         const userId = req.params.id;
 

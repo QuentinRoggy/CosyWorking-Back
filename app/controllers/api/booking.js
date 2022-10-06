@@ -11,6 +11,10 @@ module.exports = {
      */
     async findBookingByCoworker(req, res) {
 
+        if (req.userId !== parseInt(req.params.id) ) {
+            return res.json({message : "nope"});
+          }
+
         const coworkerId = req.params.id;
 
         const result = await bookingDatamapper.getCoworkerReservationsById(coworkerId);
@@ -24,6 +28,10 @@ module.exports = {
      * @param {*} res 
      */
     async findBookingByHost(req, res) {
+
+        if (req.userId !== parseInt(req.params.hostid) ) {
+            return res.json({message : "nope"});
+          }
 
         const hostId = req.params.hostid;
 
@@ -54,6 +62,8 @@ module.exports = {
     async bookingRequest(req, res) {
 
     let bookingToInsert = req.body;
+
+    bookingToInsert.user_id = parseInt(req.userId);
 
     const { date_list } = bookingToInsert;
 
