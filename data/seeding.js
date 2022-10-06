@@ -24,215 +24,106 @@ function pgQuoteEscape(row) {
 }
 
 async function insertRoles() {
-  const roles = [
-    "('coworker')",
-    "('host')",
-    "('admin')"
-  ];
 
-  const queryString = `INSERT INTO "role" ("description") VALUES ${roles} RETURNING id;`;
+
+  const queryString = `
+  INSERT INTO public.role(
+    description)
+    VALUES 
+          ('coworker'),
+          ('host'),
+          ('admin')
+  RETURNING *;
+  `;
 
   const result = await db.query(queryString);
 
   return result.rows;
 }
 
-function generateUsers(nbUsers, roleIds) {
-  const users = [];
-  const hostIds = [];
-  for (let iUsers = 0; iUsers < nbUsers; iUsers ++) {
-    const user = {
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      email: faker.internet.email(this.first_name, this.last_name),
-      password: bcrypt.hashSync("Password123!", 8),
-      username: faker.internet.userName(this.first_name, this.last_name),
-      avatar: faker.internet.avatar(),
-      gender: faker.name.sexType(),
-      about: faker.lorem.lines(),
-      role_id: roleIds[faker.datatype.number({ min: 0, max: 1})],
-
-      checkRole(){
-        if (this.role_id === 2 ) {
-          hostIds.push(iUsers+1);
-        }
-      }
-    };
-    
-    user.checkRole();
-
-    users.push(user);
-  }
-
-  const result = {
-    users,
-    hostIds
-  }
-
-  return result;
-}
 
 async function insertUsers(users) {
   await db.query('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE');
 
-  const coworkerId = await db.query(`SELECT role.id FROM role WHERE role.description = 'coworker'`);
-  const hostId = await db.query(`SELECT role.id FROM role WHERE role.description = 'host'`);
-  const password = bcrypt.hashSync("Password123!", 8);
-
-
-  const usersValues = users.map((user) => `(
-    '${user.first_name}',
-    '${user.last_name}',
-    '${user.email}',
-    '${user.password}',
-    '${user.username}',
-    '${user.avatar}',
-    '${user.gender}',
-    '${user.about}',
-    '${user.role_id}'
-  )`);
-
   const queryString = `
-    INSERT INTO "user" 
-    (
-      "first_name",
-      "last_name",
-      "email",
-      "password",
-      "username",
-      "avatar",
-      "gender",
-      "about",
-      "role_id"
-    )
-    VALUES ('Corentin', 'Vanaquer', 'corentin.vanaquer@cosyworking.fr', '${password}', 'Corentin.V', '${faker.internet.avatar()}', 'male', 'Je suis un super hôte', ${hostId.rows[0].id}),
-    ('Quentin', 'Roggy', 'quentin.roggy@cosyworking.fr', '${password}', 'Quentin.R', '${faker.internet.avatar()}', 'male', 'Je suis un super coworker', ${coworkerId.rows[0].id}),
-    ${usersValues} RETURNING id;`;
+  INSERT INTO public."user"(
+    last_name, first_name, email, password, username, avatar, about, gender, role_id)
+    VALUES 
+          ('Vanaquer', 'Corentin', 'vanaquer@cosyworking.fr', 'password123$', 'Corentin.V', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis un super hôte', 'male', 2),
+          ('Roggy', 'Quentin', 'roggy@cosyworking.fr', 'password123$', 'Quentin.R', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis primé meilleur hôte de la Maine-et-Loire', 'male', 2),
+          ('Kiwi', 'Jade', 'kiwi@cosyworking.fr', 'password123$', 'Jade.K', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/851.jpg', 'Je suis fan du chocolat milka et de la moutarde de dijon', 'female', 2),
+          ('Liorah', 'Ambre', 'liorah@cosyworking.fr', 'password123$', 'Ambre.L', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1138.jpg', 'Je suis grande, riche et indépendante', 'female', 2),
+          ('Gouttin', 'Paul', 'gouttin@cosyworking.fr', 'password123$', 'Paul.G', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Je suis célibataire, à la recherche de mon âme soeur', 'male', 2),
+          ('Martin', 'Agath', 'martin@cosyworking.fr', 'password123$', 'Agath.M', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1179.jpg', 'Je suis dev nomade et cherche un bureau', 'female', 1),
+          ('Boutoile', 'Pierre', 'boutoile@cosyworking.fr', 'password123$', 'Pierre.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Bonjour, je suis gentil avec les chats et les plantes ', 'male', 1),
+          ('Dubois', 'Alice', 'dubois@cosyworking.fr', 'password123$', 'Alice.D', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jpg', 'Salut je prendrais soins de votre bureau acceptez moi please', 'female', 1),
+          ('Nougah', 'Benjamin', 'nougah@cosyworking.fr', 'password123$', 'Benjamin.N', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/764.jpg', 'Hello je cherche des bureaux pour travailler sur un projet secret', 'male', 1),
+          ('Brooks', 'Adelaide', 'brooks@cosyworking.fr', 'password123$', 'Adelaide.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jp', 'Hi, I am looking for a place to work with a big pool, work hard play hard!', 'female', 1)
+  RETURNING id;
+  `;
 
   const result = await db.query(queryString);
   return result.rows;
 }
 
 async function insertEquipment() {
-  const equipments = [
-    [
-      "('Imprimante'",
-      "'/lib/images/equipment/imprimante.png')"
-    ],
-    [
-      "('Fibre'",
-      "'/lib/images/equipment/fibre.png')"
-    ],
-    [
-      "('Cuisine'",
-      "'/lib/images/equipment/cuisine.png')"
-    ],
-    [
-      "('Double écran'",
-      "'/lib/images/equipment/double-screen.png')"
-    ],
-    [
-      "('Enceinte'",
-      "'/lib/images/equipment/enceinte.png')"
-    ],
-    [
-      "('Piscine'",
-      "'/lib/images/equipment/piscine.png')"
-    ],
-  ];
 
-  const queryString = `INSERT INTO "equipment" ("description", "icon_link") VALUES ${equipments} RETURNING id;`;
+
+  const queryString = `
+  INSERT INTO public.equipment(
+    description, icon_link)
+    VALUES 
+    ('Imprimante', 'https://cdn-icons-png.flaticon.com/512/3022/3022251.png'),
+    ('Fibre', 'https://cdn-icons-png.flaticon.com/512/6131/6131198.png'),
+    ('Cuisine', 'https://cdn-icons-png.flaticon.com/512/481/481486.png'),
+    ('Double écran', 'https://cdn-icons-png.flaticon.com/512/3018/3018288.png'),
+    ('Enceinte', 'https://cdn-icons-png.flaticon.com/512/650/650504.png'),
+    ('Piscine', 'https://cdn-icons-png.flaticon.com/512/2932/2932355.png')
+    RETURNING *;
+    `;
+
   const result = await db.query(queryString);
 
   return result.rows;
 }
 
 async function insertStates() {
-  const states = [
-    "('En attente')",
-    "('Validé')",
-    "('Annulé')",
-    "('Terminé')",
-    "('Non disponible')"
-  ];
 
-  const queryString = `INSERT INTO "state" ("description") VALUES ${states} RETURNING id;`;
+
+  const queryString = `
+  INSERT INTO public.state(
+    description)
+    VALUES 
+          ('En attente'),
+          ('Validé'),
+          ('Annulé'),
+          ('Terminé'),
+          ('Non disponible')
+  RETURNING *;
+  `;
 
   const result = await db.query(queryString);
 
   return result.rows;
 }
 
-async function generateWorkspaces(nbWorkspace) {
-
-  const result = await db.query(`SELECT "user".id FROM "user" JOIN role ON role.id = "user".role_id WHERE role.description = 'host';`);
-
-  const userIds = [];
-
-  for (key in result.rows) {
-    userIds.push(result.rows[key].id);
-  }
-
-  const workspaces = [];
-
-  for (let iWorkspace = 0; iWorkspace < nbWorkspace; iWorkspace++) {
-    const workspace = {
-      title: faker.lorem.words(3),
-      description: faker.lorem.lines(3),
-      address: faker.address.streetAddress(),
-      zip_code: faker.address.zipCode('#####'),
-      city: faker.address.cityName(),
-      longitude: faker.address.longitude(),
-      latitude: faker.address.latitude(),
-      half_day_price: faker.datatype.number(10),
-      day_price: faker.datatype.number({min: 10, max: 100}),
-      availability: true,
-      user_id: userIds[Math.floor(Math.random() * userIds.length)]
-    }
-
-    workspace.address = workspace.address.replace(/'/g, "''");
-
-    workspaces.push(workspace);
-  }
-
-  return workspaces;
-}
 
 async function insertWorkspaces(workspaces) {
 
   await db.query('TRUNCATE TABLE "workspace" RESTART IDENTITY CASCADE');
 
-  const workspaceValues = workspaces.map((workspace) => `(
-    '${workspace.title}',
-    '${workspace.description}',
-    '${workspace.address}',
-    '${workspace.zip_code}',
-    '${workspace.city}',
-    '${workspace.longitude}',
-    '${workspace.latitude}',
-    '${workspace.half_day_price}',
-    '${workspace.day_price}',
-    '${workspace.availability}',
-    '${workspace.user_id}'
-  )`);
 
   const queryString = `
-    INSERT INTO "workspace" 
-    (
-      "title",
-      "description",
-      "address",
-      "zip_code",
-      "city",
-      "longitude",
-      "latitude",
-      "half_day_price",
-      "day_price",
-      "availability",
-      "user_id"
-    )
+  INSERT INTO public.workspace(
+    title, description, address, zip_code, city, longitude, latitude, half_day_price, day_price, availability, user_id)
     VALUES 
-    ${workspaceValues} RETURNING id;`;
+          ('Le Cocoon', 'Un bureau équipé pour votre bien être, décoré à travers la methode fengshui. Vous y serez épanouis et en sortirez plus heureux que jamais.', '30 rue Saint-Louis', '35000', 'Rennes', '-1.6840268', '48.1133316', 70, 140, true, 1),
+          ('Happy Hour Loft', 'Mon loft est à votre service, vous pourrez y étancher votre soif et bien sûr y travailler comme il se doit', '8 rue Saint-Serge', '49100', 'Angers', '-0.55', '47.4667', 80, 160, true, 2),
+          ('Bureau pas comme les autres', 'Bureau conceptuel dans une ambiance chat Sibérien. Pot de moutarde de Dijon offert', '5 rue Jacques Cellerier', '21000', 'Dijon', '5.0167', '47.3167', 40, 80, true, 3),
+          ('Luxueuse Villa', 'Charmante Villa de 300m2, vous y trouverez une piscine à débordement sur le toit avec vu sur la Tour Effeil ', '3 Av. Anatole', '75007', 'Paris', '2.2966781', '48.8571483', 199, 399, true, 4),
+          ('Charmant Atelier', 'Ancien atelier de poterie aménager en bureau, décoration inspiré du plus grand potier Bernard Palissy', '72 Pl. de Provence', '86000', 'Poitiers', '0.357187', '46.5894948', 30, 60, true, 5)
+  RETURNING *;
+`;
 
   const result = await db.query(queryString);
 
@@ -240,31 +131,23 @@ async function insertWorkspaces(workspaces) {
 }
 
 async function insertEquipmentForWorkspace() {
-  const wokspacesResult = await db.query(`SELECT id FROM workspace`);
-  const equipmentResult = await db.query(`SELECT id FROM equipment`);
 
-  const workspaceIds = [];
-  const equipmentsIds = []
-
-  for (key in wokspacesResult.rows) {
-    workspaceIds.push(wokspacesResult.rows[key].id);
-  }
-
-  for (key in equipmentResult.rows) {
-    equipmentsIds.push(equipmentResult.rows[key].id);
-  }
-
-  let valueString = ''
-
-  for (let i = 0; i < 10; i++) {
-    const workspaceId = workspaceIds[Math.floor(Math.random() * workspaceIds.length)];
-    const equipmentId = equipmentsIds[Math.floor(Math.random() * equipmentsIds.length)];
-    valueString += `(${equipmentId}, ${workspaceId}),`;
-  }
-
-  valueString = valueString.slice(0, -1);
-
-  const queryString = `INSERT INTO workspace_has_equipment ("equipment_id", "workspace_id") VALUES ${valueString} RETURNING id;`;
+  const queryString = `
+  INSERT INTO public.workspace_has_equipment(
+    equipment_id, workspace_id)
+    VALUES 
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (6, 4),
+    (1, 5),
+    (2, 1),
+    (3, 2),
+    (3, 3),
+    (5, 4),
+    (2, 5)
+  RETURNING *;
+  `;
 
   const result = await db.query(queryString);
 
@@ -274,31 +157,93 @@ async function insertEquipmentForWorkspace() {
 
 async function insertBooking() {
 
-  for (let i = 0; i < 5; i++) {
-    await db.query(`INSERT INTO booking_ref DEFAULT VALUES`);
-  }
-
-
-  const coworkerResult = await db.query(`SELECT "user".id FROM "user" JOIN role ON role.id = "user".role_id WHERE role.description = 'coworker' LIMIT 3;`);
-
-  const coworkerId = [];
-
-  for (key in coworkerResult.rows) {
-    coworkerId.push(coworkerResult.rows[key].id);
-  }
-  
-  const queryString = `INSERT INTO booking ("start_date","end_date","user_id","workspace_id","state_id","booking_ref_id") VALUES 
-  ('2022-12-04 07:00:00+01', '2022-12-04 11:00:00+01', ${coworkerId[0]}, 1, 1, 1), 
-  ('2022-12-04 12:00:00+01', '2022-12-04 16:00:00+01', ${coworkerId[1]}, 1, 1, 2),
-  ('2022-12-04 12:00:00+01', '2022-12-04 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
-  ('2022-12-05 07:00:00+01', '2022-12-05 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
-  ('2022-12-06 11:00:00+01', '2022-12-06 16:00:00+01', ${coworkerId[2]}, 3, 1, 3),
-  ('2022-12-09 11:00:00+01', '2022-12-09 16:00:00+01', ${coworkerId[2]}, 2, 1, 4)
-  RETURNING id;`;
+  const queryString = `
+  INSERT INTO public.booking(
+    start_date, end_date, user_id, workspace_id, state_id, booking_ref_id)
+    VALUES 
+    -- first
+    ('2022-10-20T06:00:00Z', '2022-10-20T15:00:00Z', 6, 1, 2, 1),
+    ('2022-10-21T11:00:00Z', '2022-10-20T15:00:00Z', 6, 1, 2, 1),
+    -- second
+    ('2022-10-20T06:00:00Z', '2022-10-20T15:00:00Z', 7, 2, 2, 2),
+    ('2022-10-21T11:00:00Z', '2022-10-20T15:00:00Z', 7, 2, 2, 2),
+    -- thirdt
+    ('2022-10-20T06:00:00Z', '2022-10-20T15:00:00Z', 8, 3, 2, 3),
+    ('2022-10-21T11:00:00Z', '2022-10-20T15:00:00Z', 8, 3, 2, 3),
+    -- forth
+    ('2022-10-20T06:00:00Z', '2022-10-20T15:00:00Z', 9, 4, 2, 4),
+    ('2022-10-21T11:00:00Z', '2022-10-20T15:00:00Z', 9, 4, 2, 4),
+    -- fifth
+    ('2022-10-20T06:00:00Z', '2022-10-20T15:00:00Z', 10, 5, 2, 5),
+    ('2022-10-21T11:00:00Z', '2022-10-20T15:00:00Z', 10, 5, 2, 5)
+  RETURNING *;
+  `;
 
   const result = await db.query(queryString);
 
   return result.rows;
+}
+
+async function insertImage() {
+
+  const queryString = `
+  INSERT INTO public.image(
+    link, main_image, workspace_id)
+    VALUES 
+          -- first
+          ('https://images.unsplash.com/photo-1416339442236-8ceb164046f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1103&q=80', true, 1),
+          ('https://images.unsplash.com/photo-1618381801643-3d253a63a386?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80', false, 1),
+          ('https://images.unsplash.com/photo-1618381801643-3d253a63a386?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80', false, 1),
+          ('https://images.unsplash.com/photo-1618381801643-3d253a63a386?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80', false, 1),
+          ('https://images.unsplash.com/photo-1618381801643-3d253a63a386?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80', false, 1),
+          -- second
+          ('https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80', true, 2),
+          ('https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80', false, 2),
+          ('https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80', false, 2),
+          ('https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80', false, 2),
+          ('https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80', false, 2),
+          -- third
+          ('https://images.unsplash.com/photo-1585779034823-7e9ac8faec70?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80', true, 3),
+          ('https://images.unsplash.com/photo-1556559322-b5071efadc88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80', false, 3),
+          ('https://images.unsplash.com/photo-1556559322-b5071efadc88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80', false, 3),
+          ('https://images.unsplash.com/photo-1556559322-b5071efadc88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80', false, 3),
+          ('https://images.unsplash.com/photo-1556559322-b5071efadc88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80', false, 3),
+          -- forth
+          ('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', true, 4),
+          ('https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', false, 4),
+          ('https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', false, 4),
+          ('https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', false, 4),
+          ('https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', false, 4),
+          -- fifth
+          ('https://images.unsplash.com/photo-1601397210737-a5534480bdc5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80', true, 5),
+          ('https://images.unsplash.com/photo-1567987768246-df799f9c8afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80', false, 5),
+          ('https://images.unsplash.com/photo-1567987768246-df799f9c8afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80', false, 5),
+          ('https://images.unsplash.com/photo-1567987768246-df799f9c8afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80', false, 5),
+          ('https://images.unsplash.com/photo-1567987768246-df799f9c8afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80', false, 5)
+  RETURNING *;
+  `;
+
+  const result = await db.query(queryString);
+
+  return result.rows;
+
+}
+
+async function insertBookingRef() {
+
+  const queryString = `
+  INSERT INTO public.booking_ref
+	DEFAULT VALUES;   
+  `;
+
+  let data = [];
+
+  for(let i = 0; i < 5; i++){
+    result = await db.query(queryString);
+    data.push(result);
+  }
+
+  return result;
 }
 
 (async () => {
@@ -306,39 +251,30 @@ async function insertBooking() {
   * Ajout des rôles en BDD
   */
   const insertedRoles = await insertRoles();
-  const rolesIds = insertedRoles.map((role) => role.id);
   debug(`${insertedRoles.length} roles inserted.`);
 
   /**
-  * Générations d'utilisateurs fake
   * Ajout de ces utilisateurs en BDD
   */
-  const result = generateUsers(NB_USERS, rolesIds);
-  const users = result.users.map((user) => user);
-  const insertedUsers = await insertUsers(users);
+  const insertedUsers = await insertUsers();
   debug(`${insertedUsers.length} users inserted.`);
-  const userIds = insertedUsers.map((user) => user.id);
 
   /**
    * Ajout des équipements en BDD
    */
   const insertedEquipments = await insertEquipment();
-  const equipmentsIds = insertedEquipments.map((equipment) => equipment.id);
   debug(`${insertedEquipments.length} equipments inserted.`);
 
   /**
    * Ajout des states en BDD
    */
   const insertedStates = await insertStates();
-  const stateIds = insertedStates.map((state) => state.id);
   debug(`${insertedStates.length} states inserted.`);
 
   /**
-  * Générations de workspace fake
   * Ajout de ces workspace en BDD
   */  
-  const workspaces = await generateWorkspaces(NB_WORKSPACES);
-  const insertedWorkspace = await insertWorkspaces(workspaces);
+  const insertedWorkspace = await insertWorkspaces();
   debug(`${insertedWorkspace.length} workspaces inserted.`);
 
   /**
@@ -348,8 +284,21 @@ async function insertBooking() {
    debug(`${insertedItems.length} workspaces has equipment inserted.`);
 
    /**
+    * Création des bookingRef
+    */
+   const bookingRef = await insertBookingRef();
+   debug(`${bookingRef.length} bookingRef inserted`);
+
+   /**
     * Création de bookings en auto
     */
     const bookings = await insertBooking();
     debug(`${bookings.length} booking inserted.`);
+
+    /**
+     * Création des images de workspace
+     */
+    const images = await insertImage();
+    debug(`${images.length} images inserted`);
+
 })();
