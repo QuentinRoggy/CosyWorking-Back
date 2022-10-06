@@ -32,7 +32,7 @@ router.get("/workspace/:id(\\d+)", controllerHandler(controller.findById));
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(controller.findWorkspacesByHost));
+router.get("/personalspace/:hostid(\\d+)/workspace",[verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.findWorkspacesByHost));
 
 /**
  * POST /api/workspace/create
@@ -41,7 +41,7 @@ router.get("/personalspace/:hostid(\\d+)/workspace", controllerHandler(controlle
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.post("/workspace/create", controllerHandler(controller.create));
+router.post("/workspace/create", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.create));
 
 /**
  * POST /api/workspace/search
@@ -59,7 +59,7 @@ router.post("/workspace/search", controllerHandler(controller.searchWorkspaces))
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.patch("/workspace/:id(\\d+)", controllerHandler(controller.updateOne));
+router.patch("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.updateOne));
 
 /**
  * PATCH /api/workspace/state/:id
@@ -68,7 +68,7 @@ router.patch("/workspace/:id(\\d+)", controllerHandler(controller.updateOne));
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.patch("/workspace/state/:id(\\d+)", controllerHandler(controller.updateState));
+router.patch("/workspace/state/:id(\\d+)",[verifyAccesRight.verifyToken, verifyAccesRight.isHost],  controllerHandler(controller.updateState));
 
 
 module.exports = router;
