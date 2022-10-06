@@ -57,8 +57,6 @@ module.exports = {
         message: "User not found"});
     }
 
-    console.log(req.body.password);
-
     // Compare the user password with the crypted password in Db, return boolean
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
