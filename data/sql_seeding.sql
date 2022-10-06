@@ -94,6 +94,21 @@ INSERT INTO public.booking_ref
 	DEFAULT VALUES;  
 
 
+INSERT INTO public.equipment_has_workspace(
+        equipment_id, workspace_id)
+        VALUES 
+        (1, 1),
+        (1, 2),
+        (1, 3),
+        (6, 4),
+        (1, 5),
+        (2, 1),
+        (3, 2),
+        (3, 3),
+        (5, 4),
+        (2, 5);
+
+
 INSERT INTO public.booking(
         start_date, end_date, user_id, workspace_id, state_id, booking_ref_id)
         VALUES 
