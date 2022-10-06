@@ -54,7 +54,7 @@ content-type: application/json
 
 ### séparateur entre deux requêtes
 
-GET {{hostname}}/personalspace/1/coworkerbooking
+GET {{hostname}}/personalspace/6/coworkerbooking
 content-type: application/json
 
 ### séparateur entre deux requêtes
@@ -98,3 +98,5 @@ content-type: application/json
    "first_name": "parfaiteee",
    "about": "Je suis très grandesss"
 }
+
+
