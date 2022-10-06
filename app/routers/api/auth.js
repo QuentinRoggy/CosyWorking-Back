@@ -6,7 +6,6 @@ const validate = require('../../validation/validator');
 const userCreateSchema = require('../../validation/schemas/userCreateSchema');
 const {userController: controller} = require("../../controllers/api");
 const controllerHandler = require('../../helpers/controllerHandler');
-const verifyAccesRight = require('../../middleware/verifyAccessRight');
 
 
 /** 
@@ -26,10 +25,5 @@ router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.che
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
 router.post("/auth/login", controllerHandler(controller.login));
-
-/**
- * test
- */
-router.get("/coworker", [verifyAccesRight.verifyToken, verifyAccesRight.isCoworker], controllerHandler(controller.coworker));
 
 module.exports = router;

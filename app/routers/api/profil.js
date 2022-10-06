@@ -3,6 +3,7 @@ const router = express.Router();
 
 const controllerHandler = require('../../helpers/controllerHandler');
 const { profilController } = require("../../controllers/api");
+const verifyAccesRight = require('../../middleware/verifyAccessRight');
 
 /**
  * GET /api/personalspace/:id(\\d+)/profil
@@ -11,7 +12,7 @@ const { profilController } = require("../../controllers/api");
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.get("/personalspace/:id(\\d+)/profil", controllerHandler(profilController.findPersonalspaceById));
+router.get("/personalspace/:id(\\d+)/profil",[verifyAccesRight.verifyToken, verifyAccesRight.isAuthenticate], controllerHandler(profilController.findPersonalspaceById));
 
 /**
  * PATCH /api/personalspace/:id(\\d+)/profil
@@ -20,7 +21,7 @@ router.get("/personalspace/:id(\\d+)/profil", controllerHandler(profilController
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.patch("/personalspace/:id(\\d+)/profil", controllerHandler(profilController.updatePersonalspace));
+router.patch("/personalspace/:id(\\d+)/profil",[verifyAccesRight.verifyToken, verifyAccesRight.isAuthenticate], controllerHandler(profilController.updatePersonalspace));
 
 /**
  * DELETE /api/personalspace/:id(\\d+)/profil

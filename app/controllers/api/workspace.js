@@ -13,6 +13,11 @@ module.exports = {
   },
 
   async findWorkspacesByHost(req, res) {
+
+    if (req.userId !== parseInt(req.params.hostid) ) {
+      return res.json({message : "nope"});
+    }
+
     const hostId = req.params.hostid;
 
     const workspaces = await workspaceDatamapper.getWorkspacesByHostId(hostId);

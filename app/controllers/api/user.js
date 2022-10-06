@@ -3,7 +3,6 @@ const userDatamapper = require("../../Datamapper/user");
 const roleDatamapper = require("../../Datamapper/role");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const user = require("../../Datamapper/user");
 
 module.exports = {
 
@@ -76,7 +75,7 @@ module.exports = {
       userRoleDescription: user[0].role_description}, 
       process.env.JWT_SECRET,
       {
-      expiresIn: 60 // 24 hours
+      expiresIn: 3600 // 24 hours
     });
 
     // We create an object for the Front response
@@ -97,15 +96,6 @@ module.exports = {
 
     res.json(result);
   },
-
-  /**
-   * test
-   * @param {*} _ 
-   * @param {*} res 
-   */
-  coworker(_, res) {
-    res.json({message: "ok"});
-  }
 
 };
 

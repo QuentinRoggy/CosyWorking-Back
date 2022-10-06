@@ -6,6 +6,8 @@ const bookingCreateSchema = require('../../validation/schemas/bookingCreateSchem
 const bookingUpdateSchema = require('../../validation/schemas/bookingUpdateSchema');
 const { bookingController } = require("../../controllers/api");
 const controllerHandler = require('../../helpers/controllerHandler');
+const verifyAccesRight = require('../../middleware/verifyAccessRight');
+const { verifyToken } = require('../../middleware/verifyAccessRight');
 
 
 /**
@@ -15,7 +17,7 @@ const controllerHandler = require('../../helpers/controllerHandler');
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.get("/personalspace/:id(\\d+)/coworkerbooking", controllerHandler(bookingController.findBookingByCoworker));
+router.get("/personalspace/:id(\\d+)/coworkerbooking",[verifyAccesRight.verifyToken, verifyAccesRight.isAuthenticate], controllerHandler(bookingController.findBookingByCoworker));
 
 
 /**
@@ -35,7 +37,7 @@ router.get("/workspace/:id(\\d+)/bookeddate", controllerHandler(bookingControlle
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.get("/personalspace/:hostid(\\d+)/booking", controllerHandler(bookingController.findBookingByHost));
+router.get("/personalspace/:hostid(\\d+)/booking", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(bookingController.findBookingByHost));
 
 
 /**
@@ -45,7 +47,7 @@ router.get("/personalspace/:hostid(\\d+)/booking", controllerHandler(bookingCont
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.post("/booking/request", controllerHandler(bookingController.bookingRequest));
+router.post("/booking/request",[verifyAccesRight.verifyToken, verifyAccesRight.isAuthenticate] ,controllerHandler(bookingController.bookingRequest));
 
 
 /**
@@ -55,6 +57,6 @@ router.post("/booking/request", controllerHandler(bookingController.bookingReque
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */ 
-router.patch("/booking/:id(\\d+)/state",[validate('body', bookingUpdateSchema)], controllerHandler(bookingController.stateUpdate));
+router.patch("/booking/:id(\\d+)/state",[verifyAccesRight.verifyToken, verifyAccesRight.isAuthenticate,validate('body', bookingUpdateSchema)], controllerHandler(bookingController.stateUpdate));
 
 module.exports = router;
