@@ -22,13 +22,38 @@ INSERT INTO public.workspace(
         ('Charmant Atelier', 'Ancien atelier de poterie aménager en bureau, décoration inspiré du plus grand potier Bernard Palissy', '72 Pl. de Provence', '86000', 'Poitiers', '0.357187', '46.5894948', 30, 60, true, 5);
 
 INSERT INTO public.image(
-	id, link, main_image, workspace_id, created_at, updated_at)
+	link, main_image, workspace_id)
 	VALUES 
-        (?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?),
-        (?, ?, ?, ?, ?, ?);
+        -- first
+        ('/path/image/1', true, 1),
+        ('/path/image/2', false, 1),
+        ('/path/image/3', false, 1),
+        ('/path/image/4', false, 1),
+        ('/path/image/5', false, 1),
+        -- second
+        ('/path/image/6', true, 2),
+        ('/path/image/7', false, 2),
+        ('/path/image/8', false, 2),
+        ('/path/image/9', false, 2),
+        ('/path/image/10', false, 2),
+        -- third
+        ('/path/image/11', true, 3),
+        ('/path/image/12', false, 3),
+        ('/path/image/13', false, 3),
+        ('/path/image/14', false, 3),
+        ('/path/image/15', false, 3),
+        -- forth
+        ('/path/image/16', true, 4),
+        ('/path/image/17', false, 4),
+        ('/path/image/18', false, 4),
+        ('/path/image/19', false, 4),
+        ('/path/image/20', false, 4),
+        -- fifth
+        ('/path/image/21', true, 5),
+        ('/path/image/22', false, 5),
+        ('/path/image/23', false, 5),
+        ('/path/image/24', false, 5),
+        ('/path/image/25', false, 5),
 
 INSERT INTO public.booking(
     id, start_date, end_date, user_id, workspace_id, state_id, booking_ref_id, created_at, updated_at)
