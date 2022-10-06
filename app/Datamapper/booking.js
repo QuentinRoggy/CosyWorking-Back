@@ -24,11 +24,11 @@ module.exports = {
         return result.rows;
     },
 
-    // /**
-    //  * 
-    //  * @param {*} req 
-    //  * @param {*} res 
-    //  */
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async getBookedDateByWorkspace(workspaceId) {
 
         const queryString = `
@@ -43,11 +43,11 @@ module.exports = {
 
     },
 
-    // /**
-    //  * 
-    //  * @param {*} req 
-    //  * @param {*} res 
-    //  */
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async getBookingByHostId(hostId) {
 
         const queryString = `
@@ -67,48 +67,45 @@ module.exports = {
 
     },
 
-    // /**
-    //  * 
-    //  * @param {*} req 
-    //  * @param {*} res 
-    //  */
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
     async PostBookingRequest(bookingToInsert) {
 
-        const queryString = `INSERT INTO booking (start_date, end_date, user_id, workspace_id, booking_ref_id, state_id) VALUES ( $1, $2, $3, $4, $5, (SELECT id FROM state WHERE description = 'En attente')) RETURNING *`;
         
         const values = [];
+        let counter = 1;
+        const queryParams = [];
+        const columns = [];
+        
+        for ( const key in bookingToInsert){
+            columns.push(key);
+            queryParams.push(`$${counter}`);
+            counter ++;
 
-        for ( const value in bookingToInsert){
-            values.push(bookingToInsert[value])
+            values.push(bookingToInsert[key])
         }
+        
+        const queryString = `
+        INSERT INTO booking (${columns.join(',')}, state_id) 
+        VALUES ( ${queryParams.join(',')}, (SELECT id FROM state WHERE description = 'En attente')) RETURNING *`;
 
         const result = await client.query(queryString, [...values]); 
         return result.rows;
 
     },
 
-    // /**
-    //  * 
-    //  * @param {*} req 
-    //  * @param {*} res 
-    //  */
-    async UpdateBookingState(body, booking_ref_id) {
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     */
+    async UpdateBookingState(stateDescription,bookingId) {
 
-        const { state } = body;
-
-        const queryString = 
-            `UPDATE booking SET state_id = 
-                (SELECT state.id 
-                FROM state 
-                WHERE state.description = $1)
-            WHERE booking.id IN (
-                SELECT booking.id 
-                FROM booking 
-                JOIN booking_ref ON booking_ref.id = booking.booking_ref_id 
-                WHERE booking_ref.id = $2) 
-            RETURNING *;`;
-
-        const result = await client.query(queryString, [state, booking_ref_id] ); 
+        const queryString = `UPDATE booking SET state_id = (SELECT state.id FROM state WHERE state.description = $1) WHERE booking.id = $2 RETURNING *;`;
+        const result = await client.query(queryString, [stateDescription, bookingId]); 
         return result.rows;
         
     },
