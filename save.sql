@@ -1,5 +1,13 @@
 BEGIN
 
+INSERT INTO public.role(
+	description)
+	VALUES 
+        ('coworker'),
+        ('host'),
+        ('admin');
+
+
 INSERT INTO public."user"(
 	last_name, first_name, email, password, username, avatar, about, gender, role_id)
 	VALUES 
@@ -14,6 +22,7 @@ INSERT INTO public."user"(
         ('Nougah', 'Benjamin', 'nougah@cosyworking.fr', 'password123$', 'Benjamin.N', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/764.jpg', 'Hello je cherche des bureaux pour travailler sur un projet secret', 'male', 1),
         ('Brooks', 'Adelaide', 'brooks@cosyworking.fr', 'password123$', 'Adelaide.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jp', 'Hi, I am looking for a place to work with a big pool, work hard play hard!', 'female', 1);
 
+
 INSERT INTO public.workspace(
 	title, description, address, zip_code, city, longitude, latitude, half_day_price, day_price, availability, user_id)
 	VALUES 
@@ -22,6 +31,7 @@ INSERT INTO public.workspace(
         ('Bureau pas comme les autres', 'Bureau conceptuel dans une ambiance chat Sibérien. Pot de moutarde de Dijon offert', '5 rue Jacques Cellerier', '21000', 'Dijon', '5.0167', '47.3167', 40, 80, true, 3),
         ('Luxieuse Villa', 'Charmante Villa de 300m2, vous y trouverez une piscine à débordement sur le toit avec vu sur la Tour Effeil ', '3 Av. Anatole', '75007', 'Paris', '2.2966781', '48.8571483', 199, 399, true, 4),
         ('Charmant Atelier', 'Ancien atelier de poterie aménager en bureau, décoration inspiré du plus grand potier Bernard Palissy', '72 Pl. de Provence', '86000', 'Poitiers', '0.357187', '46.5894948', 30, 60, true, 5);
+
 
 INSERT INTO public.image(
 	link, main_image, workspace_id)
@@ -57,35 +67,51 @@ INSERT INTO public.image(
         ('/public/image/workspace/24', false, 5),
         ('/public/image/workspace/25', false, 5);
 
+
+INSERT INTO public.state(
+	description)
+	VALUES 
+        ('En attente'),
+        ('Validé'),
+        ('Annulé'),
+        ('Terminé'),
+        ('Non disponible');
+
+-- 5x booking_ref
+INSERT INTO public.booking_ref
+	DEFAULT VALUES;  
+
+INSERT INTO public.booking_ref
+	DEFAULT VALUES;  
+
+INSERT INTO public.booking_ref
+	DEFAULT VALUES;  
+
+INSERT INTO public.booking_ref
+	DEFAULT VALUES; 
+
+INSERT INTO public.booking_ref
+	DEFAULT VALUES;  
+
+
 INSERT INTO public.booking(
         start_date, end_date, user_id, workspace_id, state_id, booking_ref_id)
         VALUES 
         -- first
         ('2022-10-20 08:00:00+01', '2022-10-20 17:00:00+01', 6, 1, 2, 1),
-        ('2022-10-21 12:00:00+01', '2022-10-20 17:00:00+01', 6, 1, 2, 1),
+        ('2022-10-21 13:00:00+01', '2022-10-20 17:00:00+01', 6, 1, 2, 1),
         -- second
         ('2022-10-20 08:00:00+01', '2022-10-20 17:00:00+01', 7, 2, 2, 2),
-        ('2022-10-21 12:00:00+01', '2022-10-20 17:00:00+01', 7, 2, 2, 2),
+        ('2022-10-21 13:00:00+01', '2022-10-20 17:00:00+01', 7, 2, 2, 2),
         -- third
         ('2022-10-20 08:00:00+01', '2022-10-20 17:00:00+01', 8, 3, 2, 3),
-        ('2022-10-21 12:00:00+01', '2022-10-20 17:00:00+01', 8, 3, 2, 3),
+        ('2022-10-21 13:00:00+01', '2022-10-20 17:00:00+01', 8, 3, 2, 3),
         -- forth
         ('2022-10-20 08:00:00+01', '2022-10-20 17:00:00+01' 9, 4, 2, 4),
-        ('2022-10-21 12:00:00+01', '2022-10-20 17:00:00+01', 9, 4, 2, 4),
+        ('2022-10-21 13:00:00+01', '2022-10-20 17:00:00+01', 9, 4, 2, 4),
         -- fifth
         ('2022-10-20 08:00:00+01', '2022-10-20 17:00:00+01', 10, 5, 2, 5),
-        ('2022-10-21 12:00:00+01', '2022-10-20 17:00:00+01', 10, 5, 2, 5);
-
-
-INSERT INTO public.booking_ref(
-	id)
-	VALUES  
-        (1),
-        (2),
-        (3),
-        (4),
-        (5);
-
+        ('2022-10-21 13:00:00+01', '2022-10-20 17:00:00+01', 10, 5, 2, 5);
 
 
 INSERT INTO public.equipment(
@@ -98,24 +124,6 @@ INSERT INTO public.equipment(
         ('Enceinte', '/public/image/equipment/speaker'),
         ('Piscine', '/public/image/equipment/pool');
 
-
-
-INSERT INTO public.role(
-	description)
-	VALUES 
-        ('coworker'),
-        ('host'),
-        ('admin');
-
-
-INSERT INTO public.state(
-	description)
-	VALUES 
-        ('En attente'),
-        ('Validé'),
-        ('Annulé'),
-        ('Terminé'),
-        ('Non disponible');
 
 COMMIT
 
