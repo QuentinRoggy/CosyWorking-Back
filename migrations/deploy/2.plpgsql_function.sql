@@ -2,17 +2,29 @@
 
 BEGIN;
 
-CREATE OR REPLACE FUNCTION get_user(parameters INT) RETURNS JSON AS $$
+CREATE OR REPLACE FUNCTION public.get_user(
+	parameters integer)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
 DECLARE result JSON;
 DECLARE num INT;
 BEGIN
 	IF ((SELECT "user".role_id FROM "user" WHERE "user".id = (parameters)) = (SELECT role.id from role where role.description = 'host'))
 	THEN
 		SELECT row_to_json(row) FROM (
-			SELECT "user".id, "user".avatar, "user".first_name, "user".username, "user".about, "user".created_at, workspace.id, workspace.title, image.id, image.link
+			SELECT "user".id, "user".avatar, "user".first_name, "user".username, "user".about, "user".created_at, role.description as role, (select json_agg(
+																											json_build_object('workspace_id', workspace.id, 'workspace_title', workspace.title, 'image_link', image.link)
+																									) as workspaces 
+																												   FROM workspace 
+																												   JOIN image ON image.workspace_id = workspace.id
+																												   WHERE workspace.user_id = (parameters)AND image.main_image = true) 
 			FROM "user"
 			JOIN workspace ON workspace.user_id = "user".id
 			JOIN image ON image.workspace_id = workspace.id
+			JOIN role ON role.id = "user".role_id
 			WHERE "user".id = (parameters) AND image.main_image = true) AS row INTO result;
 	ELSE
 		SELECT row_to_json(row) FROM (
@@ -23,6 +35,6 @@ BEGIN
 	
 	RETURN result;
 END;
-$$ LANGUAGE PLPGSQL;
+$BODY$;
 
 COMMIT;
