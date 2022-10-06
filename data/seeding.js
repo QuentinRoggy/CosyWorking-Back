@@ -45,20 +45,22 @@ async function insertRoles() {
 async function insertUsers(users) {
   await db.query('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE');
 
+  const password = bcrypt.hashSync(req.body.password, 8);
+
   const queryString = `
   INSERT INTO public."user"(
     last_name, first_name, email, password, username, avatar, about, gender, role_id)
     VALUES 
-          ('Vanaquer', 'Corentin', 'vanaquer@cosyworking.fr', 'password123$', 'Corentin.V', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis un super hôte', 'male', 2),
-          ('Roggy', 'Quentin', 'roggy@cosyworking.fr', 'password123$', 'Quentin.R', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis primé meilleur hôte de la Maine-et-Loire', 'male', 2),
-          ('Kiwi', 'Jade', 'kiwi@cosyworking.fr', 'password123$', 'Jade.K', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/851.jpg', 'Je suis fan du chocolat milka et de la moutarde de dijon', 'female', 2),
-          ('Liorah', 'Ambre', 'liorah@cosyworking.fr', 'password123$', 'Ambre.L', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1138.jpg', 'Je suis grande, riche et indépendante', 'female', 2),
-          ('Gouttin', 'Paul', 'gouttin@cosyworking.fr', 'password123$', 'Paul.G', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Je suis célibataire, à la recherche de mon âme soeur', 'male', 2),
-          ('Martin', 'Agath', 'martin@cosyworking.fr', 'password123$', 'Agath.M', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1179.jpg', 'Je suis dev nomade et cherche un bureau', 'female', 1),
-          ('Boutoile', 'Pierre', 'boutoile@cosyworking.fr', 'password123$', 'Pierre.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Bonjour, je suis gentil avec les chats et les plantes ', 'male', 1),
-          ('Dubois', 'Alice', 'dubois@cosyworking.fr', 'password123$', 'Alice.D', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jpg', 'Salut je prendrais soins de votre bureau acceptez moi please', 'female', 1),
-          ('Nougah', 'Benjamin', 'nougah@cosyworking.fr', 'password123$', 'Benjamin.N', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/764.jpg', 'Hello je cherche des bureaux pour travailler sur un projet secret', 'male', 1),
-          ('Brooks', 'Adelaide', 'brooks@cosyworking.fr', 'password123$', 'Adelaide.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jp', 'Hi, I am looking for a place to work with a big pool, work hard play hard!', 'female', 1)
+          ('Vanaquer', 'Corentin', 'vanaquer@cosyworking.fr', ${password}, 'Corentin.V', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis un super hôte', 'male', 2),
+          ('Roggy', 'Quentin', 'roggy@cosyworking.fr', ${password}, 'Quentin.R', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/578.jpg', 'Je suis primé meilleur hôte de la Maine-et-Loire', 'male', 2),
+          ('Kiwi', 'Jade', 'kiwi@cosyworking.fr', ${password}, 'Jade.K', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/851.jpg', 'Je suis fan du chocolat milka et de la moutarde de dijon', 'female', 2),
+          ('Liorah', 'Ambre', 'liorah@cosyworking.fr', ${password}, 'Ambre.L', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1138.jpg', 'Je suis grande, riche et indépendante', 'female', 2),
+          ('Gouttin', 'Paul', 'gouttin@cosyworking.fr', ${password}, 'Paul.G', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Je suis célibataire, à la recherche de mon âme soeur', 'male', 2),
+          ('Martin', 'Agath', 'martin@cosyworking.fr', ${password}, 'Agath.M', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1179.jpg', 'Je suis dev nomade et cherche un bureau', 'female', 1),
+          ('Boutoile', 'Pierre', 'boutoile@cosyworking.fr', ${password}, 'Pierre.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/40.jpg', 'Bonjour, je suis gentil avec les chats et les plantes ', 'male', 1),
+          ('Dubois', 'Alice', 'dubois@cosyworking.fr', ${password}, 'Alice.D', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jpg', 'Salut je prendrais soins de votre bureau acceptez moi please', 'female', 1),
+          ('Nougah', 'Benjamin', 'nougah@cosyworking.fr', ${password}, 'Benjamin.N', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/764.jpg', 'Hello je cherche des bureaux pour travailler sur un projet secret', 'male', 1),
+          ('Brooks', 'Adelaide', 'brooks@cosyworking.fr', ${password}, 'Adelaide.B', 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1050.jp', 'Hi, I am looking for a place to work with a big pool, work hard play hard!', 'female', 1)
   RETURNING id;
   `;
 
