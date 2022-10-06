@@ -10,13 +10,6 @@ CREATE DOMAIN public.email AS text
 CHECK(
     value ~ '(?:[a-z0-9!#$%&''*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'
 );
-    -- *** ZIP_CODE DOMAIN
-
-CREATE DOMAIN public.zip_code_fr
-    AS text;
-
-ALTER DOMAIN public.zip_code_fr
-    ADD CONSTRAINT zip_code_fr_check CHECK (VALUE ~ '^0[1-9]\d{3}$'::text OR VALUE ~ '^20[1-2]\d{2}$|^20300$'::text OR VALUE ~ '^[13-8]\d{4}$'::text OR VALUE ~ '^9[0-6]\d{3}$'::text OR VALUE ~ '^97[1-6]\d{2}$'::text OR VALUE ~ '^98[4678]\d{2}$'::text OR VALUE ~ '^9{5}$'::text);
 
 -- *** CREATION TABLES ***
 
@@ -91,7 +84,7 @@ CREATE TABLE IF NOT EXISTS public.workspace
     title text COLLATE pg_catalog."default" NOT NULL,
     description text COLLATE pg_catalog."default" NOT NULL,
     address text COLLATE pg_catalog."default" NOT NULL,
-    zip_code zip_code_fr COLLATE pg_catalog."default" NOT NULL,
+    zip_code text COLLATE pg_catalog."default" NOT NULL,
     city text COLLATE pg_catalog."default" NOT NULL,
     longitude text COLLATE pg_catalog."default" NOT NULL,
     latitude text COLLATE pg_catalog."default" NOT NULL,

@@ -53,15 +53,22 @@ module.exports = {
      */
     async bookingRequest(req, res) {
 
-    const bookingToInsert = req.body;
+    let bookingToInsert = req.body;
 
+    const { date_list } = bookingToInsert;
+
+    delete bookingToInsert.date_list;
+    
     bookingToInsert.booking_ref_id = await bookingRefDatamaper.insertNewBookingRef();
+    
+    for (const booking of date_list) {
+        bookingToInsert.start_date = booking.start_date;
+        bookingToInsert.end_date = booking.end_date;
 
-    // loop 
+        await bookingDatamapper.PostBookingRequest(bookingToInsert);
+    }
 
-    const result = await bookingDatamapper.PostBookingRequest(bookingToInsert);
-
-    res.json(result);
+    res.json({message: "Booking are created successfully"});
     },
 
     /**
@@ -71,13 +78,11 @@ module.exports = {
      */
     async stateUpdate(req, res) {
 
-        const bookingId = req.params.id;
-
-        const stateDescription = req.body.stateDescription;
+        const bookingRefId = req.params.id;
         
-        const updatedState= await bookingDatamapper.UpdateBookingState(stateDescription, bookingId );
+        await bookingDatamapper.UpdateBookingState(req.body, bookingRefId );
 
-        res.json({message: `The booking with the id ${bookingId} has been succesfully updated with the state ${stateDescription}`});
+        res.json({message: `The booking with the id ${bookingRefId} has been succesfully updated with the state ${req.body.state}`});
     },
 
 }
