@@ -45,7 +45,7 @@ async function insertRoles() {
 async function insertUsers(users) {
   await db.query('TRUNCATE TABLE "user" RESTART IDENTITY CASCADE');
 
-  const password = bcrypt.hashSync(req.body.password, 8);
+  const password = bcrypt.hashSync('Password123$', 8);
 
   const queryString = `
   INSERT INTO public."user"(
