@@ -45,7 +45,7 @@ router.get("/personalspace/:hostid(\\d+)/booking", controllerHandler(bookingCont
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
-router.post("/booking/request",[validate('body', bookingCreateSchema)], controllerHandler(bookingController.bookingRequest));
+router.post("/booking/request", controllerHandler(bookingController.bookingRequest));
 
 
 /**
