@@ -12,7 +12,7 @@ module.exports = {
      async getCoworkerReservationsById(coworkerId) {
 
         const queryString = `
-        SELECT booking.id, "user".first_name AS Host, state.description AS state, image.link AS image_link, workspace.address, workspace.city, workspace.title AS title, booking.start_date, booking.end_date, booking.workspace_id, booking.booking_ref_id
+        SELECT booking.id, "user".first_name AS Host, state.description AS state, image.link AS image_link, workspace.address, workspace.city, workspace.title AS title, workspace.half_day_price, workspace.day_price, booking.start_date, booking.end_date, booking.workspace_id, booking.booking_ref_id
         FROM booking 
         JOIN state ON state.id = booking.state_id
         JOIN workspace ON workspace.id = booking.workspace_id
