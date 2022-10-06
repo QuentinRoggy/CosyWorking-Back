@@ -105,7 +105,7 @@ module.exports = {
     async UpdateBookingState(stateDescription,bookingId) {
 
         const queryString = `UPDATE booking SET state_id = (SELECT state.id FROM state WHERE state.description = $1) WHERE booking.id = $2 RETURNING *;`;
-        const result = await client.query(queryString, [stateDescription, bookingId]); 
+        const result = await client.query(queryString, [stateDescription.state, bookingId]); 
         return result.rows;
         
     },
