@@ -27,35 +27,35 @@ INSERT INTO public.image(
 	link, main_image, workspace_id)
 	VALUES 
         -- first
-        ('/path/image/1', true, 1),
-        ('/path/image/2', false, 1),
-        ('/path/image/3', false, 1),
-        ('/path/image/4', false, 1),
-        ('/path/image/5', false, 1),
+        ('/public/image/workspace/1', true, 1),
+        ('/public/image/workspace/2', false, 1),
+        ('/public/image/workspace/3', false, 1),
+        ('/public/image/workspace/4', false, 1),
+        ('/public/image/workspace/5', false, 1),
         -- second
-        ('/path/image/6', true, 2),
-        ('/path/image/7', false, 2),
-        ('/path/image/8', false, 2),
-        ('/path/image/9', false, 2),
-        ('/path/image/10', false, 2),
+        ('/public/image/workspace/6', true, 2),
+        ('/public/image/workspace/7', false, 2),
+        ('/public/image/workspace/8', false, 2),
+        ('/public/image/workspace/9', false, 2),
+        ('/public/image/workspace/10', false, 2),
         -- third
-        ('/path/image/11', true, 3),
-        ('/path/image/12', false, 3),
-        ('/path/image/13', false, 3),
-        ('/path/image/14', false, 3),
-        ('/path/image/15', false, 3),
+        ('/public/image/workspace/11', true, 3),
+        ('/public/image/workspace/12', false, 3),
+        ('/public/image/workspace/13', false, 3),
+        ('/public/image/workspace/14', false, 3),
+        ('/public/image/workspace/15', false, 3),
         -- forth
-        ('/path/image/16', true, 4),
-        ('/path/image/17', false, 4),
-        ('/path/image/18', false, 4),
-        ('/path/image/19', false, 4),
-        ('/path/image/20', false, 4),
+        ('/public/image/workspace/16', true, 4),
+        ('/public/image/workspace/17', false, 4),
+        ('/public/image/workspace/18', false, 4),
+        ('/public/image/workspace/19', false, 4),
+        ('/public/image/workspace/20', false, 4),
         -- fifth
-        ('/path/image/21', true, 5),
-        ('/path/image/22', false, 5),
-        ('/path/image/23', false, 5),
-        ('/path/image/24', false, 5),
-        ('/path/image/25', false, 5);
+        ('/public/image/workspace/21', true, 5),
+        ('/public/image/workspace/22', false, 5),
+        ('/public/image/workspace/23', false, 5),
+        ('/public/image/workspace/24', false, 5),
+        ('/public/image/workspace/25', false, 5);
 
 INSERT INTO public.booking(
         start_date, end_date, user_id, workspace_id, state_id, booking_ref_id)
