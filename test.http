@@ -20,7 +20,7 @@ POST {{hostname}}/auth/login
 content-type: application/json
 
 {
-   "email": "jean@doeuf.com",
+   "email": "vanaquer@cosyworking.fr",
    "password": "Password123$"
 }
 
@@ -99,3 +99,28 @@ content-type: application/json
    "about": "Je suis très grandesss"
 }
 
+### séparateur entre deux requêtes
+
+POST {{hostname}}/workspace/create
+content-type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1MTQyMTQ1LCJleHAiOjE2NjUxNDU3NDV9.-dBPJNHDv0HkN8_Yv8WBCLlMOdFve1eADu6xnjGiC-k
+
+{
+	"title": "desktop",
+	"description": "primé meilleur bureau", 
+	"address": "10 rue champion", 
+	"zip_code": "35000",
+	"city": "Rennes",
+	"day_price": 10,
+	"half_day_price": 7,
+	"user_id": 2,
+	"equipment_list": 
+	[
+		{
+			"description": "Piscine"
+		},
+		{
+			"description": "Enceinte"
+		}
+	]
+}

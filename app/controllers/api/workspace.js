@@ -1,4 +1,5 @@
 const workspaceDatamapper = require("../../Datamapper/workspace");
+const equipmentDatamapper = require("../../Datamapper/equipment");
 const mapServices = require("../../services/mapServices");
 
 module.exports = {
@@ -33,7 +34,15 @@ module.exports = {
     workspaceToCreate.latitude = coordinates.latitude;
     workspaceToCreate.longitude = coordinates.longitude;
 
+    const { equipment_list } = workspaceToCreate;
+
+    delete workspaceToCreate.equipment_list;
+
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
+
+    const workspaceId = workspaceInstance[0].id;
+    
+    await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
 
     res.json(workspaceInstance);
   },
