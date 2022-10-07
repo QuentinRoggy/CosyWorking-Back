@@ -20,7 +20,7 @@ POST {{hostname}}/auth/login
 content-type: application/json
 
 {
-   "email": "jean@doeuf.com",
+   "email": "liorah@cosyworking.fr",
    "password": "Password123$"
 }
 
@@ -99,3 +99,23 @@ content-type: application/json
    "about": "Je suis très grandesss"
 }
 
+
+### séparateur entre deux requêtes
+
+POST {{hostname}}/workspace/create
+content-type: application/json
+x-acces-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1MTMwNjE3LCJleHAiOjE2NjUxMzQyMTd9.7s8s9WM-SyWQkY3u9_X7NMsU1zMBVtFLi2dHb8GK7CA
+
+{
+   "title": "Bateau",
+   "description" : "Un beau bateau pour changer de cadre de travail",
+   "address" : "Port de Gruissan",
+   "zip_code" : "11430",
+   "city": "Gruissan",
+   "longitude": "0",
+   "latitude": "0",
+   "half_day_price": "300",
+   "day_price": "600",
+   "availability": true,
+   "user_id": 4
+}
