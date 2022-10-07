@@ -4,6 +4,8 @@ const profilController = require('./profil');
 const workspaceController =  require('./workspace');
 const equipmentController = require('./equipment');
 
+const reviewController = require('./review');
+
 const apiController = {
     /**
      * Default API controller to show documention url.
@@ -20,5 +22,5 @@ const apiController = {
     },
 };
 
-module.exports = { apiController, userController, bookingController, profilController, workspaceController, equipmentController };
+module.exports = { apiController, userController, bookingController, profilController, workspaceController, equipmentController, reviewController };
 

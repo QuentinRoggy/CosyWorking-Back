@@ -10,6 +10,8 @@ const profilRouter = require('./profil');
 const userRouter = require('./user')
 const workspaceRouter = require('./workspace');
 const equipmentRouter = require('./equipment');
+const reviewRouter = require('./review');
+
 const giveAccessToken = require('../../middleware/giveAccessToken');
 
 
@@ -25,6 +27,8 @@ router.use(userRouter);
 router.use(workspaceRouter);
 router.use(equipmentRouter);
 router.use(profilRouter);
+
+router.use(reviewRouter);
 
 router.use(() => {
     throw new ApiError('API Route not found', { statusCode: 404 });
