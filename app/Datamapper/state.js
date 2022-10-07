@@ -11,10 +11,4 @@ module.exports = {
 
     }
 
-}
-
-
-        //select where id is "attente"
-        // get this id put in req body
-        
-        // put req body into table resa
+};

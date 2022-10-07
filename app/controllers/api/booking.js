@@ -1,5 +1,6 @@
-const bookingDatamapper = require("../../Datamapper/booking")
+const bookingDatamapper = require("../../Datamapper/booking");
 const bookingRefDatamaper = require('../../Datamapper/booking_ref');
+const securityDatamapper = require("../../Datamapper/security");
 
 
 module.exports = {
@@ -88,7 +89,15 @@ module.exports = {
      */
     async stateUpdate(req, res) {
 
-        const bookingRefId = req.params.id;
+        const bookingRefId = parseInt(req.params.id);
+
+        const isAuthorizedToUpdate = await securityDatamapper.checkBooking(req.userId, bookingRefId);
+
+        if (!isAuthorizedToUpdate) {
+            return res.status(403).send({
+            message: "This is not your booking ! "
+        });
+    }
         
         await bookingDatamapper.UpdateBookingState(req.body, bookingRefId );
 
