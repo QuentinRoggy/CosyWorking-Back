@@ -65,8 +65,7 @@ module.exports = {
    * @returns 
    */
   async getUserByPk(userId) {
-    
-
+  
     const queryString = `SELECT get_user($1)`;
 
     const result = await client.query(queryString, [userId]);

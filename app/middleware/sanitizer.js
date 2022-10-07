@@ -3,9 +3,9 @@ const sanitizer = require('sanitizer');
 const sanitize = function(obj) {
     // pour chaque propriété de l'object, on va modifier la valeur stockée pour nous protéger d'éventuelles injections XSS (Cross Site Script)
     for (const prop in obj) {
-        console.log('Before sanitize : ', obj[prop]);
+        // console.log('Before sanitize : ', obj[prop]);
         obj[prop] = sanitizer.escape(obj[prop]);
-        console.log('After sanitize : ', obj[prop]);
+        // console.log('After sanitize : ', obj[prop]);
     }
 }
 
