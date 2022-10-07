@@ -27,14 +27,14 @@ async checkWorkspaces(userId, workspaceId) {
       JOIN workspace ON workspace.id = booking.workspace_id
       WHERE booking_ref_id = $1;`;
 
-      const result = await client.query(queryString, [userId]);
+      const result = await client.query(queryString, [bookingRefId]);
 
       for (const element of result.rows) {
-        if (bookingRefId === element.workspace_user_id || bookingRefId === element.booking_user_id) {
+        if (userId === element.workspace_user_id || userId === element.booking_user_id) {
           return true;
         }
       }
 
       return false;
-  }
+  },
 }
