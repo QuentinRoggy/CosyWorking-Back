@@ -117,10 +117,10 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 	"equipment_list": 
 	[
 		{
-			"description": "Fibre"
+			"description": "Piscine"
 		},
 		{
-			"description": "Imprimante"
+			"description": "Enceinte"
 		}
 	]
 }
