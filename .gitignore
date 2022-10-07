@@ -26,3 +26,7 @@ sqitch.conf
 
 #test
 coverage/
+
+public/images/avatar/*
+public/images/equipment/*
+public/images/workspace/*

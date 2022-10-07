@@ -6,6 +6,11 @@ const { errorHandler } = require('../helpers/errorHandler');
 const router = express.Router();
 const sanitizer = require('../middleware/sanitizer');
 
+const multerConfig = require('../services/multerConfig');
+const bodyParser = multerConfig.editStorage();
+
+router.use( bodyParser.any() );
+
 // We prefix our api's route
 router.use('/api', sanitizer, apiRouter);
 

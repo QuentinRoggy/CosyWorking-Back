@@ -78,6 +78,8 @@ module.exports = {
     const result = await client.query(queryString, [...values]);
     
     return result.rows;
+
+    return;
   },
 
   async getRandom(){
