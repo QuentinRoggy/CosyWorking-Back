@@ -5,7 +5,10 @@ const cors = require('cors');
 const router = require('./routers');
 
 const app = express();
-require('./helpers/apiDocs')(app);
+// require('./helpers/apiDocs')(app);
+
+const {specs, serve, setup} = require('./swagger-doc/swaggerDocs');
+app.use('/api-docs', serve, setup(specs));
 
 
 // On active le middleware pour parser le payload JSON

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { ApiError } = require('../../helpers/errorHandler');
-const { apiController } = require('../../controllers/api')
+const { apiController } = require('../../controllers/api');
 
 const router = express.Router();
 const authRouter = require('./auth');
@@ -18,6 +18,7 @@ router.all('/', apiController.home);
 
 // Gives acces to x-access-token in header
 router.use(giveAccessToken);
+
 
 router.use(authRouter);
 router.use(bookingRouter);

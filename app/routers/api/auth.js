@@ -8,22 +8,22 @@ const {userController: controller} = require("../../controllers/api");
 const controllerHandler = require('../../helpers/controllerHandler');
 
 
-/** 
- * POST /api/auth/signup
- * @summary Create a new User
- * @tags User
- * @return {ApiError} 400 - Bad request response - application/json
- * @return {ApiError} 404 - Restaurant not found - application/json
- */
+// /** 
+//  * POST /api/auth/signup
+//  * @summary Create a new User
+//  * @tags User
+//  * @return {ApiError} 400 - Bad request response - application/json
+//  * @return {ApiError} 404 - Restaurant not found - application/json
+//  */
 router.post("/auth/signup",[validate('body', userCreateSchema), verifySignup.checkDuplicateEmail], controllerHandler(controller.signup));
 
-/**
- * POST /api/auth/login
- * @summary Login a User
- * @tags User
- * @return {ApiError} 400 - Bad request response - application/json
- * @return {ApiError} 404 - Restaurant not found - application/json
- */
+// /**
+//  * POST /api/auth/login
+//  * @summary Login a User
+//  * @tags User
+//  * @return {ApiError} 400 - Bad request response - application/json
+//  * @return {ApiError} 404 - Restaurant not found - application/json
+//  */
 router.post("/auth/login", controllerHandler(controller.login));
 
 module.exports = router;
