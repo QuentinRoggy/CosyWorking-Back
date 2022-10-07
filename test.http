@@ -20,6 +20,7 @@ POST {{hostname}}/auth/login
 content-type: application/json
 
 {
+
    "email": "vanaquer@cosyworking.fr",
    "password": "Password123$"
 }
@@ -124,3 +125,4 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 		}
 	]
 }
+
