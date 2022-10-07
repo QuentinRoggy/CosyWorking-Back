@@ -81,7 +81,7 @@ module.exports = {
     // We create an object for the Front response
     const userLogged = {
       userId: user[0].id, 
-      userRoleDescription: user[0].role_description, 
+      userRoleDescription: user[0].role_description,  
       userToken: token
     }
 
