@@ -1,8 +1,12 @@
 const swagger = require('swagger-jsdoc');
 const swaggerJSDoc = swagger;
 const { serve, setup } = require('swagger-ui-express');
-const { signup, loggin, userId } = require('./paths/auth');
 const { components } = require ('./swagger-utils/swaggerComponents.js');
+
+const { signup, login } = require('./paths/auth');
+const { userId } = require('./paths/user');
+const { getProfil, patchProfil} =  require('./paths/profil');
+
 
 const options = {
 
@@ -36,14 +40,14 @@ const options = {
 
             //~ ------------- AUTH
             '/api/auth/signup': signup,
-            '/api/auth/login': loggin,
+            '/api/auth/login': login,
             
             //~ ------------- USER
             '/api/user/{id}': userId,
 
-            // //~ ------------- PROFIL
-            // '/personalspace/{id}/profil': profil,
-            // '/personalspace/{id}/profil': profil,
+            //~ ------------- PROFIL
+            '/personalspace/{id}/profil': getProfil,
+            '/personalspace/{id}/profil ': patchProfil,
 
             // //~ ------------- WORKSPACE
             // '/api/workspace/find-random': workspace,
@@ -64,20 +68,19 @@ const options = {
             // '/api/booking/request': booking,
             // '/api/booking/{id}/state': booking
             // //~ ------------- IMAGE
-            // 
         },
 
         // Tous les schemas
         components,
 
         // Element correspondant à la sécurité
-        // securitySchemes: {
-        //     api_key: {
-        //         type: 'apiKey',
-        //         name: 'api_key',
-        //         in: 'header'
-        //     },
-        // }
+        securitySchemes: {
+            api_key: {
+                type: 'apiKey',
+                name: 'api_key',
+                in: 'header'
+            },
+        }
     },
 
     apis: ['./app/routers/*.js']
@@ -88,4 +91,4 @@ const options = {
 const specs = swaggerJSDoc(options);
 
 
-module.exports =  { specs, serve, setup };
+module.exports =  { specs, serve, setup};

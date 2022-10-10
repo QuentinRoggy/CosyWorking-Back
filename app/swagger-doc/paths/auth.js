@@ -1,23 +1,23 @@
-const {usersProperties, userExample} = require('../swagger-utils/swaggerExemples');
+const { signupProperties, signupExample, loginProperties, loginExample} = require('../swaggerSchemas/auth');
 
 const {error400, error404} = require('../swagger-utils/swaggerStatus');
 const {component} = require('../swagger-utils/swaggerComponents.js');
 
 const signup = {
 
-    //~ --------------------------------------------- FETCH ALL USERS
+    //~ --------------------------------------------- SIGNING UP
     get: {
-        tags: ['Users'],
-        summary: 'Récupération des utilisateurs',
+        tags: ['Authentication'],
+        summary: 'User subscribe',
         responses: {
             200: {
-                description: 'Requête réussie',
+                description: 'Request sent successfully',
                 content: {
                     'application/json': {
                         schema: {
                             type: 'object',
-                            properties:usersProperties,
-                            example: userExample  
+                            properties:signupProperties,
+                            example: signupExample  
                         }
                     }
                 }
@@ -30,21 +30,21 @@ const signup = {
 
 }
 
-const loggin = {
+const login = {
 
-    //~ --------------------------------------------- FETCH ALL USERS
+    //~ --------------------------------------------- LOGIN
     get: {
-        tags: ['Users'],
-        summary: 'Récupération des utilisateurs',
+        tags: ['Authentication'],
+        summary: 'User connexion',
         responses: {
             200: {
-                description: 'Requête réussie',
+                description: 'Request sent successfully',
                 content: {
                     'application/json': {
                         schema: {
                             type: 'object',
-                            properties:usersProperties,
-                            example: userExample  
+                            properties: loginProperties,
+                            example: loginExample  
                         }
                     }
                 }
@@ -54,4 +54,4 @@ const loggin = {
     },
 }
 
-module.exports = {signup, loggin};
+module.exports = {signup, login};
