@@ -1,5 +1,6 @@
 const imageDatamapper = require('../../Datamapper/image');
 const fs = require('fs');
+const { stringify } = require('querystring');
 
 module.exports = {
 
@@ -13,17 +14,21 @@ module.exports = {
     
         if(workspaceImageDeleted){
     
-          const imagePath = [];
+          const rawPath = [];
     
           for(const key of workspaceImageDeleted){
             const value = key.link;
     
-            imagePath.push(value)
+            rawPath.push(value)
           }
     
+          console.log(rawPath)
+
+          const imagePath = stringify(rawPath);
+
           console.log(imagePath)
     
-          fs.unlinkSync(stringify(imagePath));
+          fs.unlinkSync(imagePath);
         } else {
           console.log(`can not find ${imagePath} into ${workspaceImageDeleted}`)
         }
