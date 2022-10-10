@@ -75,13 +75,13 @@ module.exports = {
       userRoleDescription: user[0].role_description}, 
       process.env.JWT_SECRET,
       {
-      expiresIn: 3600 // 24 hours
+      expiresIn: 60 // 24 hours
     });
 
     // We create an object for the Front response
     const userLogged = {
       userId: user[0].id, 
-      userRoleDescription: user[0].role_description, 
+      userRoleDescription: user[0].role_description,  
       userToken: token
     }
 

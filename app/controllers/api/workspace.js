@@ -1,4 +1,8 @@
 const workspaceDatamapper = require("../../Datamapper/workspace");
+const equipmentDatamapper = require("../../Datamapper/equipment");
+const imageDatamapper = require("../../Datamapper/image");
+const securityDatamapper = require('../../Datamapper/security');
+
 const mapServices = require("../../services/mapServices");
 
 module.exports = {
@@ -33,7 +37,17 @@ module.exports = {
     workspaceToCreate.latitude = coordinates.latitude;
     workspaceToCreate.longitude = coordinates.longitude;
 
+    // const { equipment_list } = workspaceToCreate;
+
+    // delete workspaceToCreate.equipment_list;
+
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
+
+    const workspaceId = workspaceInstance[0].id;
+
+    await imageDatamapper.addImage(workspaceId, req.files);
+    
+    // await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
 
     res.json(workspaceInstance);
   },
@@ -44,8 +58,16 @@ module.exports = {
   },
 
   async updateOne(req, res) {
-    const workspaceId = req.params.id;
+    const workspaceId = parseInt(req.params.id);
     const updatedWorkspace = req.body;
+
+    const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
+
+    if (!isAuthorizedToUpdate) {
+      return res.status(403).send({
+        message: "This is not your workspace ! "
+      });
+    }
 
     const result = await workspaceDatamapper.patchOne(workspaceId, updatedWorkspace);
 
@@ -53,8 +75,16 @@ module.exports = {
   },
 
   async updateState(req, res) {
-    const workspaceId = req.params.id;
+    const workspaceId = parseInt(req.params.id);
     const newState = req.body.availability;
+
+    const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
+
+    if (!isAuthorizedToUpdate) {
+      return res.status(403).send({
+        message: "This is not your workspace ! "
+      });
+    }
 
     await workspaceDatamapper.patchState(workspaceId, newState);
 
