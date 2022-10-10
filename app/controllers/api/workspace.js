@@ -3,7 +3,9 @@ const equipmentDatamapper = require("../../Datamapper/equipment");
 const imageDatamapper = require("../../Datamapper/image");
 const securityDatamapper = require('../../Datamapper/security');
 
+
 const mapServices = require("../../services/mapServices");
+const { stringify } = require("querystring");
 
 module.exports = {
 
@@ -99,22 +101,4 @@ module.exports = {
     res.json(workspacesAvailable);
   },
 
-  async delete(req, res) {
-
-    const workspaceId = req.params.id;
-
-    const searchDetails = req.body;
-
-    const workspaceImageDeleted = await workspaceDatamapper.deleteWorkspaceImages(workspaceId, searchDetails);
-
-    res.json(workspaceImageDeleted);
-
-    // if(workspaceImageDeleted){
-
-    //   const imagePath = workspaceImageDeleted.path;
-
-    //   fs.unlik(imagePath);
-    // } 
-
-  }
 }

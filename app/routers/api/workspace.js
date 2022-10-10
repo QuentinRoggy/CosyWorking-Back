@@ -70,14 +70,4 @@ router.patch("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesR
  */
 router.patch("/workspace/state/:id(\\d+)",[verifyAccesRight.verifyToken, verifyAccesRight.isHost],  controllerHandler(controller.updateState));
 
-
-/**
- * DELETE /api/workspace/create
- * @summary Create a new workspace
- * @tags Workspace
- * @return {ApiError} 400 - Bad request response - application/json
- * @return {ApiError} 404 - Restaurant not found - application/json
- */
- router.delete("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.delete));
-
 module.exports = router;
