@@ -1,7 +1,7 @@
 const swagger = require('swagger-jsdoc');
 const swaggerJSDoc = swagger;
 const { serve, setup } = require('swagger-ui-express');
-const { signup, loggin } = require('./paths/auth');
+const { signup, loggin, userId } = require('./paths/auth');
 const { components } = require ('./swagger-utils/swaggerComponents.js');
 
 const options = {
@@ -38,8 +38,8 @@ const options = {
             '/api/auth/signup': signup,
             '/api/auth/login': loggin,
             
-            // //~ ------------- USER
-            // '/api/user/{id}': userid,
+            //~ ------------- USER
+            '/api/user/{id}': userId,
 
             // //~ ------------- PROFIL
             // '/personalspace/{id}/profil': profil,
@@ -63,6 +63,8 @@ const options = {
             // '/api/personalspace/:{hostid}/booking': booking,
             // '/api/booking/request': booking,
             // '/api/booking/{id}/state': booking
+            // //~ ------------- IMAGE
+            // 
         },
 
         // Tous les schemas
