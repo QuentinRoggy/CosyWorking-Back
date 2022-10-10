@@ -28,4 +28,26 @@ module.exports = {
 
     return result.rows;
   },
+
+  async updateMainImage(workspaceId, imageList) {
+
+    await client.query(`DELETE FROM image WHERE workspace_id = $1 AND main_image = true`, [workspaceId]);
+
+    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, true, imageList[0].path])
+
+    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
+
+    console.log(result);
+
+    return result.rows;
+
+  },
+
+  async updateImages(workspaceId, imageList) {
+
+    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, false, imageList[0].path]);
+    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
+
+    return result.rows;
+  }
 };

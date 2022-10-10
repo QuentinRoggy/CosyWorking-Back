@@ -63,6 +63,10 @@ module.exports = {
   async updateOne(req, res) {
     const workspaceId = parseInt(req.params.id);
     const updatedWorkspace = req.body;
+    const { equipments } = updatedWorkspace;
+    const equipmentList = equipments.split(',');
+
+    delete updatedWorkspace.equipments;
 
     const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
 
@@ -71,6 +75,8 @@ module.exports = {
         message: "This is not your workspace ! "
       });
     }
+
+    await equipmentDatamapper.update(workspaceId, equipmentList);
 
     const result = await workspaceDatamapper.patchOne(workspaceId, updatedWorkspace);
 
@@ -100,5 +106,20 @@ module.exports = {
     const workspacesAvailable = await workspaceDatamapper.getWorkspacesFromSearch(searchDetails);
 
     res.json(workspacesAvailable);
+  },
+
+  async addImages(req, res) {
+    const workspaceId = parseInt(req.params.id);
+
+    let result;
+
+    if (req.files[0].fieldname.includes("mainImage")) {
+      result =  await imageDatamapper.updateMainImage(workspaceId, req.files);
+    } else {
+      result = await imageDatamapper.updateImages(workspaceId, req.files);
+    }
+
+    res.json(result);
+
   }
 }
