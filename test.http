@@ -130,10 +130,10 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 
 DELETE {{hostname}}/workspace/1
 content-type: application/json
-x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1NDAyOTgxLCJleHAiOjE2NjU0MDMwNDF9.eWzMMFm_3ono3P1DP6y-hbqJ5ZYq4IJ5FVgfUi7M_Wc
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1NDAzMTczLCJleHAiOjE2NjU0MDMyMzN9.Cm-T-l_M7gJ7fSUCvnJL85oi_9XMUff3kJMFc6Zh6fk
 
 {
-	"id" : 58,
+	"id" : 60,
 	"link" : "public/images/workspace/01.png",
 	"main_image" : false,
 	"workspace_id" : 1
