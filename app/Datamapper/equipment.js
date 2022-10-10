@@ -16,18 +16,17 @@ module.exports = {
     let counter = 2;
 
     for(const key of equipmentList){
-      queryEquipment.push(`((select equipment.id from equipment where description = $${counter}), $1)`);
-      values.push(key.description);
+      queryEquipment.push(`($${counter}, $1)`);
+      values.push(key);
       counter++;
     }
-
 
     const queryString = `
     INSERT INTO workspace_has_equipment (equipment_id, workspace_id) 
     VALUES ${queryEquipment.join(',')};
     `;
 
-    const result = await client.query(queryString, [workspaceId, ...values]);
+    const result = await client.query(queryString, [workspaceId, ...values ]);
 
     return result.rows;
   }

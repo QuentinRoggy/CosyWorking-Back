@@ -10,7 +10,11 @@ module.exports = {
     let counter = 2;
 
     for(const key of imageList){
-      queryImage.push(`($1, $${counter}, false)`);
+      if (key.fieldname.includes("mainImage")) {
+        queryImage.push(`($1, $${counter}, true)`);
+      } else {
+        queryImage.push(`($1, $${counter}, false)`);
+      }
       values.push(key.path);
       counter++;
     }
@@ -24,6 +28,4 @@ module.exports = {
 
     return result.rows;
   },
-
-
 };

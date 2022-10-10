@@ -31,15 +31,17 @@ module.exports = {
 
   async create(req, res) {
     const workspaceToCreate = req.body;
+    workspaceToCreate.user_id = req.userId;
     
     const coordinates = await mapServices.findLocation(req.body.address,req.body.zip_code, req.body.city);
 
     workspaceToCreate.latitude = coordinates.latitude;
     workspaceToCreate.longitude = coordinates.longitude;
 
-    // const { equipment_list } = workspaceToCreate;
-
-    // delete workspaceToCreate.equipment_list;
+    // Equipements
+    const { equipments } = workspaceToCreate;
+    const equipment_list = equipments.split(',');
+    delete workspaceToCreate.equipments;
 
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
 
@@ -47,7 +49,8 @@ module.exports = {
 
     await imageDatamapper.addImage(workspaceId, req.files);
     
-    // await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
+    //Equipements
+    await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
 
     res.json(workspaceInstance);
   },
