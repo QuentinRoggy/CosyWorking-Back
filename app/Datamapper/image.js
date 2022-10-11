@@ -37,7 +37,7 @@ module.exports = {
 
     await client.query(queryString, [workspaceId, imageId]);
 
-    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
+    const result = await client.query(`SELECT id as image_id, link, main_image, workspace_id FROM image WHERE workspace_id = $1`, [workspaceId]);
 
     return result.rows
   },
@@ -48,9 +48,7 @@ module.exports = {
 
     await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, true, imageList[0].path])
 
-    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
-
-    console.log(result);
+    const result = await client.query(`SELECT id as image_id, link, main_image, workspace_id FROM image WHERE workspace_id = $1`, [workspaceId]);
 
     return result.rows;
 
@@ -58,8 +56,14 @@ module.exports = {
 
   async updateImages(workspaceId, imageList) {
 
-    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, false, imageList[0].path]);
-    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
+    const path = imageList[0].path
+    .split('/')
+    .slice(1)
+    .join('/');
+
+    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, false, path]);
+
+    const result = await client.query(`SELECT id as image_id, link, main_image, workspace_id FROM image WHERE workspace_id = $1`, [workspaceId]);
 
     return result.rows;
   }
