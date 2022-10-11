@@ -5,8 +5,11 @@ const { components } = require ('./swagger-utils/swaggerComponents.js');
 
 const { signup, login } = require('./paths/auth');
 const { userId } = require('./paths/user');
-const { getProfil, patchProfil} =  require('./paths/profil');
+const { getProfil, patchProfil } =  require('./paths/profil');
+const { randomWorkspace, getWorkspaceId, getHostWorkspace, createWorkspace, getWorkspaces, patchWorkspaceId, patchWorkspaceState } = require ('./paths/workspace');
 const { equipment } = require ('./paths/equipment');
+const { getCoworkerBooking, getWorkspaceBooking, getHostBooking, createBookingRequest, patchBookingState } = require ('./paths/booking');
+const { deleteImage } = require ('./paths/image');
 
 
 const options = {
@@ -50,25 +53,27 @@ const options = {
             '/personalspace/{id}/profil': getProfil,
             '/personalspace/{id}/profil ': patchProfil,
 
-            // //~ ------------- WORKSPACE
-            // '/api/workspace/find-random': workspace,
-            // '/api/workspace/{id}': workspace,
-            // '/api/personalspace/:hostid(\\d+)/workspace': workspace,
-            // '/api/workspace/create': workspace, 
-            // '/api/workspace/search': workspace,
-            // '/api/workspace/{id}': workspace,
-            // '/api/workspace/state/{id}': workspace,
+            //~ ------------- WORKSPACE
+            '/api/workspace/find-random': randomWorkspace,
+            '/api/workspace/{id}': getWorkspaceId,
+            '/api/personalspace/{hostid}/workspace': getHostWorkspace,
+            '/api/workspace/create': createWorkspace, 
+            '/api/workspace/search': getWorkspaces,
+            '/api/workspace/{id} ': patchWorkspaceId,
+            '/api/workspace/state/{id}': patchWorkspaceState,
 
-            // //~ ------------- EQUIPMENT
+            //~ ------------- EQUIPMENT
             '/api/equipments': equipment,
-            
-            // //~ ------------- BOOKING
-            // '/api/personalspace/{id}/coworkerbooking': booking,
-            // '/api/workspace/{id}/bookeddate': booking,
-            // '/api/personalspace/:{hostid}/booking': booking,
-            // '/api/booking/request': booking,
-            // '/api/booking/{id}/state': booking
-            // //~ ------------- IMAGE
+
+            //~ ------------- BOOKING
+            '/api/personalspace/{id}/coworkerbooking': getCoworkerBooking,
+            '/api/workspace/{id}/bookeddate': getWorkspaceBooking,
+            '/api/personalspace/{hostid}/booking': getHostBooking,
+            '/api/booking/request': createBookingRequest,
+            '/api/booking/{id}/state': patchBookingState,
+
+            //~ ------------- IMAGE
+            '/workspace/{id}/image': deleteImage,
         },
 
         // Tous les schemas
