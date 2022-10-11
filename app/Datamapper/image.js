@@ -38,7 +38,7 @@ module.exports = {
     const result = await client.query(queryString, [workspaceId, imageId]);
 
     return result.rows
-  }
+  },
 
     async updateMainImage(workspaceId, imageList) {
 
