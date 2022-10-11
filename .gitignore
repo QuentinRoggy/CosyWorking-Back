@@ -23,10 +23,3 @@ package-lock.json
 #config
 .env
 sqitch.conf
-
-#test
-coverage/
-
-public/images/avatar/*
-public/images/equipment/*
-public/images/workspace/*
