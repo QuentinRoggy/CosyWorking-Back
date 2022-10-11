@@ -85,8 +85,9 @@ content-type: application/json
 
 ### séparateur entre deux requêtes
 
-GET {{hostname}}/personnalspace/1/profil
+GET {{hostname}}/personalspace/1/profil
 content-type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1NDExOTYzLCJleHAiOjE2NjU0MTIwMjN9.R1ODcjdYi9eGz3LVkd7kPi6JvQ2SQDLh5H_fqSzq0Yg
 
 
 ### séparateur entre deux requêtes
@@ -128,6 +129,10 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 
 ### séparateur entre deux requêtes
 
+
+GET {{hostname}}/equipments
+content-type: application/json
+
 DELETE {{hostname}}/workspace/1
 content-type: application/json
 x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2xlRGVzY3JpcHRpb24iOiJob3N0IiwiaWF0IjoxNjY1NDAzMTczLCJleHAiOjE2NjU0MDMyMzN9.Cm-T-l_M7gJ7fSUCvnJL85oi_9XMUff3kJMFc6Zh6fk
@@ -138,3 +143,4 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 	"main_image" : false,
 	"workspace_id" : 1
 }
+

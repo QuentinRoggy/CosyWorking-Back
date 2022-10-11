@@ -1,11 +1,13 @@
 const express = require('express');
+const router = express.Router();
 
 const apiRouter = require('./api');
+
 const { errorHandler } = require('../helpers/errorHandler');
 
-const router = express.Router();
 const sanitizer = require('../middleware/sanitizer');
 
+// Multer 
 const multerConfig = require('../services/multerConfig');
 const bodyParser = multerConfig.editStorage();
 
@@ -18,5 +20,6 @@ router.use('/api', sanitizer, apiRouter);
 router.use((err, _, response, next) => {
     errorHandler(err, response, next);
 });
+
 
 module.exports = router;
