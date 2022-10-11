@@ -8,7 +8,7 @@ const app = express();
 require('./helpers/apiDocs')(app);
 
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 // On active le middleware pour parser le payload JSON
 app.use(express.json());
