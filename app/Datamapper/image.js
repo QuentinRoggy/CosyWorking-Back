@@ -25,5 +25,15 @@ module.exports = {
     return result.rows;
   },
 
+  async deleteWorkspaceImages(workspaceId, searchDetails){
+
+    const imageId = searchDetails.id
+
+    let queryString = "DELETE FROM image WHERE image.workspace_id = $1 AND image.id = $2 RETURNING *";
+
+    const result = await client.query(queryString, [workspaceId, imageId]);
+
+    return result.rows
+  }
 
 };

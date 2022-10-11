@@ -327,6 +327,6 @@ module.exports = {
     const result = await client.query(queryString, [...values]);
 
     return result.rows;
-  }
+  },
 
 }
