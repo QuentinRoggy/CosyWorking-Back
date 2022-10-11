@@ -70,4 +70,7 @@ router.patch("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesR
  */
 router.patch("/workspace/state/:id(\\d+)",[verifyAccesRight.verifyToken, verifyAccesRight.isHost],  controllerHandler(controller.updateState));
 
+
+router.post("/workspace/:id(\\d+)/images/add",[verifyAccesRight.verifyToken, verifyAccesRight.isHost] , controllerHandler(controller.addImages));
+
 module.exports = router;
