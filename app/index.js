@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set images directory static
-app.use(express.static('../public'));
+app.use(express.static('public'));
+
 
 // On lève la restriction CORS pour nos amis React
 app.use(cors(process.env.CORS_DOMAINS || '*'));
