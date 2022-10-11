@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const {userController: controller} = require("../../controllers/api");
+// ERROR HANDLER
 const controllerHandler = require('../../helpers/controllerHandler');
 
-// /**
-//  * GET /api/user/:id(\\d+)
-//  * @summary Get user by id
-//  * @tags USER
-//  * @return {ApiError} 400 - Bad request response - application/json
-//  * @return {ApiError} 404 - Restaurant not found - application/json
-//  */
+// CONTROLLER
+const {userController: controller} = require("../../controllers/api");
+
+
+//~ ---------- GET
 router.get('/user/:id(\\d+)', controllerHandler(controller.findUserById))
+
 
 module.exports = router;
