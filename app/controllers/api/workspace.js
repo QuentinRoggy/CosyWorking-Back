@@ -33,15 +33,17 @@ module.exports = {
 
   async create(req, res) {
     const workspaceToCreate = req.body;
+    workspaceToCreate.user_id = req.userId;
     
     const coordinates = await mapServices.findLocation(req.body.address,req.body.zip_code, req.body.city);
 
     workspaceToCreate.latitude = coordinates.latitude;
     workspaceToCreate.longitude = coordinates.longitude;
 
-    // const { equipment_list } = workspaceToCreate;
-
-    // delete workspaceToCreate.equipment_list;
+    // Equipements
+    const { equipments } = workspaceToCreate;
+    const equipment_list = equipments.split(',');
+    delete workspaceToCreate.equipments;
 
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
 
@@ -49,7 +51,8 @@ module.exports = {
 
     await imageDatamapper.addImage(workspaceId, req.files);
     
-    // await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
+    //Equipements
+    await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
 
     res.json(workspaceInstance);
   },
@@ -62,6 +65,10 @@ module.exports = {
   async updateOne(req, res) {
     const workspaceId = parseInt(req.params.id);
     const updatedWorkspace = req.body;
+    const { equipments } = updatedWorkspace;
+    const equipmentList = equipments.split(',');
+
+    delete updatedWorkspace.equipments;
 
     const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
 
@@ -70,6 +77,8 @@ module.exports = {
         message: "This is not your workspace ! "
       });
     }
+
+    await equipmentDatamapper.update(workspaceId, equipmentList);
 
     const result = await workspaceDatamapper.patchOne(workspaceId, updatedWorkspace);
 
@@ -100,5 +109,20 @@ module.exports = {
 
     res.json(workspacesAvailable);
   },
+
+  async addImages(req, res) {
+    const workspaceId = parseInt(req.params.id);
+
+    let result;
+
+    if (req.files[0].fieldname.includes("mainImage")) {
+      result =  await imageDatamapper.updateMainImage(workspaceId, req.files);
+    } else {
+      result = await imageDatamapper.updateImages(workspaceId, req.files);
+    }
+
+    res.json(result);
+
+  }
 
 }
