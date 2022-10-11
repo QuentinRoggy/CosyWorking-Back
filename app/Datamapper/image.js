@@ -15,7 +15,14 @@ module.exports = {
       } else {
         queryImage.push(`($1, $${counter}, false)`);
       }
-      values.push(key.path);
+
+      // Supprime la première partie du lien => public
+      const path = key.path
+      .split('/')
+      .slice(1)
+      .join('/');
+
+      values.push(path);
       counter++;
     }
 
