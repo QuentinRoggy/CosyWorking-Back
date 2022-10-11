@@ -20,4 +20,5 @@ app.use(cors(process.env.CORS_DOMAINS || '*'));
 
 app.use(router);
 
+
 module.exports = app;
