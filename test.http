@@ -127,3 +127,7 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJSb2x
 	]
 }
 
+### séparateur entre deux requêtes
+
+GET {{hostname}}/equipments
+content-type: application/json

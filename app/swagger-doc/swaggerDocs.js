@@ -6,6 +6,7 @@ const { components } = require ('./swagger-utils/swaggerComponents.js');
 const { signup, login } = require('./paths/auth');
 const { userId } = require('./paths/user');
 const { getProfil, patchProfil} =  require('./paths/profil');
+const { equipment } = require ('./paths/equipment');
 
 
 const options = {
@@ -59,7 +60,7 @@ const options = {
             // '/api/workspace/state/{id}': workspace,
 
             // //~ ------------- EQUIPMENT
-            // '/api/equipments': equipment,
+            '/api/equipments': equipment,
             
             // //~ ------------- BOOKING
             // '/api/personalspace/{id}/coworkerbooking': booking,

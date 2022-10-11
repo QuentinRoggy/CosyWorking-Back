@@ -1,6 +1,7 @@
 const { signupProperties, loginProperties} = require('../swaggerSchemas/auth');
 const { userProperties } = require('../swaggerSchemas/user');
 const { profilProperties, updateProfilProperties} = require ('../swaggerSchemas/profil');
+const { equipmentProperties } = require ('../swaggerSchemas/equipment');
 
 const components = {
     schemas: {
@@ -38,6 +39,11 @@ const components = {
         updateProfilProperties: {
             type: 'object',
             properties: updateProfilProperties
+        },
+        //~
+        equipmentProperties: {
+            type: 'object',
+            properties: equipmentProperties
         }
     }
 };
