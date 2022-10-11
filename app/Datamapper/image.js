@@ -31,14 +31,16 @@ module.exports = {
 
   async deleteWorkspaceImages(workspaceId, searchDetails){
 
-    const imageId = searchDetails.id
+    const imageId = searchDetails.image_id;
 
     let queryString = "DELETE FROM image WHERE image.workspace_id = $1 AND image.id = $2 RETURNING *";
 
-    const result = await client.query(queryString, [workspaceId, imageId]);
+    await client.query(queryString, [workspaceId, imageId]);
+
+    const result = await client.query(`SELECT * FROM image WHERE workspace_id = $1`, [workspaceId]);
 
     return result.rows
-  }
+  },
 
     async updateMainImage(workspaceId, imageList) {
 

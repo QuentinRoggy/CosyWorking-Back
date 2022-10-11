@@ -7,7 +7,6 @@ module.exports = {
     async delete(req, res) {
 
         const workspaceId = req.params.id;
-    
         const searchDetails = req.body;
     
         const workspaceImageDeleted = await imageDatamapper.deleteWorkspaceImages(workspaceId, searchDetails);
@@ -22,16 +21,19 @@ module.exports = {
             rawPath.push(value)
           }
     
-          console.log(rawPath)
+          // console.log(rawPath[0])
 
           const imagePath = stringify(rawPath);
 
-          console.log(imagePath)
+          // console.log(imagePath)
     
-          fs.unlinkSync(imagePath);
+          // fs.unlinkSync(`/${imagePath}`);
+          fs.unlinkSync(`${rawPath[0]}`);
         } else {
           console.log(`can not find ${imagePath} into ${workspaceImageDeleted}`)
         }
+
+        res.json(workspaceImageDeleted);
     
       }
 }

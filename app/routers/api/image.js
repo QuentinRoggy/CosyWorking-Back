@@ -7,12 +7,12 @@ const verifyAccesRight = require('../../middleware/verifyAccessRight');
 const imageController = require("../../controllers/api/image")
 
 /**
- * DELETE /api/workspace/create
+ * DELETE /api/workspace/
  * @summary Create a new workspace
  * @tags Workspace
  * @return {ApiError} 400 - Bad request response - application/json
  * @return {ApiError} 404 - Restaurant not found - application/json
  */
- router.delete("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(imageController.delete));
+ router.post("/workspace/:id(\\d+)/image", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(imageController.delete));
 
 module.exports = router;
