@@ -17,7 +17,6 @@ const userRouter = require('./user')
 const workspaceRouter = require('./workspace');
 const equipmentRouter = require('./equipment');
 const imageRouter = require('./image');
-const giveAccessToken = require('../../middleware/giveAccessToken');
 
 // Default prefixing API's route,
 router.all('/', apiController.home);
