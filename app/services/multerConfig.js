@@ -17,8 +17,8 @@ const multerConfig = {
         }
 
         },
-        filename: function ( req, file, cb ) {
-          cb( null, file.originalname+ '-' + Date.now()+".png");
+        filename: function ( _, file, cb ) {
+          cb( null, Date.now() + '-' + file.originalname);
         }
      }
     );
