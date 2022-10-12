@@ -82,7 +82,8 @@ module.exports = {
     const userLogged = {
       userId: user[0].id, 
       userRoleDescription: user[0].role_description,  
-      userToken: token
+      userToken: token,
+      userAvatar: user[0].avatar
     }
 
     res.json(userLogged);

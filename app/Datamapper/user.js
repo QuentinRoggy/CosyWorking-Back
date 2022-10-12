@@ -25,7 +25,7 @@ module.exports = {
    */
   async findUserLoggedByEmail(emailToFind) {
 
-    const queryString = 'SELECT "user".id, "user".email, "user".password, role.id AS role_id, role.description AS role_description  FROM "user" JOIN role ON "user".role_id = role.id WHERE "user".email = $1';
+    const queryString = 'SELECT "user".id, "user".email, "user".password, role.id AS role_id, role.description AS role_description, avatar  FROM "user" JOIN role ON "user".role_id = role.id WHERE "user".email = $1';
   
     const result = await client.query(queryString, [emailToFind]);
 
