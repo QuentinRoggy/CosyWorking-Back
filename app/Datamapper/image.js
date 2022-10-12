@@ -53,7 +53,13 @@ module.exports = {
 
     await client.query(`DELETE FROM image WHERE workspace_id = $1 AND main_image = true`, [workspaceId]);
 
-    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, true, imageList[0].path])
+    // Supprime la première partie du lien => public
+    const path = imageList[0].path
+    .split('/')
+    .slice(1)
+    .join('/');
+
+    await client.query(`INSERT INTO image (workspace_id, main_image, link) VALUES ($1, $2, $3)`, [workspaceId, true, path])
 
     const result = await client.query(`SELECT id as image_id, link, main_image, workspace_id FROM image WHERE workspace_id = $1`, [workspaceId]);
 
