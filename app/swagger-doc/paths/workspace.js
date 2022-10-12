@@ -1,6 +1,7 @@
 const { randomWorkspaceProperties, getWorkspaceIdProperties, getHostWorkspaceProperties, createWorkspaceProperties, getWorkspacesProperties, 
         patchWorkspaceIdProperties, patchWorkspaceStateProperties, randomWorkspaceExample, getWorkspaceIdExample, getHostWorkspaceExample, 
-        createWorkspaceExample, getWorkspacesExample, patchWorkspaceIdExample, patchWorkspaceStateExample } = require ('../swaggerSchemas/workspace');
+        createWorkspaceExample, getWorkspacesExample, patchWorkspaceIdExample, patchWorkspaceStateExample, addWorkspaceImageProperties, 
+        addWorkspaceImageExample } = require ('../swaggerSchemas/workspace');
 
 const {error400, error404} = require('../swagger-utils/swaggerStatus');
 const {component} = require('../swagger-utils/swaggerComponents.js');
@@ -141,6 +142,33 @@ const getWorkspaces = {
 
 }
 
+const addWorkspaceImage = {
+
+    //~ --------------------------------------------- ADD WORKSPACE IMAGE
+    post: {
+        tags: ['Workspace'],
+        summary: 'Add workspace images',
+        responses: {
+            200: {
+                description: 'Request sent successfully',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: addWorkspaceImageProperties,
+                            example: addWorkspaceImageExample  
+                        }
+                    }
+                }
+            },
+            404: error404
+        }
+    },
+
+// [...,... all other methods]
+
+}
+
 const patchWorkspaceId = {
 
     //~ --------------------------------------------- UPDATE WORKSPACE
@@ -196,4 +224,4 @@ const patchWorkspaceState = {
 }
 
 
-module.exports = { randomWorkspace, getWorkspaceId, getHostWorkspace, createWorkspace, getWorkspaces, patchWorkspaceId, patchWorkspaceState };
+module.exports = { randomWorkspace, getWorkspaceId, getHostWorkspace, createWorkspace, getWorkspaces, patchWorkspaceId, patchWorkspaceState, addWorkspaceImage };

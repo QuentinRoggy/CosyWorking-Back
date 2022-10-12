@@ -51,7 +51,7 @@ module.exports = {
     async getBookingByHostId(hostId) {
 
         const queryString = `
-        SELECT booking_ref.id AS bookig_ref_id, booking.id AS booking_id, workspace.id AS workspace_id, workspace.title, image.link AS main_image, workspace.address, workspace.city, "user".first_name AS coworker, booking.start_date, booking.end_date, state.description 
+        SELECT booking_ref.id AS bookig_ref_id, booking.id AS booking_id, workspace.id AS workspace_id, workspace.title, image.link AS main_image, workspace.address, workspace.city, booking.user_id as coworker_id,"user".first_name AS coworker, booking.start_date, booking.end_date, state.description 
         FROM booking
         JOIN workspace ON workspace.id = booking.workspace_id
         JOIN "user" ON "user".id = booking.user_id

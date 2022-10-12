@@ -6,7 +6,7 @@ const { components } = require ('./swagger-utils/swaggerComponents.js');
 const { signup, login } = require('./paths/auth');
 const { userId } = require('./paths/user');
 const { getProfil, patchProfil } =  require('./paths/profil');
-const { randomWorkspace, getWorkspaceId, getHostWorkspace, createWorkspace, getWorkspaces, patchWorkspaceId, patchWorkspaceState } = require ('./paths/workspace');
+const { randomWorkspace, getWorkspaceId, getHostWorkspace, createWorkspace, getWorkspaces, patchWorkspaceId, patchWorkspaceState, addWorkspaceImage } = require ('./paths/workspace');
 const { equipment } = require ('./paths/equipment');
 const { getCoworkerBooking, getWorkspaceBooking, getHostBooking, createBookingRequest, patchBookingState } = require ('./paths/booking');
 const { deleteImage } = require ('./paths/image');
@@ -50,8 +50,8 @@ const options = {
             '/api/user/{id}': userId,
 
             //~ ------------- PROFIL
-            '/personalspace/{id}/profil': getProfil,
-            '/personalspace/{id}/profil ': patchProfil,
+            '/api/personalspace/{id}/profil': getProfil,
+            '/api/personalspace/{id}/profil ': patchProfil,
 
             //~ ------------- WORKSPACE
             '/api/workspace/find-random': randomWorkspace,
@@ -59,6 +59,7 @@ const options = {
             '/api/personalspace/{hostid}/workspace': getHostWorkspace,
             '/api/workspace/create': createWorkspace, 
             '/api/workspace/search': getWorkspaces,
+            '/api/workspace/{id}/images/add': addWorkspaceImage,
             '/api/workspace/{id} ': patchWorkspaceId,
             '/api/workspace/state/{id}': patchWorkspaceState,
 
@@ -73,7 +74,7 @@ const options = {
             '/api/booking/{id}/state': patchBookingState,
 
             //~ ------------- IMAGE
-            '/workspace/{id}/image': deleteImage,
+            '/api/workspace/{id}/image': deleteImage,
         },
 
         // Tous les schemas
