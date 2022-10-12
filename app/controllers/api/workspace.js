@@ -42,18 +42,21 @@ module.exports = {
 
     // Equipements
     const { equipments } = workspaceToCreate;
-    const equipment_list = equipments.split(',');
     delete workspaceToCreate.equipments;
-
+    
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
-
+    
     const workspaceId = workspaceInstance[0].id;
+
+    if (equipments) {
+      // console.log(equipments);
+      // const equipment_list = equipments.split(',');
+      await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipments);
+    }
+    
 
     await imageDatamapper.addImage(workspaceId, req.files);
     
-    //Equipements
-    await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipment_list);
-
     res.json(workspaceInstance);
   },
 
