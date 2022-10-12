@@ -2,7 +2,7 @@ const { signupProperties, loginProperties} = require('../swaggerSchemas/auth');
 const { userProperties } = require('../swaggerSchemas/user');
 const { profilProperties, updateProfilProperties} = require ('../swaggerSchemas/profil');
 const { equipmentProperties } = require ('../swaggerSchemas/equipment');
-const { randomWorkspaceProperties, getWorkspaceIdProperties, getHostWorkspaceProperties, createWorkspaceProperties, getWorkspacesProperties, patchWorkspaceIdProperties, patchWorkspaceStateProperties } = require('../swaggerSchemas/workspace');
+const { randomWorkspaceProperties, getWorkspaceIdProperties, getHostWorkspaceProperties, createWorkspaceProperties, getWorkspacesProperties, patchWorkspaceIdProperties, patchWorkspaceStateProperties, addWorkspaceImageProperties } = require('../swaggerSchemas/workspace');
 const { getCoworkerBookingProperties, getWorkspaceBookingProperties, getHostBookingProperties, createBookingRequestProperties, patchBookingStateProperties } = require ('../swaggerSchemas/booking');
 const { deleteImagePropreties } = require ('../swaggerSchemas/image');
 
@@ -75,6 +75,10 @@ const components = {
         patchWorkspaceState: {
             type: 'object',
             properties: patchWorkspaceStateProperties
+        },
+        addWorkspaceImageProperties: {
+            type: 'object',
+            properties: addWorkspaceImageProperties,
         },
         //~ ---------- BOOKING
         getCoworkerBooking: {

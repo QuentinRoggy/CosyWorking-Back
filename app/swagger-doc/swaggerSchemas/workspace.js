@@ -63,6 +63,15 @@ const patchWorkspaceStateProperties = {
 const patchWorkspaceStateExample = {
 
 };
+//~ ------------------------------- addWorkspaceImage
 
-module.exports = { randomWorkspaceProperties, getWorkspaceIdProperties, getHostWorkspaceProperties, createWorkspaceProperties, getWorkspacesProperties, patchWorkspaceIdProperties, patchWorkspaceStateProperties };
-module.exports = { randomWorkspaceExample, getWorkspaceIdExample, getHostWorkspaceExample, createWorkspaceExample, getWorkspacesExample, patchWorkspaceIdExample, patchWorkspaceStateExample };
+const addWorkspaceImageProperties = {
+
+};
+
+const addWorkspaceImageExample = {
+
+};
+
+module.exports = { randomWorkspaceProperties, getWorkspaceIdProperties, getHostWorkspaceProperties, createWorkspaceProperties, getWorkspacesProperties, patchWorkspaceIdProperties, patchWorkspaceStateProperties, addWorkspaceImageProperties };
+module.exports = { randomWorkspaceExample, getWorkspaceIdExample, getHostWorkspaceExample, createWorkspaceExample, getWorkspacesExample, patchWorkspaceIdExample, patchWorkspaceStateExample, addWorkspaceImageExample };

@@ -6,7 +6,7 @@ const {component} = require('../swagger-utils/swaggerComponents.js');
 const signup = {
 
     //~ --------------------------------------------- SIGNING UP
-    get: {
+    post: {
         tags: ['Authentication'],
         summary: 'User subscribe',
         responses: {
@@ -33,7 +33,7 @@ const signup = {
 const login = {
 
     //~ --------------------------------------------- LOGIN
-    get: {
+    post: {
         tags: ['Authentication'],
         summary: 'User connexion',
         responses: {

@@ -23,12 +23,13 @@ router.post("/workspace/create", [verifyAccesRight.verifyToken, verifyAccesRight
 
 router.post("/workspace/search", controllerHandler(controller.searchWorkspaces));
 
+router.post("/workspace/:id(\\d+)/images/add",[verifyAccesRight.verifyToken, verifyAccesRight.isHost] , controllerHandler(controller.addImages));
+
 //~ ---------- PATCH
 router.patch("/workspace/:id(\\d+)", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.updateOne));
 
 router.patch("/workspace/state/:id(\\d+)",[verifyAccesRight.verifyToken, verifyAccesRight.isHost],  controllerHandler(controller.updateState));
 
 
-router.post("/workspace/:id(\\d+)/images/add",[verifyAccesRight.verifyToken, verifyAccesRight.isHost] , controllerHandler(controller.addImages));
 
 module.exports = router;
