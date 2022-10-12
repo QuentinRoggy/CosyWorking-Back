@@ -14,7 +14,9 @@ const bodyParser = multerConfig.editStorage();
 router.use( bodyParser.any() );
 
 // We prefix our api's route
-router.use('/api', sanitizer, apiRouter);
+// router.use('/api', sanitizer, apiRouter);
+router.use('/api', apiRouter);
+
 
 // We take in our route into handle errors
 router.use((err, _, response, next) => {
