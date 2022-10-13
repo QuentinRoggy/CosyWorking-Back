@@ -137,14 +137,14 @@ CREATE TABLE IF NOT EXISTS public.booking
     workspace_id integer NOT NULL,
     state_id integer NOT NULL,
     booking_ref_id integer NOT NULL,
+    price integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT booking_pkey PRIMARY KEY (id),
     CONSTRAINT booking_ref_fk FOREIGN KEY (booking_ref_id)
         REFERENCES public.booking_ref (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID,
+        ON DELETE NO ACTION,
     CONSTRAINT booking_state_id_fk FOREIGN KEY (state_id)
         REFERENCES public.state (id) MATCH SIMPLE
         ON UPDATE NO ACTION

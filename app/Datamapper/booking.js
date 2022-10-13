@@ -12,7 +12,7 @@ module.exports = {
      async getCoworkerReservationsById(coworkerId) {
 
         const queryString = `
-        SELECT booking.id, "user".first_name AS Host, "user".avatar AS host_avatar, state.description AS state, image.link AS image_link, workspace.address, workspace.city, workspace.zip_code, workspace.title AS title, workspace.day_price, workspace.half_day_price, booking.start_date, booking.end_date, booking.workspace_id, booking.booking_ref_id
+        SELECT booking.id, "user".first_name AS Host, booking.price,"user".avatar AS host_avatar, state.description AS state, image.link AS image_link, workspace.user_id as host_id,workspace.address, workspace.city, workspace.zip_code, workspace.title AS title, workspace.day_price, workspace.half_day_price, booking.start_date, booking.end_date, booking.workspace_id, booking.booking_ref_id
         FROM booking 
         JOIN state ON state.id = booking.state_id
         JOIN workspace ON workspace.id = booking.workspace_id
@@ -51,7 +51,7 @@ module.exports = {
     async getBookingByHostId(hostId) {
 
         const queryString = `
-        SELECT booking_ref.id AS bookig_ref_id, booking.id AS booking_id, workspace.id AS workspace_id, workspace.title, image.link AS main_image, workspace.address, workspace.city, booking.user_id as coworker_id,"user".first_name AS coworker, "user".avatar, booking.start_date, booking.end_date, state.description 
+        SELECT booking_ref.id AS bookig_ref_id, booking.id AS booking_id, booking.price,workspace.id AS workspace_id, workspace.title, image.link AS main_image, workspace.address, workspace.city, booking.user_id as coworker_id,"user".first_name AS coworker, "user".avatar, booking.start_date, booking.end_date, state.description 
         FROM booking
         JOIN workspace ON workspace.id = booking.workspace_id
         JOIN "user" ON "user".id = booking.user_id
