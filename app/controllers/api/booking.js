@@ -1,6 +1,7 @@
 const bookingDatamapper = require("../../Datamapper/booking");
 const bookingRefDatamaper = require('../../Datamapper/booking_ref');
 const securityDatamapper = require("../../Datamapper/security");
+const workspaceDatamapper = require("../../Datamapper/workspace");
 
 
 module.exports = {
@@ -67,15 +68,30 @@ module.exports = {
     bookingToInsert.user_id = parseInt(req.userId);
 
     const { date_list } = bookingToInsert;
-
     delete bookingToInsert.date_list;
     
     bookingToInsert.booking_ref_id = await bookingRefDatamaper.insertNewBookingRef();
+
+    const workspacePrice = await workspaceDatamapper.getWorkspacesPrices(bookingToInsert.workspace_id);
+
+    let bookingPrice = 0;
     
     for (const booking of date_list) {
         bookingToInsert.start_date = booking.start_date;
         bookingToInsert.end_date = booking.end_date;
 
+        const startHour = new Date(booking.start_date);
+        const endHour = new Date(booking.end_date);
+        const duringTime = (endHour - startHour) / 3600000;
+
+        if (duringTime <= 4 ) {
+            bookingPrice += parseInt(workspacePrice[0].half_day_price);
+        } else {
+            bookingPrice += parseInt(workspacePrice[0].day_price);
+        }
+        
+        bookingToInsert.price = bookingPrice;
+        
         await bookingDatamapper.PostBookingRequest(bookingToInsert);
     }
 
