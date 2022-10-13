@@ -74,7 +74,7 @@ module.exports = {
 
     const workspacePrice = await workspaceDatamapper.getWorkspacesPrices(bookingToInsert.workspace_id);
 
-    let bookingPrice = 0;
+    let bookingRefPrice = 0;
     
     for (const booking of date_list) {
         bookingToInsert.start_date = booking.start_date;
@@ -85,15 +85,18 @@ module.exports = {
         const duringTime = (endHour - startHour) / 3600000;
 
         if (duringTime <= 4 ) {
-            bookingPrice = parseInt(workspacePrice[0].half_day_price);
+            bookingToInsert.price = parseInt(workspacePrice[0].half_day_price);
+
         } else {
-            bookingPrice = parseInt(workspacePrice[0].day_price);
+            bookingToInsert.price = parseInt(workspacePrice[0].day_price);
         }
         
-        bookingToInsert.price = bookingPrice;
+        bookingRefPrice += bookingToInsert.price;
         
         await bookingDatamapper.PostBookingRequest(bookingToInsert);
     }
+
+    await bookingRefDatamaper.updatePrice(bookingToInsert.booking_ref_id, bookingRefPrice);
 
     res.json({message: "Booking are created successfully"});
     },
