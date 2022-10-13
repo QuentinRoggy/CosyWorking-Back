@@ -329,4 +329,10 @@ module.exports = {
     return result.rows;
   },
 
+  async getWorkspacesPrices(workspaceId) {
+    const result = await client.query(`SELECT half_day_price, day_price FROM workspace WHERE id = $1;`, [workspaceId]);
+
+    return result.rows;
+  }
+
 }
