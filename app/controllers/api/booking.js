@@ -85,9 +85,9 @@ module.exports = {
         const duringTime = (endHour - startHour) / 3600000;
 
         if (duringTime <= 4 ) {
-            bookingPrice += parseInt(workspacePrice[0].half_day_price);
+            bookingPrice = parseInt(workspacePrice[0].half_day_price);
         } else {
-            bookingPrice += parseInt(workspacePrice[0].day_price);
+            bookingPrice = parseInt(workspacePrice[0].day_price);
         }
         
         bookingToInsert.price = bookingPrice;
