@@ -38,9 +38,6 @@ module.exports = {
 
     equipmentList = equipmentList.map(equipment => parseInt(equipment));
 
-    console.log(equipmentList);
-    console.log(result.rows);
-
     for (const itemEquipment of equipmentList ) {
       if (!result.rows.find(item => item.equipment_id === itemEquipment)) {
         await client.query(`INSERT INTO workspace_has_equipment (equipment_id, workspace_id) VALUES ($1, $2)`, [itemEquipment, workspaceId]);
@@ -54,8 +51,6 @@ module.exports = {
     }
 
     result = await client.query('SELECT * FROM workspace_has_equipment WHERE workspace_id = $1', [workspaceId]);
-
-    console.log(result.rows);
 
     return;
   }

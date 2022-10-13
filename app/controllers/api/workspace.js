@@ -49,8 +49,6 @@ module.exports = {
     const workspaceId = workspaceInstance[0].id;
 
     if (equipments) {
-      // console.log(equipments);
-      // const equipment_list = equipments.split(',');
       await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipments);
     }
     
@@ -69,19 +67,22 @@ module.exports = {
     const workspaceId = parseInt(req.params.id);
     const updatedWorkspace = req.body;
     const { equipments } = updatedWorkspace;
-    const equipmentList = equipments.split(',');
+ 
 
     delete updatedWorkspace.equipments;
 
     const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
 
     if (!isAuthorizedToUpdate) {
-      return res.status(403).send({
+      return res.status(401).send({
         message: "This is not your workspace ! "
       });
     }
 
-    await equipmentDatamapper.update(workspaceId, equipmentList);
+    if (equipments) {
+
+      await equipmentDatamapper.update(workspaceId, equipments);
+    }
 
     const result = await workspaceDatamapper.patchOne(workspaceId, updatedWorkspace);
 
@@ -95,7 +96,7 @@ module.exports = {
     const isAuthorizedToUpdate = await securityDatamapper.checkWorkspaces(req.userId, workspaceId);
 
     if (!isAuthorizedToUpdate) {
-      return res.status(403).send({
+      return res.status(401).send({
         message: "This is not your workspace ! "
       });
     }
