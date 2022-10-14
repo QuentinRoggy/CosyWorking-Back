@@ -242,17 +242,22 @@ async function insertImage() {
 async function insertBookingRef() {
 
   const queryString = `
-  INSERT INTO public.booking_ref
-	DEFAULT VALUES;   
+  INSERT INTO public.booking_ref (price) VALUES 
+  (210),
+  (240),   
+  (120),   
+  (598),   
+  (680),
+  (120);  
   `;
 
-  let data = [];
+  // let data = [];
 
-  for(let i = 0; i < 6; i++){
-    result = await db.query(queryString);
-    data.push(result);
-  }
-
+  // for(let i = 0; i < 6; i++){
+  //   data.push(result);
+  // }
+  
+  result = await db.query(queryString);
   return result;
 }
 

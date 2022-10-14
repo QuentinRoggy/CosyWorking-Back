@@ -34,6 +34,8 @@ module.exports = {
   async create(req, res) {
     const workspaceToCreate = req.body;
     workspaceToCreate.user_id = req.userId;
+
+    workspaceToCreate.city = workspaceToCreate.city.toLowerCase();
     
     const coordinates = await mapServices.findLocation(req.body.address,req.body.zip_code, req.body.city);
 
