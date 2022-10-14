@@ -119,12 +119,12 @@ async function insertWorkspaces(workspaces) {
   INSERT INTO public.workspace(
     title, description, address, zip_code, city, longitude, latitude, half_day_price, day_price, availability, user_id)
     VALUES 
-          ('Le Cocoon', 'Un bureau équipé pour votre bien être, décoré à travers la methode fengshui. Vous y serez épanouis et en sortirez plus heureux que jamais.', '30 rue Saint-Louis', '35000', 'Rennes', '-1.6840268', '48.1133316', 70, 140, true, 1),
-          ('Happy Hour Loft', 'Mon loft est à votre service, vous pourrez y étancher votre soif et bien sûr y travailler comme il se doit', '8 rue Saint-Serge', '49100', 'Angers', '-0.55', '47.4667', 80, 160, true, 2),
-          ('Bureau pas comme les autres', 'Bureau conceptuel dans une ambiance chat Sibérien. Pot de moutarde de Dijon offert', '5 rue Jacques Cellerier', '21000', 'Dijon', '5.0167', '47.3167', 40, 80, true, 3),
-          ('Luxueuse Villa', 'Charmante Villa de 300m2, vous y trouverez une piscine à débordement sur le toit avec vu sur la Tour Effeil ', '3 Av. Anatole', '75007', 'Paris', '2.2966781', '48.8571483', 199, 399, true, 4),
-          ('Petite Villa', 'Petite Villa de 1300m2, parfait pour vos team building. ', '12 rue Desaix', '75015', 'Paris', '2.294337574460753', '48.85408615197824', 80, 200, true, 1),
-          ('Charmant Atelier', 'Ancien atelier de poterie aménager en bureau, décoration inspiré du plus grand potier Bernard Palissy', '72 Pl. de Provence', '86000', 'Poitiers', '0.357187', '46.5894948', 30, 60, true, 5)
+          ('Le Cocoon', 'Un bureau équipé pour votre bien être, décoré à travers la methode fengshui. Vous y serez épanouis et en sortirez plus heureux que jamais.', '30 rue Saint-Louis', '35000', 'rennes', '-1.6840268', '48.1133316', 70, 140, true, 1),
+          ('Happy Hour Loft', 'Mon loft est à votre service, vous pourrez y étancher votre soif et bien sûr y travailler comme il se doit', '8 rue Saint-Serge', '49100', 'angers', '-0.55', '47.4667', 80, 160, true, 2),
+          ('Bureau pas comme les autres', 'Bureau conceptuel dans une ambiance chat Sibérien. Pot de moutarde de Dijon offert', '5 rue Jacques Cellerier', '21000', 'dijon', '5.0167', '47.3167', 40, 80, true, 3),
+          ('Luxueuse Villa', 'Charmante Villa de 300m2, vous y trouverez une piscine à débordement sur le toit avec vu sur la Tour Effeil ', '3 Av. Anatole', '75007', 'paris', '2.2966781', '48.8571483', 199, 399, true, 4),
+          ('Petite Villa', 'Petite Villa de 1300m2, parfait pour vos team building. ', '12 rue Desaix', '75015', 'paris', '2.294337574460753', '48.85408615197824', 80, 200, true, 1),
+          ('Charmant Atelier', 'Ancien atelier de poterie aménager en bureau, décoration inspiré du plus grand potier Bernard Palissy', '72 Pl. de Provence', '86000', 'poitiers', '0.357187', '46.5894948', 30, 60, true, 5)
   RETURNING *;
 `;
 
