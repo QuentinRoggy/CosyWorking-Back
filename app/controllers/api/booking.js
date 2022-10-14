@@ -21,6 +21,8 @@ module.exports = {
 
         const result = await bookingDatamapper.getCoworkerReservationsById(coworkerId);
 
+        result[0].city = result[0].city.charAt(0).toUpperCase() + result[0].city.slice(1);
+
         res.json(result)
     },
 
@@ -38,6 +40,10 @@ module.exports = {
         const hostId = req.params.hostid;
 
         const result = await bookingDatamapper.getBookingByHostId(hostId);
+
+        for (const workspace of result ) {
+            workspace.city = workspace.city.charAt(0).toUpperCase() + workspace.city.slice(1);
+        }
         
         res.json(result);
     },

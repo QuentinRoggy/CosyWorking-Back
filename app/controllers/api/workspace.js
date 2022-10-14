@@ -14,6 +14,8 @@ module.exports = {
 
     const workspace = await workspaceDatamapper.getWorkspaceByPk(workspaceId);
 
+    workspace[0].workspace_details.workspace.city = workspace[0].workspace_details.workspace.city.charAt(0).toUpperCase() + workspace[0].workspace_details.workspace.city.slice(1);
+
     res.json(workspace);
 
   },
@@ -27,6 +29,10 @@ module.exports = {
     const hostId = req.params.hostid;
 
     const workspaces = await workspaceDatamapper.getWorkspacesByHostId(hostId);
+
+    for (const workspace of workspaces) {
+      workspace.json_build_object.workspace.city = workspace.json_build_object.workspace.city.charAt(0).toUpperCase() + workspace.json_build_object.workspace.city.slice(1);
+    }
 
     res.json(workspaces);
   },
@@ -62,6 +68,11 @@ module.exports = {
 
   async findRandom(_, res) {
     const workspaces = await workspaceDatamapper.getRandom();
+
+    for (const workspace of workspaces ) {
+      workspace.city = workspace.city.charAt(0).toUpperCase() + workspace.city.slice(1);
+    }
+
     res.json(workspaces);
   },
 
