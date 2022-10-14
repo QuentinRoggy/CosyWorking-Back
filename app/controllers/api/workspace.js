@@ -111,6 +111,8 @@ module.exports = {
   async searchWorkspaces(req, res) {
     const searchDetails = req.body;
 
+    req.body.city = req.body.city.toLowerCase();
+
     const workspacesAvailable = await workspaceDatamapper.getWorkspacesFromSearch(searchDetails);
 
     res.json(workspacesAvailable);
