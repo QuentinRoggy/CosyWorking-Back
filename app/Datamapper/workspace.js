@@ -155,7 +155,9 @@ module.exports = {
     }
 
     for (const equipment of equipments) {
-      equipmentsList.push(equipment.description);
+      if (equipment != null) {
+        equipmentsList.push(equipment);
+      }
     }
 
     // ************* Logique de création des query String *************
