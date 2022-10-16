@@ -79,6 +79,9 @@ module.exports = {
   async updateOne(req, res) {
     const workspaceId = parseInt(req.params.id);
     const updatedWorkspace = req.body;
+
+    updatedWorkspace.city = updatedWorkspace.city.toLowerCase();
+
     const { equipments } = updatedWorkspace;
  
 
