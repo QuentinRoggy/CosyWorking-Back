@@ -25,5 +25,30 @@ module.exports = {
     const result = await client.query(queryString, [...values]);
 
     return result.rows;
+  },
+
+  async patch(workspaceId, data) {
+    let columns = [];
+    let counter = 2;
+    let queryParams = [];
+    let values = [];
+
+    for (const key in data) {
+      columns.push(key);
+      queryParams.push(`$${counter}`);
+      counter ++;
+      values.push(data[key]);
+    }
+
+    if (queryParams.length > 1 ) {
+      queryString = `UPDATE workspace SET ( ${columns.join(',')} ) = (${queryParams.join(',')}) WHERE id = $1 RETURNING *;`;
+
+    } else {
+      queryString = `UPDATE workspace SET ${columns.join(',')} = ${queryParams.join(',')} WHERE id = $1 RETURNING *;`;
+    }
+
+    const result = await client.query(queryString, [workspaceId, ...values]);
+
+    return result.rows;
   }
 }

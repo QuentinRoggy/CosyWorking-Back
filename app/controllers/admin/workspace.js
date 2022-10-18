@@ -12,6 +12,15 @@ module.exports = {
     const newWorkspace = await workspaceDatamapper.add(workspaceToCreate);
 
     res.json(newWorkspace);
+  },
+
+  async updateOne(req,res) {
+    const workspaceToUpdate = parseInt(req.params.id);
+    const dataToUpdate = req.body;
+
+    const workspaceUpdated = await workspaceDatamapper.patch(workspaceToUpdate, dataToUpdate);
+
+    res.json(workspaceUpdated);
   }
 
 }

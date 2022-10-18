@@ -14,7 +14,6 @@ router.get("/workspace", controllerHandler(controller.findAll));
 //~ ---------- POST
 router.post("/workspace", controllerHandler(controller.create));
 
-
 //~ ---------- PATCH
 router.patch("/workspace/:id(\\d+)", controllerHandler(controller.updateOne));
 
