@@ -1,7 +1,7 @@
 const workspaceDatamapper = require('../../Datamapper/admin/workspace');
 
 module.exports = {
-  async findAll(req, res) {
+  async findAll(_, res) {
     const workspaces = await workspaceDatamapper.getAll();
     res.json(workspaces);
   },
@@ -21,6 +21,14 @@ module.exports = {
     const workspaceUpdated = await workspaceDatamapper.patch(workspaceToUpdate, dataToUpdate);
 
     res.json(workspaceUpdated);
+  },
+
+  async deleteOne(req, res) {
+    const workspaceToDelete = parseInt(req.params.id);
+
+    await workspaceDatamapper.delete(workspaceToDelete);
+
+    res.json({message: `Worksapce with id ${workspaceToDelete} successfully deleted.`});
   }
 
 }

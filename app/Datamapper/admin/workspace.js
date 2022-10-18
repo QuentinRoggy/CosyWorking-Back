@@ -50,5 +50,10 @@ module.exports = {
     const result = await client.query(queryString, [workspaceId, ...values]);
 
     return result.rows;
+  },
+
+  async delete(workspaceId) {
+    await client.query(`DELETE FROM workspace WHERE id = $1;`, [workspaceId]);
+    return;
   }
 }
