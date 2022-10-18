@@ -128,6 +128,7 @@ async function insertWorkspaces(workspaces) {
   RETURNING *;
 `;
 
+
   const result = await db.query(queryString);
 
   return result.rows;
