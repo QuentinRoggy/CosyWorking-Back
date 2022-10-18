@@ -1,3 +1,4 @@
+const workspaceController = require('./workspace');
 
 const adminController = {
     /**
@@ -15,4 +16,4 @@ const adminController = {
     },
 };
 
-module.exports = { adminController };
+module.exports = { adminController, workspaceController };

@@ -6,6 +6,9 @@ const adminRouter = require('./admin')
 
 const { errorHandler } = require('../helpers/errorHandler');
 
+// JWT VALIDATION
+const verifyAccesRight = require('../middleware/verifyAccessRight');
+
 const sanitizer = require('../middleware/sanitizer');
 
 // Multer 
@@ -18,7 +21,7 @@ router.use( bodyParser.any() );
 // router.use('/api', sanitizer, apiRouter);
 router.use('/api', apiRouter);
 
-router.use('/admin', adminRouter);
+router.use('/admin', [verifyAccesRight.verifyToken, verifyAccesRight.isAdmin],adminRouter);
 
 
 

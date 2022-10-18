@@ -9,16 +9,14 @@ const { ApiError } = require('../../helpers/errorHandler');
 // Default prefixing API's route,
 router.all('/', adminController.home);
 
-
 // Import all router files
-
+const workspaceRouter = require('./workspace');
 
 // Gives acces to x-access-token in header
 router.use(giveAccessToken);
 
-
 // Use all router files
-
+router.use(workspaceRouter);
 
 // Use error handler
 router.use(() => {
