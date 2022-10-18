@@ -18,6 +18,9 @@ router.use( bodyParser.any() );
 // router.use('/api', sanitizer, apiRouter);
 router.use('/api', apiRouter);
 
+router.use('/admin', adminRouter);
+
+
 
 // We take in our route into handle errors
 router.use((err, _, response, next) => {
