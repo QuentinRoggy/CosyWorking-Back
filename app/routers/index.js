@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const apiRouter = require('./api');
+const adminRouter = require('./admin')
 
 const { errorHandler } = require('../helpers/errorHandler');
 
