@@ -72,7 +72,8 @@ module.exports = {
     // to have a direct access
     const token = jwt.sign({
       userId: user[0].id, 
-      userRoleDescription: user[0].role_description}, 
+      userRoleDescription: user[0].role_description
+    }, 
       process.env.JWT_SECRET,
       {
       expiresIn: 3600 // 24 hours

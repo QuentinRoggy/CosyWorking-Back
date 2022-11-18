@@ -3,6 +3,7 @@ const bookingController = require('./booking');
 const profilController = require('./profil');
 const workspaceController =  require('./workspace');
 const equipmentController = require('./equipment');
+const wishlistController = require('./wishlist');
 
 const apiController = {
     /**
@@ -20,5 +21,5 @@ const apiController = {
     },
 };
 
-module.exports = { apiController, userController, bookingController, profilController, workspaceController, equipmentController };
+module.exports = { apiController, userController, bookingController, profilController, workspaceController, equipmentController, wishlistController };
 
