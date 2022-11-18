@@ -3,3 +3,4 @@
 
 1.initDb 2022-09-22T10:26:49Z Vanaquer,,, <corentin@corentin-Inspiron-3505> # initialization db
 2.plpgsql_function 2022-10-04T08:55:49Z System Administrator <root@MacBook-Air-de-Quentin.local> # Creation of a plpgsql function for userDatamapper
+3.wishlist 2022-10-07T15:49:06Z System Administrator <root@MacBook-Air-de-Quentin.local> # Add wishlist table

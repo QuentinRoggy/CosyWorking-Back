@@ -17,6 +17,7 @@ const userRouter = require('./user')
 const workspaceRouter = require('./workspace');
 const equipmentRouter = require('./equipment');
 const imageRouter = require('./image');
+const wishlistRouter = require('./wishlist');
 
 // Default prefixing API's route,
 router.all('/', apiController.home);
@@ -32,6 +33,7 @@ router.use(workspaceRouter);
 router.use(equipmentRouter);
 router.use(profilRouter);
 router.use(imageRouter);
+router.use(wishlistRouter);
 
 // Use error handler
 router.use(() => {

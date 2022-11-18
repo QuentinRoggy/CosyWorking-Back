@@ -12,7 +12,7 @@ module.exports = {
    */
   async findByEmail(emailToFind) {
 
-    const queryString = 'SELECT email FROM "user" WHERE email = $1'
+    const queryString = 'SELECT email FROM "user" WHERE email = $1';
     const result = await client.query(queryString, [emailToFind]);
 
     return result.rows;
