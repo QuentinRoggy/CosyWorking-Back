@@ -21,7 +21,10 @@ app.use(express.static('public'));
 
 
 // On lève la restriction CORS pour nos amis React
-app.use(cors(process.env.CORS_DOMAINS || '*'));
+// app.use(cors(process.env.CORS_DOMAINS || '*'));
+app.use(cors({
+  origin: '*'
+}));
 
 app.use(router);
 
