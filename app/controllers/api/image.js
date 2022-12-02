@@ -1,5 +1,4 @@
 const imageDatamapper = require('../../Datamapper/image');
-const fs = require('fs');
 
 module.exports = {
 
@@ -10,13 +9,6 @@ module.exports = {
     
         const workspaceImageDeleted = await imageDatamapper.deleteWorkspaceImages(workspaceId, searchDetails);
     
-        if(workspaceImageDeleted){    
-          fs.unlinkSync(`public/${searchDetails.image_link}`);
-        } else {
-          console.log(`can not find ${imagePath} into ${workspaceImageDeleted}`)
-        }
-
-
         res.json(workspaceImageDeleted);
     
       }

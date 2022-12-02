@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS public.workspace_review
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
 
 
 COMMIT;
