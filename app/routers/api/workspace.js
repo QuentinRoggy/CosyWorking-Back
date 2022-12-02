@@ -18,6 +18,8 @@ router.get("/workspace/:id(\\d+)", controllerHandler(controller.findById));
 
 router.get("/personalspace/:hostid(\\d+)/workspace",[verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.findWorkspacesByHost));
 
+router.get("/workspace/:id(\\d+)", controllerHandler(controller.fetchReviews));
+
 //~ ---------- POST
 router.post("/workspace/create", [verifyAccesRight.verifyToken, verifyAccesRight.isHost], controllerHandler(controller.create));
 

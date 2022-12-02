@@ -2,6 +2,7 @@ const workspaceDatamapper = require("../../Datamapper/workspace");
 const equipmentDatamapper = require("../../Datamapper/equipment");
 const imageDatamapper = require("../../Datamapper/image");
 const securityDatamapper = require('../../Datamapper/security');
+const reviewsDatamapper = require('../../Datamapper/reviews');
 
 
 const mapServices = require("../../services/mapServices");
@@ -40,14 +41,20 @@ module.exports = {
   async create(req, res) {
     const workspaceToCreate = req.body;
     workspaceToCreate.user_id = req.userId;
+    
+    const mainImage = workspaceToCreate.workspace_mainImage;
+    delete workspaceToCreate.workspace_mainImage;
 
+    const otherImagesLink = workspaceToCreate.otherImagesLink.split(',');
+    delete workspaceToCreate.otherImagesLink;
+    
     workspaceToCreate.city = workspaceToCreate.city.toLowerCase();
     
     const coordinates = await mapServices.findLocation(req.body.address,req.body.zip_code, req.body.city);
-
+    
     workspaceToCreate.latitude = coordinates.latitude;
     workspaceToCreate.longitude = coordinates.longitude;
-
+    
     // Equipements
     const { equipments } = workspaceToCreate;
     delete workspaceToCreate.equipments;
@@ -55,13 +62,12 @@ module.exports = {
     const workspaceInstance = await workspaceDatamapper.create(workspaceToCreate);
     
     const workspaceId = workspaceInstance[0].id;
-
+    
     if (equipments) {
       await equipmentDatamapper.associateWorkspaceToEquipment(workspaceId, equipments);
     }
     
-
-    await imageDatamapper.addImage(workspaceId, req.files);
+    await imageDatamapper.addImage(workspaceId, mainImage, otherImagesLink);
     
     res.json(workspaceInstance);
   },
@@ -137,14 +143,18 @@ module.exports = {
 
     let result;
 
-    if (req.files[0].fieldname.includes("mainImage")) {
-      result =  await imageDatamapper.updateMainImage(workspaceId, req.files);
-    } else {
-      result = await imageDatamapper.updateImages(workspaceId, req.files);
-    }
+    result =  await imageDatamapper.updateImage(workspaceId, req.body);
 
     res.json(result);
+    
+  },
+  
+  async fetchReviews(req, res) {
+    const workspaceId = parseInt(req.params.id);
 
+    result = await reviewsDatamapper.getAllWorkspaceReviews(workspaceId);
+
+    res.json({message: "OK"});
   }
 
 }
